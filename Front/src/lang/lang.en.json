@@ -1,0 +1,45 @@
+{
+  "MainTitle" : "Korean Market",
+  "Korean Market": "Korean Market",
+  "Welcome to the World of" : "Welcome to the World of",
+  "Discover Authentic Treasures and Explore Korean Culture and Craftsmanship" : "Discover Authentic Treasures and Explore Korean Culture and Craftsmanship",
+  "Shop Now" : "Shop Now",
+  "What is Korea Market?" : "What is Korea Market?",
+  "For Koreans Abroad: Your International Direct Trading Hub": "For Koreans Abroad: Your International Direct Trading Hub",
+  "Korea Market is a second-hand trading site for Koreans in the U.S. and Canada, and other foreigners can also use this site, even if they are not Koreans. This site is also a safe site where you can search for jobs and evaluate reliability. Korea Market offers multiple categories and provides convenient options for selecting your desired location, time, and more. It's your go-to platform for hassle-free transactions. merchandise.": "Korea Market is a second-hand trading site for Koreans in the U.S. and Canada, and other foreigners can also use this site, even if they are not Koreans. This site is also a safe site where you can search for jobs and evaluate reliability. Korea Market offers multiple categories and provides convenient options for selecting your desired location, time, and more. It's your go-to platform for hassle-free transactions. merchandise.",
+  "Join us in spreading joy and playfulness!": "Join us in spreading joy and playfulness!",
+  "Using": "Using",
+  "Discover the World of Korea Market today! Your one-stop destination for authentic Korean treasures and unique finds. Shop with ease, explore diverse categories, and connect with sellers worldwide. Don't miss out—start your Korea Market adventure now. Join us to experience the best of Korean culture and craftsmanship. Your next great discovery is just a click away": "Discover the World of Korea Market today! Your one-stop destination for authentic Korean treasures and unique finds. Shop with ease, explore diverse categories, and connect with sellers worldwide. Don't miss out—start your Korea Market adventure now. Join us to experience the best of Korean culture and craftsmanship. Your next great discovery is just a click away",
+  "Your questions,": "Your questions,",
+  "Frequently asked questions.": "Frequently asked questions.",
+  "Can't find the answer you are looking for? Please": "Can't find the answer you are looking for? Please",
+  "contact": "contact",
+  " to us.": " to us.",
+  "answered.": "answered.",
+   "English" : "English",
+  "Korean" : "Korean",
+  "Japanese": "Japanese",
+  "Chinese": "Chinese",
+
+  "faq": {
+    "questions": [
+      {
+        "name": "Which country is primarily served, and is it exclusive to Koreans?",
+        "description": "Our primary audience is Korean, but Korea Market is open to customers from around the world. We welcome everyone to explore our platform, connect with Korean sellers, and discover authentic treasures. While our focus is on serving the Korean community, our doors are wide open to all who wish to experience the richness of Korean culture and craftsmanship. Join us today and be part of our global community!"
+      },
+      {
+        "name": "Is it available as a mobile app as well?",
+        "description": "At the moment, it's not available as a mobile app, but we plan to launch one in the near future."
+      },
+      {
+        "name": "How are the costs structured? Is it in dollars or Korean won?",
+        "description": "Our platform is designed for direct transactions, so whether it's in dollars or Korean won, it doesn't matter. One of the advantages of our site is that when you list a product, it automatically calculates the currency exchange based on the country, making it convenient for both local and international users. This feature ensures a seamless and user-friendly experience for all our members. Join us today to experience the simplicity and flexibility of Korea Market"
+      },
+      {
+        "name": "How do I make a purchase?",
+        "description": "1. Search for the desired product using categories or product names. 2. Click on the product to enter its details and confirm if it meets your criteria. Check the cost, which includes currency conversion. 3. Choose a date, add any necessary notes, and specify the location. Click the 'Reserve' button located in the upper right corner. 4. Once the date and location are confirmed, proceed with the direct transaction. 5. To ensure trustworthiness for future transactions, both parties may rate each other with a trust score."
+      }
+    ]
+  }
+}
+

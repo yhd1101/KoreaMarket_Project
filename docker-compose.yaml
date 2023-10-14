@@ -1,0 +1,34 @@
+#들여쓰기 기준
+
+services:
+  nestjs_api:
+    build:
+      dockerfile: Dockerfile
+      context: Backend
+      target: development
+    volumes:
+      - ./Backend:/usr/src/app
+    env_file:
+      - ./Backend/.env
+    command: npm run start:dev
+    ports:
+      - 8000:8000
+    networks:
+      - koreanmarket-network
+
+
+  react_app:
+    container_name: react_app
+    build:
+      dockerfile: Dockerfile
+      context: Front
+      target: development
+    command: npm run start
+    ports:
+      - 80:3000
+    networks:
+      - koreanmarket-network
+
+
+networks:
+  koreanmarket-network:
