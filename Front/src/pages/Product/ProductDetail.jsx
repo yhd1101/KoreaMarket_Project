@@ -24,7 +24,7 @@ const ProductDetail = () => {
 
 
 
-        // const getMoneyInfo = async () => {
+    // const getMoneyInfo = async () => {
     //     try{
     //         const result = await axios.get("https://api.currencyfreaks.com/latest?apikey=13c39624b2be49dcae2e987f4200390e")
     //         if( result.status === 200){
@@ -35,7 +35,7 @@ const ProductDetail = () => {
     //     }
     // }
 
-   //환율 데이터 로딩 중 또는 에러 처리
+    //환율 데이터 로딩 중 또는 에러 처리
     if (moneyLoading) {
         return <LoadingSkeleton />;
     }
@@ -80,7 +80,7 @@ const ProductDetail = () => {
                                         <div className="absolute inset-0 translate-x-1/2 translate-y-1/2">
                                             <LazyLoadImage
                                                 src={img}
-                                                alt={data?.data.desc}
+                                                alt={data?.desc}
                                                 effect="blur"
                                                 className="absolute top-0 left-0 h-full w-auto -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75"
                                             />
@@ -98,28 +98,28 @@ const ProductDetail = () => {
                         {/*    modules={[FreeMode, Thumbs]}*/}
                         {/*    className="mySwiper mt-4"*/}
                         {/*>*/}
-                            {console.log("1111111111",data)}
-                            {/*{data?.productImg === null || undefined ? null : (*/}
-                            {/*    <>*/}
-                            {/*        {console.log("11111111111111",data)}*/}
-                            {/*    /!*{data?.productImg?.map((img, index) => (*!/*/}
-                            {/*    /!*    <SwiperSlide key={index}>*!/*/}
-                            {/*    /!*        <div className="relative overflow-hidden rounded-2xl bg-gray-100 pt-[100%]">*!/*/}
-                            {/*    /!*            <div className="absolute inset-0 translate-x-1/2 translate-y-1/2">*!/*/}
-                            {/*    /!*                <LazyLoadImage*!/*/}
-                            {/*    /!*                    src={img}*!/*/}
-                            {/*    /!*                    alt={data.desc}*!/*/}
-                            {/*    /!*                    effect="blur"*!/*/}
-                            {/*    /!*                    className="absolute top-0 left-0 h-full w-auto -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75"*!/*/}
-                            {/*    /!*                />*!/*/}
-                            {/*    /!*            </div>*!/*/}
-                            {/*    /!*        </div>*!/*/}
+                        {console.log("1111111111",data)}
+                        {/*{data?.productImg === null || undefined ? null : (*/}
+                        {/*    <>*/}
+                        {/*        {console.log("11111111111111",data)}*/}
+                        {/*    /!*{data?.productImg?.map((img, index) => (*!/*/}
+                        {/*    /!*    <SwiperSlide key={index}>*!/*/}
+                        {/*    /!*        <div className="relative overflow-hidden rounded-2xl bg-gray-100 pt-[100%]">*!/*/}
+                        {/*    /!*            <div className="absolute inset-0 translate-x-1/2 translate-y-1/2">*!/*/}
+                        {/*    /!*                <LazyLoadImage*!/*/}
+                        {/*    /!*                    src={img}*!/*/}
+                        {/*    /!*                    alt={data.desc}*!/*/}
+                        {/*    /!*                    effect="blur"*!/*/}
+                        {/*    /!*                    className="absolute top-0 left-0 h-full w-auto -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75"*!/*/}
+                        {/*    /!*                />*!/*/}
+                        {/*    /!*            </div>*!/*/}
+                        {/*    /!*        </div>*!/*/}
 
-                            {/*    /!*    </SwiperSlide>*!/*/}
+                        {/*    /!*    </SwiperSlide>*!/*/}
 
-                            {/*    /!*))}*!/*/}
-                            {/*    </>*/}
-                            {/*) }*/}
+                        {/*    /!*))}*!/*/}
+                        {/*    </>*/}
+                        {/*) }*/}
                         {/*</Swiper>*/}
 
                     </div>
@@ -134,7 +134,7 @@ const ProductDetail = () => {
                         <div className="mt-4 lg:mt-0">
                             <h2 className="sr-only">Product information</h2>
                             <p className="mt-4 text-3xl tracking-tight text-gray-900">
-                                ${data?.data.price}
+                                ${data?.price}
                                 {/*{moneyInfo ? (*/}
                                 {/*    <h5>*/}
                                 {/*        Korea is {data?.price * moneyInfo.rates.KRW}원*/}
@@ -145,15 +145,15 @@ const ProductDetail = () => {
                                 {/*        Japan is {data?.price * moneyInfo.rates.JPY}엔*/}
                                 {/*    </h5>*/}
                                 {/*) : null}*/}
-                                <h5>korea is {data?.data.price * moneyInfo?.rates?.KRW.slice(0,5)}원</h5>
-                                <h5>Japan is {data?.data.price * moneyInfo?.rates?.JPY.slice(0,5)}엔</h5>
+                                <h5>korea is {data?.price * moneyInfo?.rates?.KRW.slice(0,5)}원</h5>
+                                <h5>Japan is {data?.price * moneyInfo?.rates?.JPY.slice(0,5)}엔</h5>
                             </p>
                         </div>
 
                         <div className="mt-10">
                             <div className=" lg:border-gray-200 lg:pr-8">
                                 <p className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-                                    Location: {data?.data.region}
+                                    Location: {data?.region}
                                 </p>
                             </div>
                         </div>
@@ -161,7 +161,7 @@ const ProductDetail = () => {
                         <div className="mt-8">
                             <div className=" lg:border-gray-200 lg:pr-8">
                                 <p className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-                                    Brand: {data?.data.brand}
+                                    Brand: {data?.brand}
                                 </p>
                             </div>
                         </div>
@@ -209,7 +209,7 @@ const ProductDetail = () => {
                                     // When the modal is closed, set the state to hide the modal
                                     setShowReservationModal(false);
                                 }}
-                                />
+                            />
                         )}
 
                         {/*    /!*</div>*!/*/}
@@ -217,20 +217,20 @@ const ProductDetail = () => {
 
 
                         <div className="py-10 lg:border-gray-200 lg:pt-6 lg:pb-16">
-                             Description
-                                <div className="mt-4">
-                                    <ul
-                                        role="list"
-                                        className="list-disc space-y-2 pl-4 text-sm"
-                                    >
-                                        {data?.desc?.map((d, index) => (
-                                            <li key={index} className="text-gray-400">
-                                                <span className="text-gray-600">{d}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                            Description
+                            <div className="mt-4">
+                                <ul
+                                    role="list"
+                                    className="list-disc space-y-2 pl-4 text-sm"
+                                >
+                                    {data?.desc?.map((d, index) => (
+                                        <li key={index} className="text-gray-400">
+                                            <span className="text-gray-600">{d}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
+                        </div>
 
                         {/*    <div className="mt-10">*/}
                         {/*        <h2 className="text-sm font-medium text-gray-900">Details</h2>*/}

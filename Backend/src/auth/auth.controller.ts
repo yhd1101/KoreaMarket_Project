@@ -8,6 +8,7 @@ import {
   Get,
   HttpStatus,
   Res,
+    Request
 } from '@nestjs/common';
 
 import {
@@ -31,6 +32,7 @@ import { GoogleAuthGuard } from '@auth/guards/google-auth.guard';
 import { KakaoAuthGuard } from '@auth/guards/kakao-auth.guard';
 import { NaverAuthGuard } from '@auth/guards/naver-auth.guard';
 import { Response } from 'express';
+import {NewPasswordDto} from "@users/dto/new-password.dto";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -101,6 +103,20 @@ export class AuthController {
   async changePassword(@Body() changePasswordDto: ChangePasswordDto) {
     return await this.authService.changePassword(changePasswordDto);
   }
+
+  @Post('newpassword')
+  @ApiOperation({ summary: '비밀번호 바꾸기', description: '비밀번호 수정' })
+  @UseGuards(JwtAuthGuard)
+  async newPassword(@Body() newPasswordDto: NewPasswordDto,   @Req() req: RequestWithUserInterface,) {
+    const newPassword = newPasswordDto.newPassword;
+    const user = req.user.email;
+    const updatedUser = await this.authService.changePasswordWithToken(user, newPassword);
+    return updatedUser
+
+  }
+
+
+
   //구글에 접속하는 코드(로그인요청 코드)
   @HttpCode(200)
   @Get('google')

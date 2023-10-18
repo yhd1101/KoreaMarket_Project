@@ -4,7 +4,8 @@ import React from "react";
 
 const fetchProductById = async (id) => {
     const { data } = await axios.get(`http://localhost:8000/api/product/${id}`)
-    return data
+    console.log("dsdsd13", data)
+    return data.data
 }
 
 const useFetchProductById = (id) =>

@@ -8,11 +8,21 @@ import ImagePlaceholder from "../../components/ui/ImagePlaceholder";
 import {LOADING_ARRAY} from "../../data/Product/productData";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 import ProductItem from "../../components/ui/ProductItem";
+import {SwiperSlide} from "swiper/react";
+import ProductCard from "../../components/ui/ProductCard";
 
 const Products = () => {
     const [filters, setFilters] = useState([])
-    const { data, isLoading, error,} = useFetchProducts()
-    console.log("4444444444",data)
+    const {data, isLoading, error} = useFetchProducts()
+    console.log("ddddsdsa+=",data?.title)
+    console.log("dsdadwdqeq__", data?.name)
+
+
+    // if (isLoading) {
+    //     <div>
+    //         Loading
+    //     </div>
+    // }
 
     return (
         <div className={"bg-white"}>
@@ -56,11 +66,36 @@ const Products = () => {
                             <ul className="grid grid-cols-1 gap-6  sm:grid-cols-2 md:grid-cols-4">
                                 <>
                                     {error && <ErrorMessage />}
-                                    {data.map((item, index)=> (
-                                        <Fragment key={index}>
-                                            <ProductItem image={data?.item.productImg[0]} title={data?.item.name} id={data?.item.id} />
+                                    {data?.map((product, index) => (
+                                        <Fragment key={index}
+
+                                            // sizes={product.sizes}
+                                            // tags={product.tags}
+                                        >
+                                            <ProductItem key={index}
+                                                         id={product?.id}
+                                                         image={product?.productImg[0]}
+                                                         description={product?.desc[0]}
+                                                         title={product?.name}
+                                                         price={product?.price}
+                                                         category={product?.category[0]}
+                                                         location={product?.region}
+                                            />
                                         </Fragment>
+
                                     ))}
+                                    {/*{data?.map((item, index) => (*/}
+                                    {/*    <Fragment key={index}>*/}
+                                    {/*        <ProductItem image={data?.productImg} title={data?.name} id={data?.id} />*/}
+                                    {/*        /!*<ProductItem image={data?.productImg[0]}  title={data?.name} id={data?.item.id} />*!/*/}
+                                    {/*    </Fragment>*/}
+                                    {/*))}*/}
+                                    {/*{data?.map((item, index)=> (*/}
+                                    {/*    <Fragment key={index}>*/}
+                                    {/*        /!*{data.id}*!/*/}
+                                    {/*        <ProductItem image={data?.productImg} title={data?.name} id={data?.id} />*/}
+                                    {/*    </Fragment>*/}
+                                    {/*))}*/}
                                 </>
                             </ul>
                         </div>

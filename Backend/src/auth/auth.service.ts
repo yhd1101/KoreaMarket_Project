@@ -18,6 +18,7 @@ import { verificationEmail } from '@common/template/verificationEmail';
 import { ConfirmEmailDto } from '@users/dto/confirm-email.dto';
 import { VerificationTokenPayloadInterface } from '@auth/interfaces/verificationTokenPayload.interface';
 import { ChangePasswordDto } from '@users/dto/change-password.dto';
+import {NewPasswordDto} from "@users/dto/new-password.dto";
 
 @Injectable()
 export class AuthService {
@@ -115,6 +116,12 @@ export class AuthService {
     ); //패스워드바꾸기 함수 먼저만들고하기
   }
 
+  async newPassword(newPasswordDto: NewPasswordDto) {
+
+  }
+
+
+
   //토큰 푸는 함수
   public async decodedConfirmationToken(token: string) {
     try {
@@ -129,6 +136,13 @@ export class AuthService {
         throw new BadRequestException('token error');
       }
     }
+  }
+
+  //토큰 비밀번호
+  async changePasswordWithToken(userId: string, newPassword: string) {
+    const updatedUser = await this.usersService.changePassword(userId, newPassword)
+    return updatedUser;
+
   }
 
   //랜덤함수

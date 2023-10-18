@@ -11,11 +11,18 @@ import Navbar from "../../components/layout/Navbar";
 import User from "../../components/User";
 import Button from "../../components/ui/Button";
 import {useAuthContext} from "../../context/AuthContext";
+import {useQueryClient} from "@tanstack/react-query";
+import useChangePassword from "../../services/changePassword";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 const Profile = () => {
     const { data , isLoading, error } = useFetchProfileById()
-
+    const navigate = useNavigate()
+    const { userInput, mutateAsync } = useChangePassword()
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get('token');
     const {user} = useAuthContext()
     const shouldShowNavbarAndFooter = false;
     const {
@@ -26,7 +33,24 @@ const Profile = () => {
         // setError,
         // clearErrors,
         formState: { isSubmitting, errors, isDirty}
-    } = useForm()
+    } = useForm({
+        defaultValues: {
+            password: "",
+        }
+    })
+
+    const onSubmit = async (values) => {
+        console.log("dsdsadad2eq", values)
+        const { password } = values
+        const userInput = {
+            token,
+            newPassword: password
+        }
+        console.log("2q2313",userInput)
+        await mutateAsync(userInput)
+        navigate("/")
+
+    }
 
     console.log("7777777777", data)
     // console.log("2222222",data)
@@ -65,7 +89,7 @@ const Profile = () => {
                                 change
                             </button>
                         </div>
-                        <form className="ml-4 mt-3" >
+                        <form className="ml-4 mt-3"  onSubmit={handleSubmit(onSubmit)}>
 
                             <Input
                                 {...register('email', {
@@ -121,7 +145,9 @@ const Profile = () => {
                             />
                             <Button
                                 text="Save"
+                                disabled={isSubmitting}
                                 className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
+                                type={"submit"}
                             />
                         </form>
                     </div>
