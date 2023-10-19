@@ -7,6 +7,7 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '@users/entities/user.entity';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import {Reservation} from "@reservation/entities/reservation.entity";
+import {Product} from "@product/entities/product.entity";
 
 @Injectable()
 export class UsersService {
@@ -15,16 +16,33 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  //프로필
-  async userGetAll(reservation?:Reservation) {
-    const queryBuilder = await this.userRepository.createQueryBuilder('user',);
-    queryBuilder.leftJoinAndSelect('user.reservation', 'reservation')
-
-    if (reservation) {
-      queryBuilder.where('user.reservation = :reservation', { reservation})
-    }
-    const {entities } = await queryBuilder.getRawAndEntities()
-    return entities
+  // //프로필
+  // async userGetAll(reservation?:Reservation) {
+  //   const queryBuilder = await this.userRepository.createQueryBuilder('user',);
+  //   queryBuilder.leftJoinAndSelect('user.reservation', 'reservation')
+  //
+  //   if (reservation) {
+  //     queryBuilder.where('user.reservation = :reservation', { reservation})
+  //   }
+  //   const {entities } = await queryBuilder.getRawAndEntities()
+  //   return entities
+  // }
+  async userGetAll(reservation?: Reservation) {
+    const reservations = await this.userRepository.find({
+      relations : ['reservation'] //관계형으로 이어진것을 보여줌
+    });
+    return { count: reservations.length, reservations };
+    // const queryBuilder = await this.userRepository.createQueryBuilder(
+    //     'user',
+    // );
+    // queryBuilder.leftJoinAndSelect('user.reservation', 'users');
+    //
+    // if (reservation) {
+    //   queryBuilder.where('user.reservation = :reservation', { reservation });
+    // }
+    //
+    // const { entities } = await queryBuilder.getRawAndEntities();
+    // return entities;
   }
 
   //user생성로직

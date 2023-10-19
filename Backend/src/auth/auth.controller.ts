@@ -86,7 +86,7 @@ export class AuthController {
   async getUserInfoByToken(@Req() req: RequestWithUserInterface, @Query('Reservation') reservationQuery?: Reservation) {
     const { user } = req;
     user.password = undefined;
-    const reservations = await  this.authService.profile( reservationQuery);
+    const reservations = await this.authService.profile(reservationQuery);
     return { reservations, user };
   }
 
