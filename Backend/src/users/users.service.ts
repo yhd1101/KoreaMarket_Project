@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {Injectable, NotFoundException, Req} from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { User } from '@users/entities/user.entity';
 import { CreateUserDto } from '@users/dto/create-user.dto';
+import {Reservation} from "@reservation/entities/reservation.entity";
 
 @Injectable()
 export class UsersService {
@@ -14,10 +15,16 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  //전체불러옴
-  async userGetAll() {
-    const users = await this.userRepository.find();
-    return { count: users.length, users };
+  //프로필
+  async userGetAll(reservation?:Reservation) {
+    const queryBuilder = await this.userRepository.createQueryBuilder('user',);
+    queryBuilder.leftJoinAndSelect('user.reservation', 'reservation')
+
+    if (reservation) {
+      queryBuilder.where('user.reservation = :reservation', { reservation})
+    }
+    const {entities } = await queryBuilder.getRawAndEntities()
+    return entities
   }
 
   //user생성로직

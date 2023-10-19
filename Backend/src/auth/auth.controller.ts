@@ -8,7 +8,7 @@ import {
   Get,
   HttpStatus,
   Res,
-    Request
+  Request, Query
 } from '@nestjs/common';
 
 import {
@@ -33,6 +33,7 @@ import { KakaoAuthGuard } from '@auth/guards/kakao-auth.guard';
 import { NaverAuthGuard } from '@auth/guards/naver-auth.guard';
 import { Response } from 'express';
 import {NewPasswordDto} from "@users/dto/new-password.dto";
+import {Reservation} from "@reservation/entities/reservation.entity";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -80,13 +81,15 @@ export class AuthController {
   @Get()
   @ApiBearerAuth('access-token')
   @HttpCode(200)
-  @ApiOperation({ summary: '프로필 정보', description: '프로필정보' })
+  @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
   @UseGuards(JwtAuthGuard)
-  async getUserInfoByToken(@Req() req: RequestWithUserInterface) {
+  async getUserInfoByToken(@Req() req: RequestWithUserInterface, @Query('Reservation') reservationQuery?: Reservation) {
     const { user } = req;
     user.password = undefined;
-    return user;
+    const reservations = await  this.authService.profile( reservationQuery);
+    return { reservations, user };
   }
+
 
   @Post('forgot/password') //비밀번호 재설정위한 메일전송
   @ApiOperation({

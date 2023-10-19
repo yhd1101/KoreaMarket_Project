@@ -19,6 +19,8 @@ import { ConfirmEmailDto } from '@users/dto/confirm-email.dto';
 import { VerificationTokenPayloadInterface } from '@auth/interfaces/verificationTokenPayload.interface';
 import { ChangePasswordDto } from '@users/dto/change-password.dto';
 import {NewPasswordDto} from "@users/dto/new-password.dto";
+import {User} from "@users/entities/user.entity";
+import {Reservation} from "@reservation/entities/reservation.entity";
 
 @Injectable()
 export class AuthService {
@@ -120,7 +122,10 @@ export class AuthService {
 
   }
 
-
+  async profile(reservation?: Reservation){
+    const queryBuilder  = await this.usersService.userGetAll(reservation);
+    return queryBuilder
+  }
 
   //토큰 푸는 함수
   public async decodedConfirmationToken(token: string) {

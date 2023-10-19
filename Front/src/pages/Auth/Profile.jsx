@@ -11,15 +11,15 @@ import Navbar from "../../components/layout/Navbar";
 import User from "../../components/User";
 import Button from "../../components/ui/Button";
 import {useAuthContext} from "../../context/AuthContext";
-import {useQueryClient} from "@tanstack/react-query";
-import useChangePassword from "../../services/changePassword";
 import {useLocation, useNavigate} from "react-router-dom";
+import useNewPassword from "../../services/newPassword";
+import ReservationTittle from "../../components/ui/ReservationTittle";
 
 
 const Profile = () => {
     const { data , isLoading, error } = useFetchProfileById()
     const navigate = useNavigate()
-    const { userInput, mutateAsync } = useChangePassword()
+    const { userInput, mutateAsync } = useNewPassword()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
@@ -151,7 +151,14 @@ const Profile = () => {
                             />
                         </form>
                     </div>
+                    <main className="mx-auto mb-32 w-full max-w-2xl px-2 sm:px-6 lg:px-8">
+                        <div className="flex items-end justify-between border-b border-gray-200 pt-24 pb-6">
+                            <ReservationTittle title={"ReservationList"}/>
+                        </div>
+                    </main>
                 </main>
+
+
             </div>
             {shouldShowNavbarAndFooter && <Footer />}
         </div>
