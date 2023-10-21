@@ -8,7 +8,7 @@ import {
   Get,
   HttpStatus,
   Res,
-  Request, Query
+  Request, Query, Param
 } from '@nestjs/common';
 
 import {
@@ -34,6 +34,7 @@ import { NaverAuthGuard } from '@auth/guards/naver-auth.guard';
 import { Response } from 'express';
 import {NewPasswordDto} from "@users/dto/new-password.dto";
 import {Reservation} from "@reservation/entities/reservation.entity";
+import {Product} from "@product/entities/product.entity";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -78,16 +79,17 @@ export class AuthController {
     // return await this.authService.Login(loginUserDto);
   }
 
-  @Get()
+  @Get(':id')
   @ApiBearerAuth('access-token')
   @HttpCode(200)
   @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
   @UseGuards(JwtAuthGuard)
-  async getUserInfoByToken(@Req() req: RequestWithUserInterface, @Query('Reservation') reservationQuery?: Reservation) {
-    const { user } = req;
-    user.password = undefined;
-    const reservations = await this.authService.profile(reservationQuery);
-    return { reservations, user };
+  async getUserInfoByToken(@Param('id') id: string, @Query('reservation') reservationQuery?: Reservation){
+    // const { user } = req;
+    // user.password = undefined;
+    const profile = await this.authService.profile( id, reservationQuery); // user를 profile 메서드에 전달
+    // console.log("dsdad",reservationQuery)
+    return { profile };
   }
 
 

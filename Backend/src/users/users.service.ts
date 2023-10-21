@@ -1,7 +1,7 @@
 import {Injectable, NotFoundException, Req} from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {FindOperator, Repository} from 'typeorm';
 
 import * as bcrypt from 'bcryptjs';
 import { User } from '@users/entities/user.entity';
@@ -27,11 +27,29 @@ export class UsersService {
   //   const {entities } = await queryBuilder.getRawAndEntities()
   //   return entities
   // }
-  async userGetAll(reservation?: Reservation) {
-    const reservations = await this.userRepository.find({
-      relations : ['reservation'] //관계형으로 이어진것을 보여줌
+
+  // async userGetAll(user: User, reservation?: Reservation, product?: Product) {
+  //   const query = this.userRepository.createQueryBuilder('user')
+  //       .leftJoinAndSelect('user.reservation', 'reservation') // 관련 예약을 가져오도록 수정
+  //       .where('user.id = :userId', { userId: user.id }); // 특정 사용자에 대한 것만 가져오도록 수정
+  //
+  //   if (reservation) {
+  //     query.andWhere('reservation.id = :reservationId', { reservationId: reservation.id });
+  //   }
+  //
+  //   if (product) {
+  //     query.andWhere('product.id = :productId', { productId: product.id });
+  //   }
+  //
+  //   return query.getOne()
+  // }
+
+  async userGetAll( id: string,reservation?: Reservation) {
+    const profile = await  this.userRepository.findOne({
+      where: {id},
+      relations : ['reservation']
     });
-    return { count: reservations.length, reservations };
+    return { profile }
     // const queryBuilder = await this.userRepository.createQueryBuilder(
     //     'user',
     // );

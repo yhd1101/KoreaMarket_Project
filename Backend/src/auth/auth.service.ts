@@ -21,6 +21,7 @@ import { ChangePasswordDto } from '@users/dto/change-password.dto';
 import {NewPasswordDto} from "@users/dto/new-password.dto";
 import {User} from "@users/entities/user.entity";
 import {Reservation} from "@reservation/entities/reservation.entity";
+import {Product} from "@product/entities/product.entity";
 
 @Injectable()
 export class AuthService {
@@ -122,10 +123,11 @@ export class AuthService {
 
   }
 
-  async profile(reservation?: Reservation){
-    const queryBuilder  = await this.usersService.userGetAll(reservation);
-    return queryBuilder
+  async profile( id: string, reservation?: Reservation) {
+    const queryBuilder = await this.usersService.userGetAll( id, reservation); // user를 userGetAll 메서드에 전달
+    return queryBuilder;
   }
+
 
   //토큰 푸는 함수
   public async decodedConfirmationToken(token: string) {

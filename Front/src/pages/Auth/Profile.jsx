@@ -11,9 +11,10 @@ import Navbar from "../../components/layout/Navbar";
 import User from "../../components/User";
 import Button from "../../components/ui/Button";
 import {useAuthContext} from "../../context/AuthContext";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import useNewPassword from "../../services/newPassword";
 import ReservationTittle from "../../components/ui/ReservationTittle";
+import useFetchReservationById from "../../services/fetchReservations";
 
 
 const Profile = () => {
@@ -25,6 +26,10 @@ const Profile = () => {
     const token = searchParams.get('token');
     const {user} = useAuthContext()
     const shouldShowNavbarAndFooter = false;
+    const { id } = useParams()
+    const { data: reservation, isLoading: reservationLoading, error: reservationError } = useFetchReservationById(id)
+    console.log("dasdad1323", data)
+
     const {
         register,
         handleSubmit,
@@ -51,6 +56,17 @@ const Profile = () => {
         navigate("/")
 
     }
+    //
+    // if (reservationLoading) {
+    //     return  <LoadingSkeleton/>
+    // }
+    // if(reservationError) {
+    //     return (
+    //         <div className={"mt-20"}>
+    //             <ErrorMessage/>
+    //         </div>
+    //     )
+    // }
 
     console.log("7777777777", data)
     // console.log("2222222",data)

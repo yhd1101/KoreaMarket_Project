@@ -33,7 +33,10 @@ export class User extends CommonEntity {
   @OneToMany(() => Product, (product: Product) => product.seller)
   public products: Product[];
 
+  // @OneToMany(() => Reservation, (reservation: Reservation) => reservation.user)
+  // public reservations: Reservation[];
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.user)
+  @JoinColumn()
   public reservation: Reservation[];
 
   @Column({
