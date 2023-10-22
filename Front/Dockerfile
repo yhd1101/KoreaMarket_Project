@@ -23,8 +23,11 @@ COPY . .
 # 3000번 포트 노출
 EXPOSE 3000
 
-# npm start 스크립트 실행
-CMD ["npm", "start"]
+# Deploy app for local development
+CMD npm start —host 0.0.0.0 —port 3000 —disableHostCheck true
+
+## npm start 스크립트 실행
+#CMD ["npm", "start"]
 
 # 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
 # $ docker build .

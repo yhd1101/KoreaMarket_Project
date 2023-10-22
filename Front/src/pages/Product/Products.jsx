@@ -74,7 +74,8 @@ const Products = () => {
                                         >
                                             <ProductItem key={index}
                                                          id={product?.id}
-                                                         image={product?.productImg[0]}
+                                                         img={product.productImg[0]}
+                                                         // img={"https://assets.burberry.com/is/image/Burberryltd/7F1F1853-CA91-43B6-B4B1-ADC28DE93F0F?$BBY_V3_SL_1$&wid=2500&hei=2500"}
                                                          description={product?.desc[0]}
                                                          title={product?.name}
                                                          price={product?.price}

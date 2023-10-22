@@ -6,7 +6,7 @@ import {TagIcon} from "@heroicons/react/20/solid";
 
 const ProductCard = ({
                          id,
-                         image,
+                         img,
                          description,
                          title,
                          price,
@@ -39,9 +39,9 @@ const ProductCard = ({
                     {/*{console.log("++++++++++++++++", Array.isArray(image))}*/}
                     <LazyLoadImage
                         // src={image && Array.isArray(image) ? image[0] : image}
-                        src={image}
+                        src={img}
                         alt={description}
-                        effect="blur"
+                        // effect="blur"
                         className="absolute top-0 left-0 h-full w-auto -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75"
                     />
                 </div>

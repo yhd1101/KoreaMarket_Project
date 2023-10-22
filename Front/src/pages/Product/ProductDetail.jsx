@@ -6,12 +6,13 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Thumbs} from "swiper";
 import Button from "../../components/ui/Button";
-import { Calendar } from "primereact/calendar";
-import {RadioGroup} from "@headlessui/react";
-import axios from "axios";
 import ReservationModal from '../../components/ui/ReservationModal';
 import LoadingSkeleton from "../../components/ui/LoadingSkeleton";
 import useFetchMoney from "../../services/fetchMoneyInfo";
+import useFetchCommentById from "../../services/fetchCommentById";
+import useCreateComment from "../../services/createComment";
+import {useForm} from "react-hook-form";
+import Input from "../../components/ui/Input";
 
 const ProductDetail = () => {
     const { id } = useParams()
@@ -19,7 +20,24 @@ const ProductDetail = () => {
     const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
     const [showReservationModal, setShowReservationModal] = useState(false); // 모달 가시성을 제어하는 상태
-    console.log("0000000000000", data)
+    const { data: createComment, mutateAsync} = useCreateComment()
+
+    // console.log("0000000000000", data)
+
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting, errors, isDirty}
+    } = useForm()
+
+    const onSubmit =  async (values) => {
+        const { desc } = values
+        const userInput = {
+            desc, product : id
+        }
+        console.log("coments Create: +++++++++++++++++++++", userInput)
+        await mutateAsync(userInput)
+    }
 
 
 
@@ -81,7 +99,7 @@ const ProductDetail = () => {
                                             <LazyLoadImage
                                                 src={img}
                                                 alt={data?.desc}
-                                                effect="blur"
+                                                // effect="blur"
                                                 className="absolute top-0 left-0 h-full w-auto -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75"
                                             />
                                         </div>
@@ -145,8 +163,8 @@ const ProductDetail = () => {
                                 {/*        Japan is {data?.price * moneyInfo.rates.JPY}엔*/}
                                 {/*    </h5>*/}
                                 {/*) : null}*/}
-                                <h5>korea is {data?.price * moneyInfo?.rates?.KRW.slice(0,5)}원</h5>
-                                <h5>Japan is {data?.price * moneyInfo?.rates?.JPY.slice(0,5)}엔</h5>
+                                <h5 className={"mt-4"}>korea is {(data?.price * moneyInfo?.rates.KRW.slice(0,5)).toLocaleString()}원</h5>
+                                <h5 className={"mt-3"}>Japan is {(data?.price * moneyInfo?.rates.JPY.slice(0,7)).toLocaleString()}엔</h5>
                             </p>
                         </div>
 
@@ -231,6 +249,41 @@ const ProductDetail = () => {
                                 </ul>
                             </div>
                         </div>
+                        <div className="py-10 lg:border-gray-200 lg:pt-6 lg:pb-16">
+                            Comment
+                            <div className="mt-4">
+                                <p
+                                    role="list"
+                                    className="list-disc space-y-2 pl-4 text-sm"
+                                >
+                                    {data?.comments?.map((c, index) => (
+                                        <p key={index} className="text-gray-400">
+                                            <span className="text-gray-600">{c.desc}  이름: {c.user.name}</span>
+                                        </p>
+                                    ))}
+                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(onSubmit)}>
+                                        <Input
+                                            {...register('desc', {
+                                                required: '',
+                                            })}
+                                            error={errors.desc?.message}
+                                            ariaInvalid={isDirty}
+                                            labelText="desc"
+                                            type="text"
+                                            className="mb-3"
+                                            autocomplete="on"
+                                            />
+                                        <Button
+                                            text="comment"
+                                            disabled={isSubmitting}
+                                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
+                                            type={"submit"}
+                                            />
+                                    </form>
+                                </p>
+                            </div>
+                        </div>
+
 
                         {/*    <div className="mt-10">*/}
                         {/*        <h2 className="text-sm font-medium text-gray-900">Details</h2>*/}

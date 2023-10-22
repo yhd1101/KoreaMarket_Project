@@ -59,7 +59,8 @@ const ProductSlide = ({
                     >
                         <ProductCard
                             id={product?.id}
-                            image={product?.productImg[0]}
+                            // image={product?.productImg[0]}
+                            img={product?.productImg[0]}
                             description={product?.desc[0]}
                             title={product?.name}
                             price={product?.price}
