@@ -47,7 +47,7 @@ export class UsersService {
   async userGetAll( id: string,reservation?: Reservation) {
     const profile = await  this.userRepository.findOne({
       where: {id},
-      relations : ['reservation']
+      relations : ['reservation', 'reservation.product', 'reservation.product.seller']
     });
     return { profile }
     // const queryBuilder = await this.userRepository.createQueryBuilder(

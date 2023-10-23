@@ -62,7 +62,7 @@ const MenuDesktop = forwardRef(
             return (
                 <nav
                     className={`mt-auto border-t border-gray-200 ${
-                        navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === "/profile" || navigation.pathname === "/order"
+                        navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === `/profile/${id}` || navigation.pathname === "/order"
                             ? "hidden"
                             : "block"
                     }`}

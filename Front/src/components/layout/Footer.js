@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useLocation}from "react-router-dom"
 import {footerMarketPlace, footerCompany, footerResource, footerSocial} from "../../data/layout/layoutData"
 import Logo from "../ui/logo";
@@ -7,10 +7,12 @@ import Logo from "../ui/logo";
 
 const Footer = () => {
     const navigation = useLocation()
+    const { id } = useParams()
+
     return (
         <footer
             className={`mt-auto border-t border-gray-200 ${
-                navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === "/profile" || navigation.pathname === "/order"
+                navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === `/profile/${id}` || navigation.pathname === "/order"
                     ? "hidden"
                     : "block"
             }`}

@@ -17,7 +17,7 @@ const fetchProfileById = async (id) => {
     return data.data.data; // 데이터를 반환합니다.
 }
 const useFetchProfileById = (id) =>
-    useQuery(["profile", id], ()=> fetchProfileById(id), {
+    useQuery(["profile",id], ()=> fetchProfileById(id), {
         keepPreviousData: true
     })
 
