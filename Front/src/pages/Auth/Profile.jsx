@@ -15,10 +15,13 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import useNewPassword from "../../services/newPassword";
 import ReservationTittle from "../../components/ui/ReservationTittle";
 import useFetchReservationById from "../../services/fetchReservations";
+import fetchReservations from "../../services/fetchReservations";
+import useFetchCommentById from "../../services/fetchCommentById";
 
 
 const Profile = () => {
-    const { data , isLoading, error } = useFetchProfileById()
+    const {id} = useParams()
+    const { data , isLoading, error } = useFetchProfileById(id)
     const navigate = useNavigate()
     const { userInput, mutateAsync } = useNewPassword()
     const location = useLocation()
@@ -26,9 +29,9 @@ const Profile = () => {
     const token = searchParams.get('token');
     const {user} = useAuthContext()
     const shouldShowNavbarAndFooter = false;
-    const { id } = useParams()
-    const { data: reservation, isLoading: reservationLoading, error: reservationError } = useFetchReservationById(id)
-    console.log("dasdad1323", data)
+    const {id: reservationId} = useParams()
+    const { data: getReservation, isLoading: LoadingReservation, error: reservationError } = useFetchReservationById(reservationId)
+    console.log("222222",getReservation)
 
     const {
         register,
@@ -170,6 +173,19 @@ const Profile = () => {
                     <main className="mx-auto mb-32 w-full max-w-2xl px-2 sm:px-6 lg:px-8">
                         <div className="flex items-end justify-between border-b border-gray-200 pt-24 pb-6">
                             <ReservationTittle title={"ReservationList"}/>
+                            <div>
+                                <p>
+                                    {data?.profile.reservation?.map((c, index) => (
+                                        <button
+                                            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                            key={index} // 각 버튼에 고유한 키 추가
+                                            style={{ marginRight: '8px' }} // 오른쪽 마진을 추가
+                                        >
+                                            {c.desc}
+                                        </button>
+                                    ))}
+                                </p>
+                            </div>
                         </div>
                     </main>
                 </main>

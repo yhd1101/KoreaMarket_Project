@@ -49,7 +49,7 @@ export class ReservationService {
   async reservationGetById(id: string) {
     const reservation = await this.reservationRepository.findOne({
       where: { id },
-      relations: ['user', 'product'],
+      relations: ['user', 'product', 'product.seller'],
     });
     if (reservation) return reservation;
     throw new HttpException('No reservation', HttpStatus.NOT_FOUND);

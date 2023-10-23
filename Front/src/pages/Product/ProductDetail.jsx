@@ -21,6 +21,9 @@ const ProductDetail = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
     const [showReservationModal, setShowReservationModal] = useState(false); // 모달 가시성을 제어하는 상태
     const { data: createComment, mutateAsync} = useCreateComment()
+    const {id: commentId} = useParams()
+    const { data: getComment, isLoading: LoadingComment, error: commentError } = useFetchCommentById(commentId)
+    console.log("00000000", commentId)
 
     // console.log("0000000000000", data)
 

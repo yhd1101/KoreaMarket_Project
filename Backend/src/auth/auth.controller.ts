@@ -87,9 +87,9 @@ export class AuthController {
   async getUserInfoByToken(@Param('id') id: string, @Query('reservation') reservationQuery?: Reservation){
     // const { user } = req;
     // user.password = undefined;
-    const profile = await this.authService.profile( id, reservationQuery); // user를 profile 메서드에 전달
+    const data = await this.authService.profile( id, reservationQuery); // user를 profile 메서드에 전달
     // console.log("dsdad",reservationQuery)
-    return { profile };
+    return { data };
   }
 
 

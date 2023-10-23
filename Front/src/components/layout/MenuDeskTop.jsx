@@ -1,6 +1,6 @@
 import React, {forwardRef, Fragment, useContext} from 'react';
 import {ArrowLeftOnRectangleIcon, Bars3Icon, PencilSquareIcon, ShoppingBagIcon} from "@heroicons/react/24/outline";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {Popover, Transition} from "@headlessui/react";
 import {headerData} from "../../data/layout/layoutData";
 import CartStatus from "../CartStatus";
@@ -10,6 +10,7 @@ import {ClockIcon} from "@heroicons/react/24/outline";
 import i18n from "../../lang/i18n";
 import {useTranslation} from "react-i18next";
 import LocaleContext from "../../LocaleContext";
+import useFetchProfileById from "../../services/fetchProfileById";
 const MenuDesktop = forwardRef(
     function (
         {
@@ -30,6 +31,8 @@ const MenuDesktop = forwardRef(
     )
 
         {
+            const {id } = useParams()
+            const { data } = useFetchProfileById(id)
             const navigation = useLocation()
             const { t } = useTranslation();
             const { locale  } = useContext(LocaleContext)
@@ -156,7 +159,7 @@ const MenuDesktop = forwardRef(
                                                                             <div className="relative grid  bg-white ">
                                                                                 <div className="p-4">
                                                                                     <Popover.Button
-                                                                                        onClick={() => navigate('/profile')}
+                                                                                        onClick={() => navigate(`/profile/${id}`)}
                                                                                         className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"
                                                                                     >
                                                                                         <PencilSquareIcon className="h-4 w-4" />
@@ -164,6 +167,15 @@ const MenuDesktop = forwardRef(
                                                                                             Edit Profile
                                                                                         </p>
                                                                                     </Popover.Button>
+                                                                                    {/*<Popover.Button*/}
+                                                                                    {/*    onClick={() => navigate(`/profile/${id}`)}*/}
+                                                                                    {/*    className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"*/}
+                                                                                    {/*>*/}
+                                                                                    {/*    <PencilSquareIcon className="h-4 w-4" />*/}
+                                                                                    {/*    <p className="ml-3 text-base font-medium text-gray-900">*/}
+                                                                                    {/*        Edit Profile*/}
+                                                                                    {/*    </p>*/}
+                                                                                    {/*</Popover.Button>*/}
                                                                                     <Popover.Button
                                                                                         onClick={() => navigate('/order')}
                                                                                         className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"
