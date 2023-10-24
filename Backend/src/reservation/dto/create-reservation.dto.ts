@@ -30,4 +30,10 @@ export class CreateReservationDto {
   })
   @IsString()
   product: Product;
+
+  @ApiProperty({
+    description: 'insert reservation date',
+    default: new Date()
+  })
+  reservationDate: Date;
 }
