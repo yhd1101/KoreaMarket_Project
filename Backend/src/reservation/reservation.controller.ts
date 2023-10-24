@@ -6,7 +6,7 @@ import {
   Param,
   UseGuards,
   Req,
-  Query,
+  Query, Delete,
 } from '@nestjs/common';
 
 import {
@@ -69,5 +69,12 @@ export class ReservationController {
   async getReservationById(@Param('id') id: string) {
     const reservation = await this.reservationService.reservationGetById(id);
     return reservation;
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: '예약취소', description: '예약삭제 api'})
+  async deleteReservationById(@Param('id') id: string) {
+    const reservation = await this.reservationService.deleteReservationById(id);
+    return reservation
   }
 }

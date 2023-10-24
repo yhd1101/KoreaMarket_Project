@@ -54,4 +54,9 @@ export class ReservationService {
     if (reservation) return reservation;
     throw new HttpException('No reservation', HttpStatus.NOT_FOUND);
   }
+
+  async deleteReservationById(id: string) {
+    const reservation = await this.reservationRepository.delete(id)
+    return reservation
+  }
 }

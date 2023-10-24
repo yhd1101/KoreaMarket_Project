@@ -169,7 +169,7 @@ const Profile = () => {
                             />
                         </form>
                     </div>
-                    <main className="mx-auto  w-full max-w-2xl px-2 sm:px-6 lg:px-8">
+                    <main className="mx-auto  w-full max-w-3xl px-2 sm:px-6 lg:px-8">
                         <div className="flex items-end justify-between border-b border-gray-200 pt-24 pb-6">
                             <ReservationTittle title={"ReservationList"}/>
 
@@ -178,20 +178,10 @@ const Profile = () => {
 
                                 </div>
 
-                                {/*<p>*/}
-                                {/*    {data?.profile.reservation?.map((c, index) => (*/}
-                                {/*        <button*/}
-                                {/*            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"*/}
-                                {/*            key={index} // 각 버튼에 고유한 키 추가*/}
-                                {/*            style={{ marginRight: '8px' }} // 오른쪽 마진을 추가*/}
-                                {/*        >*/}
-                                {/*            {c.desc}*/}
-                                {/*        </button>*/}
-                                {/*    ))}*/}
-                                {/*</p>*/}
                             </div>
                         </div>
-                        <ul className="grid grid-cols-1 gap-6  sm:grid-cols-2 md:grid-cols-4">
+
+                        <ul className="grid grid-cols-1 gap-6  sm:grid-cols-2 md:grid-cols-4 mt-3">
 
                             {error && <ErrorMessage />}
                             {data?.profile.reservation?.map((c, index) => (
@@ -200,11 +190,22 @@ const Profile = () => {
                                                      id={c?.product?.id}
                                                      img={c?.product.productImg[0]}
                                     />
-                                    <div>
-                                        {c.product.name}
-                                        <br/>
-                                        {c.product.seller.name}
+                                    <div >
+                                        <p className="font-bold tracking-tight text-gray-900 " style={{ width: '500px' }}>
+                                            {c.product.name}
+                                        </p>
+                                        <p style={{ color: 'purple' }}>Reserved</p>
+                                        <p>Seller: {c.product.seller.name}</p>
+                                        <p>Location: {c.location}</p>
+                                        <p></p>
+
+
                                     </div>
+                                    {/*<div>*/}
+                                    {/*    {c.product.name}*/}
+                                    {/*    <br/>*/}
+                                    {/*    {c.product.seller.name}*/}
+                                    {/*</div>*/}
                                 </Fragment>
                             ))}
 

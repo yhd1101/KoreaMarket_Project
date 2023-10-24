@@ -34,4 +34,5 @@ export class Reservation extends CommonEntity {
 
   @Column()
   public desc: string;
+
 }
