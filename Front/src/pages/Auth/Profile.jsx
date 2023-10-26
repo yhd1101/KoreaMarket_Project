@@ -18,17 +18,18 @@ import useFetchReservationById from "../../services/fetchReservations";
 import fetchReservations from "../../services/fetchReservations";
 import useFetchCommentById from "../../services/fetchCommentById";
 import ReservationItem from "../../components/ui/ReservationItem";
+import useChangePassword from "../../services/changePassword";
 
 
 const Profile = () => {
     const {id} = useParams()
     const { data , isLoading, error } = useFetchProfileById(id)
     const navigate = useNavigate()
-    const { userInput, mutateAsync } = useNewPassword()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
     const {user} = useAuthContext()
+    const { data: changePasswordData, isLoading: passwordLoading, error: passwordError, mutateAsync} = useChangePassword()
     const shouldShowNavbarAndFooter = false;
     console.log("222222",data)
 
@@ -43,12 +44,17 @@ const Profile = () => {
     } = useForm({
         defaultValues: {
             password: "",
+            confirmPassword: "",
         }
     })
 
     const onSubmit = async (values) => {
         console.log("dsdsadad2eq", values)
-        const { password } = values
+        const {password, confirmPassword } = values
+        if (password !== confirmPassword) {
+            alert("password do not match")
+            return
+        }
         const userInput = {
             token,
             newPassword: password
@@ -161,6 +167,31 @@ const Profile = () => {
                                 className="mb-3"
                                 autocomplete="off"
                             />
+                            <Input
+                                {...register('confirmPassword', {
+                                    required: 'Please provide a confirm password.',
+                                    minLength: {
+                                        value: 6,
+                                        message: 'Password needs to be between 6 to 20 characters.',
+                                    },
+                                    maxLength: {
+                                        value: 20,
+                                        message: 'Password needs to be between 6 to 20 characters.',
+                                    },
+                                    validate: (val) => {
+                                        if (watch('password') !== val) {
+                                            return 'Please make sure your passwords match.';
+                                        }
+                                    },
+                                })}
+                                error={errors.confirmPassword?.message}
+                                ariaInvalid={isDirty}
+                                labelText="Confirm Password"
+                                type="password"
+                                className="mb-3"
+                                autocomplete="off"
+                            />
+
                             <Button
                                 text="Save"
                                 disabled={isSubmitting}

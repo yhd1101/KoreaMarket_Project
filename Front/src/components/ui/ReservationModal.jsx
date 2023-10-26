@@ -1,13 +1,36 @@
 import React from 'react';
 import MapContainer from "../Maps";
-import {Col, Container, Row, Image, ListGroup, Button, Card, InputGroup, Form} from "react-bootstrap";
+import {Col, Container, Row, Image, ListGroup, Card, InputGroup, Form} from "react-bootstrap";
 import { Calendar } from "primereact/calendar";
 import useFetchProductById from "../../services/fetchProductById";
 import {useParams} from "react-router-dom";
+import useCreateReservation from "../../services/createReservation";
+import {useForm} from "react-hook-form";
+import Input from "./Input";
+import Button from "../../components/ui/Button";
 
 const ReservationModal = ({ productData, onClose }) => {
     const { id } = useParams()
     const { data, isLoading, error} = useFetchProductById(id)
+    const { data: createReservation, mutateAsync } =useCreateReservation()
+
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting, errors, isDirty}
+    } = useForm()
+
+    const onSubmit = async (values) => {
+        const {location, desc, purchase, reservationDate} = values
+        const userInput = {
+            location, desc, purchase, reservationDate, product: id
+        }
+
+        await mutateAsync(userInput)
+
+    }
+
+
     const getToday = () => {
         let today = new Date()
         let year = today.getFullYear()
@@ -28,7 +51,7 @@ const ReservationModal = ({ productData, onClose }) => {
 
                         {/* 모달 헤더 */}
                         <div className="flex items-start justify-between p-5 border-b border-solid rounded-t border-blueGray-200">
-                            <h3 className="text-3xl font-semibold">Reservatiom</h3>
+                            <h3 className="text-3xl font-semibold">Reservation</h3>
                             <button
                                 className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                 onClick={onClose}
@@ -38,23 +61,23 @@ const ReservationModal = ({ productData, onClose }) => {
                         </div>
                             {/* 모달 내용 */}
                         <div className="relative p-6 flex-auto max-h-[80vh] min-h-[50vh] flex justify-center">
-                            <div className="mx-4 flex-1 ml-8" style={{ marginBottom: '20px' }}>
+                            <div className="mx-4 flex-1 ml-8" style={{ marginBottom: '1px' }}>
                                 <MapContainer />
                             </div>
                             <div className="mx-4 flex-1 text-left ">
-                                <div className="mb-4">
+                                <div className="mt-4">
                                     <h1 className="text-xl font-semibold">Seller information</h1>
                                 </div>
                                 <div>
-                                    <div>
+                                    <div className={"mb-1"}>
                                         <span className="font-semibold">seller name:</span> {data.seller.name}
                                     </div>
-                                    <div>
+                                    <div className={"mb-1, mt-2"}>
                                         <span className="font-semibold">seller email:</span> {data.seller.email}
 
 
                                     {/*<Card style={{ width: '22rem' }}>*/}
-                                        <Card>
+                                        <Card className={"mb-1"}>
                                             <Calendar
                                                 showTime
                                                 hourFormat="24"
@@ -63,36 +86,58 @@ const ReservationModal = ({ productData, onClose }) => {
                                                 placeholder={getToday()} //현재 시간 가이드 오늘날짜로 보여줌
                                             />
                                         </Card>
-                                        <Form>
-                                            <Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">
-                                                <Form.Label>메모</Form.Label>
-                                                <Form.Control
-                                                    as="textarea"
-                                                    rows={3}
-                                                    placeholder={"memo"}
-                                                    // value={memo}
-                                                    // onChange={e => setMemo(e.target.value)}
-                                                />
-                                            </Form.Group>
-                                            <Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">
-                                                <Form.Label>약속장소</Form.Label>
-                                                <Form.Control
-                                                    as="textarea"
-                                                    rows={3}
-                                                    placeholder={"location"}
-                                                    // value={location}
-                                                    // onChange={e => setLocation(e.target.value)}
-                                                />
-                                            </Form.Group>
-                                        </Form>
-                                        <Button
-                                            // onClick={reservationPost}
-                                            style={{width: "350px", marginBottom: "30px"}}
-                                            variant={"dark"}
-                                            // disabled={resShow ? true : false}
-                                        >
-                                            Reservation
-                                        </Button>
+
+                                        <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(onSubmit)}>
+                                            <Input
+                                                {...register('location', {
+                                                    required: '',
+                                                })}
+                                                error={errors.desc?.message}
+                                                ariaInvalid={isDirty}
+                                                labelText="location"
+                                                type="text"
+                                                className="mb-3"
+                                                autocomplete="on"
+                                            />
+                                            <Input
+                                                {...register('desc', {
+                                                    required: '',
+                                                })}
+                                                error={errors.desc?.message}
+                                                ariaInvalid={isDirty}
+                                                labelText="desc"
+                                                type="text"
+                                                className="mb-3"
+                                                autocomplete="on"
+                                            />
+                                            {/*<Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">*/}
+                                            {/*    <Form.Label>메모</Form.Label>*/}
+                                            {/*    <Form.Control*/}
+                                            {/*        as="textarea"*/}
+                                            {/*        rows={3}*/}
+                                            {/*        placeholder={"memo"}*/}
+                                            {/*        // value={memo}*/}
+                                            {/*        // onChange={e => setMemo(e.target.value)}*/}
+                                            {/*    />*/}
+                                            {/*</Form.Group>*/}
+                                            {/*<Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">*/}
+                                            {/*    <Form.Label>약속장소</Form.Label>*/}
+                                            {/*    <Form.Control*/}
+                                            {/*        as="textarea"*/}
+                                            {/*        rows={3}*/}
+                                            {/*        placeholder={"location"}*/}
+                                            {/*        // value={location}*/}
+                                            {/*        // onChange={e => setLocation(e.target.value)}*/}
+                                            {/*    />*/}
+                                            {/*</Form.Group>*/}
+                                            <Button
+                                                text="reservation"
+                                                // disabled={isSubmitting}
+                                                className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
+                                                // type={"submit"}
+                                            />
+                                        </form>
+
                                     {/*</Card>*/}
                                     </div>
                                 </div>

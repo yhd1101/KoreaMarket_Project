@@ -95,4 +95,5 @@ export class UsersService {
     user.password = await bcrypt.hash(password, 10);
     return this.userRepository.save(user);
   }
+
 }
