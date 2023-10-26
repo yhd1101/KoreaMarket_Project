@@ -13,6 +13,7 @@ import useFetchCommentById from "../../services/fetchCommentById";
 import useCreateComment from "../../services/createComment";
 import {useForm} from "react-hook-form";
 import Input from "../../components/ui/Input";
+import useCreateReservation from "../../services/createReservation";
 
 const ProductDetail = () => {
     const { id } = useParams()
@@ -23,6 +24,7 @@ const ProductDetail = () => {
     const { data: createComment, mutateAsync} = useCreateComment()
     const {id: commentId} = useParams()
     const { data: getComment, isLoading: LoadingComment, error: commentError } = useFetchCommentById(commentId)
+    const { data: createReservation, mutateAsync: reservationMutateAsync  } =useCreateReservation()
     console.log("00000000", commentId)
 
     // console.log("0000000000000", data)
@@ -40,6 +42,17 @@ const ProductDetail = () => {
         }
         console.log("coments Create: +++++++++++++++++++++", userInput)
         await mutateAsync(userInput)
+    }
+
+    const submit = async (values) => {
+        const {location, desc, purchase, reservationDate} = values
+        const userInput = {
+            location, desc, purchase, reservationDate, product: id
+        }
+
+        await reservationMutateAsync(userInput)
+        console.log("5555555", userInput)
+
     }
 
 
@@ -282,6 +295,57 @@ const ProductDetail = () => {
                                             className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
                                             type={"submit"}
                                             />
+                                    </form>
+
+                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(submit)}>
+                                        <Input
+                                            {...register('location', {
+                                                required: '',
+                                            })}
+                                            error={errors.desc?.message}
+                                            ariaInvalid={isDirty}
+                                            labelText="location"
+                                            type="text"
+                                            className="mb-3"
+                                            autocomplete="on"
+                                        />
+                                        <Input
+                                            {...register('desc', {
+                                                required: '',
+                                            })}
+                                            error={errors.desc?.message}
+                                            ariaInvalid={isDirty}
+                                            labelText="desc"
+                                            type="text"
+                                            className="mb-3"
+                                            autocomplete="on"
+                                        />
+                                        {/*<Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">*/}
+                                        {/*    <Form.Label>메모</Form.Label>*/}
+                                        {/*    <Form.Control*/}
+                                        {/*        as="textarea"*/}
+                                        {/*        rows={3}*/}
+                                        {/*        placeholder={"memo"}*/}
+                                        {/*        // value={memo}*/}
+                                        {/*        // onChange={e => setMemo(e.target.value)}*/}
+                                        {/*    />*/}
+                                        {/*</Form.Group>*/}
+                                        {/*<Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">*/}
+                                        {/*    <Form.Label>약속장소</Form.Label>*/}
+                                        {/*    <Form.Control*/}
+                                        {/*        as="textarea"*/}
+                                        {/*        rows={3}*/}
+                                        {/*        placeholder={"location"}*/}
+                                        {/*        // value={location}*/}
+                                        {/*        // onChange={e => setLocation(e.target.value)}*/}
+                                        {/*    />*/}
+                                        {/*</Form.Group>*/}
+                                        <Button
+                                            text="reservation"
+                                            // disabled={isSubmitting}
+                                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
+                                            type={"submit"}
+                                        />
                                     </form>
                                 </p>
                             </div>

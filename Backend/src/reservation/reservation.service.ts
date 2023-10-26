@@ -55,8 +55,14 @@ export class ReservationService {
     throw new HttpException('No reservation', HttpStatus.NOT_FOUND);
   }
 
-  async deleteReservationById(id: string) {
-    const reservation = await this.reservationRepository.delete(id)
-    return reservation
+  async deleteReservationById(id: string, user: User) {
+    const res = await this.reservationRepository.findOneBy({id})
+    if(res.user === user) {
+      const reservation = await this.reservationRepository.delete(id)
+      return reservation
+
+    }
+    throw new HttpException("not reservation", HttpStatus.FORBIDDEN)
+
   }
 }

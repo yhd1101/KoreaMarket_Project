@@ -72,6 +72,7 @@ export class AuthService {
     return token;
   }
 
+
   async sendEmail(email: string) {
     const generateNumber = this.generateOTP();
     await this.cacheManger.set(email, generateNumber);

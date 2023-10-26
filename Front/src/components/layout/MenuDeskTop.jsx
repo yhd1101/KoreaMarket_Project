@@ -159,13 +159,15 @@ const MenuDesktop = forwardRef(
                                                                             <div className="relative grid  bg-white ">
                                                                                 <div className="p-4">
                                                                                     <Popover.Button
-                                                                                        onClick={() => navigate(`/profile/${id}`)}
+                                                                                        // onClick={() => navigate(`/profile/${id}`)}
                                                                                         className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"
                                                                                     >
-                                                                                        <PencilSquareIcon className="h-4 w-4" />
-                                                                                        <p className="ml-3 text-base font-medium text-gray-900">
-                                                                                            Edit Profile
-                                                                                        </p>
+                                                                                        <Link to={`profile/${id}`}>
+                                                                                            <PencilSquareIcon className="h-4 w-4" />
+                                                                                                <p className="ml-3 text-base font-medium text-gray-900">
+                                                                                                    Edit Profile
+                                                                                                </p>
+                                                                                        </Link>
                                                                                     </Popover.Button>
                                                                                     {/*<Popover.Button*/}
                                                                                     {/*    onClick={() => navigate(`/profile/${id}`)}*/}

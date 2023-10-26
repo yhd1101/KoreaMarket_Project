@@ -9,26 +9,27 @@ import {useForm} from "react-hook-form";
 import Input from "./Input";
 import Button from "../../components/ui/Button";
 
-const ReservationModal = ({ productData, onClose }) => {
-    const { id } = useParams()
-    const { data, isLoading, error} = useFetchProductById(id)
-    const { data: createReservation, mutateAsync } =useCreateReservation()
+const ReservationModal = ({ productData, onClose, submit, errors }) => {
+    // const { id } = useParams()
+    // const { data, isLoading, error} = useFetchProductById(id)
+    // const { data: createReservation, mutateAsync } =useCreateReservation()
+    //
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     formState: { isSubmitting, errors, isDirty}
+    // } = useForm()
 
-    const {
-        register,
-        handleSubmit,
-        formState: { isSubmitting, errors, isDirty}
-    } = useForm()
-
-    const onSubmit = async (values) => {
-        const {location, desc, purchase, reservationDate} = values
-        const userInput = {
-            location, desc, purchase, reservationDate, product: id
-        }
-
-        await mutateAsync(userInput)
-
-    }
+    // const onSubmit = async (values) => {
+    //     const {location, desc, purchase, reservationDate} = values
+    //     const userInput = {
+    //         location, desc, purchase, reservationDate, product: id
+    //     }
+    //
+    //     // await mutateAsync(userInput)
+    //     console.log("5555555", userInput)
+    //
+    // }
 
 
     const getToday = () => {
@@ -70,10 +71,10 @@ const ReservationModal = ({ productData, onClose }) => {
                                 </div>
                                 <div>
                                     <div className={"mb-1"}>
-                                        <span className="font-semibold">seller name:</span> {data.seller.name}
+                                        <span className="font-semibold">seller name:</span> {productData.seller.name}
                                     </div>
                                     <div className={"mb-1, mt-2"}>
-                                        <span className="font-semibold">seller email:</span> {data.seller.email}
+                                        <span className="font-semibold">seller email:</span> {productData.seller.email}
 
 
                                     {/*<Card style={{ width: '22rem' }}>*/}
@@ -87,11 +88,12 @@ const ReservationModal = ({ productData, onClose }) => {
                                             />
                                         </Card>
 
-                                        <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(onSubmit)}>
+                                        <form className="flex w-full max-w-sm flex-col" onSubmit={submit}>
                                             <Input
-                                                {...register('location', {
-                                                    required: '',
-                                                })}
+                                                {/*{...register('location', {*/}
+                                                {/*    required: '',*/}
+                                                {/*})}*/}
+
                                                 error={errors.desc?.message}
                                                 ariaInvalid={isDirty}
                                                 labelText="location"
@@ -100,9 +102,9 @@ const ReservationModal = ({ productData, onClose }) => {
                                                 autocomplete="on"
                                             />
                                             <Input
-                                                {...register('desc', {
-                                                    required: '',
-                                                })}
+                                                {/*{...register('desc', {*/}
+                                                {/*    required: '',*/}
+                                                {/*})}*/}
                                                 error={errors.desc?.message}
                                                 ariaInvalid={isDirty}
                                                 labelText="desc"
@@ -134,14 +136,14 @@ const ReservationModal = ({ productData, onClose }) => {
                                                 text="reservation"
                                                 // disabled={isSubmitting}
                                                 className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
-                                                // type={"submit"}
+                                                type={"submit"}
+                                                // onClick={() => console.log("reservation")}
                                             />
                                         </form>
 
                                     {/*</Card>*/}
                                     </div>
                                 </div>
-                                {/* 이곳에 예약 폼이나 모달 내용을 넣어주세요 */}
                             </div>
                         </div>
                         {/* 모달 푸터 */}

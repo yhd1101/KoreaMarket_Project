@@ -6,7 +6,7 @@ import {
   Param,
   UseGuards,
   Req,
-  Query, Delete,
+  Query, Delete, Res,
 } from '@nestjs/common';
 
 import {
@@ -72,9 +72,12 @@ export class ReservationController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '예약취소', description: '예약삭제 api'})
-  async deleteReservationById(@Param('id') id: string) {
-    const reservation = await this.reservationService.deleteReservationById(id);
-    return reservation
+  async deleteReservationById(@Param('id') id: string, @Res() res: RequestWithUserInterface) {
+    const { user } = res;
+    const reservation = await this.reservationService.deleteReservationById(id, user);
+    return reservation;
   }
+
 }

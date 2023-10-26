@@ -222,13 +222,13 @@ const Profile = () => {
                                                      img={c?.product.productImg[0]}
                                     />
                                     <div >
-                                        <p className="font-bold tracking-tight text-gray-900 " style={{ width: '500px' }}>
+                                        <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '350px' }}>
                                             {c.product.name}
                                         </p>
-                                        <p style={{ color: 'purple' }}>Reserved</p>
-                                        <p>Seller: {c.product.seller.name}</p>
-                                        <p>Location: {c.location}</p>
-                                        <p></p>
+                                        <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
+                                        <p className="mb-1">Seller: {c.product.seller.name}</p>
+                                        <p className="mb-1">Location: {c.location}</p>
+                                        <p className="mb-1">{c.reservationDate.slice(0,10)}</p>
 
 
                                     </div>
