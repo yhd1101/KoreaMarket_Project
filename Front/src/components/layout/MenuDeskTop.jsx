@@ -11,14 +11,15 @@ import i18n from "../../lang/i18n";
 import {useTranslation} from "react-i18next";
 import LocaleContext from "../../LocaleContext";
 import useFetchProfileById from "../../services/fetchProfileById";
+import {useAuthContext} from "../../context/AuthContext";
 const MenuDesktop = forwardRef(
     function (
         {
             classNames,
             setOpen,
-            userData,
+            // userData,
             navigate,
-            loading,
+            // loading,
             logout,
             isAdmin,
             onMouseEnter,
@@ -36,6 +37,12 @@ const MenuDesktop = forwardRef(
             const navigation = useLocation()
             const { t } = useTranslation();
             const { locale  } = useContext(LocaleContext)
+            console.log("menubar",id)
+            const { user, loading } = useAuthContext()
+
+            // const userInfo = localStorage.getItem("userInfo")
+            const userData = user ?? null;
+            console.log("ser: ", JSON.stringify(userData?.["id"]))
             const changeLocale = (l) => {
                 if (locale !== l) {
                     i18n.changeLanguage(l)
@@ -162,7 +169,7 @@ const MenuDesktop = forwardRef(
                                                                                         // onClick={() => navigate(`/profile/${id}`)}
                                                                                         className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"
                                                                                     >
-                                                                                        <Link to={`profile/${id}`}>
+                                                                                        <Link to={`profile/${userData?.["id"]}`}>
                                                                                             <PencilSquareIcon className="h-4 w-4" />
                                                                                                 <p className="ml-3 text-base font-medium text-gray-900">
                                                                                                     Edit Profile
