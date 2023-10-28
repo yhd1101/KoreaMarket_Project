@@ -14,8 +14,11 @@ import useCreateComment from "../../services/createComment";
 import {useForm} from "react-hook-form";
 import Input from "../../components/ui/Input";
 import useCreateReservation from "../../services/createReservation";
+import MapContainer from "../../components/Maps";
+import {Card} from "react-bootstrap";
+import {Calendar} from "primereact/calendar";
 
-const ProductDetail = () => {
+const ProductDetail = ( onClose) => {
     const { id } = useParams()
     const { data, isLoading, error} = useFetchProductById(id)
     const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
@@ -27,7 +30,7 @@ const ProductDetail = () => {
     const { data: createReservation, mutateAsync: reservationMutateAsync  } =useCreateReservation()
     console.log("00000000", commentId)
 
-    // console.log("0000000000000", data)
+
 
     const {
         register,
@@ -35,7 +38,9 @@ const ProductDetail = () => {
         formState: { isSubmitting, errors, isDirty}
     } = useForm()
 
-    const onSubmit =  async (values) => {
+
+
+    const commentSubmit =  async (values) => {
         const { desc } = values
         const userInput = {
             desc, product : id
@@ -44,30 +49,28 @@ const ProductDetail = () => {
         await mutateAsync(userInput)
     }
 
-    const submit = async (values) => {
+    const reservationSubmit = async (values) => {
         const {location, desc, purchase, reservationDate} = values
+        console.log("ddddwdads",values)
         const userInput = {
             location, desc, purchase, reservationDate, product: id
         }
 
         await reservationMutateAsync(userInput)
         console.log("5555555", userInput)
-
     }
 
 
+    const getToday = () => {
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = today.getMonth() + 1 //월
+        let date = today.getDate() //날짜
+        let day = today.getDay() //요일
 
+        return year + '/' + month + '/' + date
+    }
 
-    // const getMoneyInfo = async () => {
-    //     try{
-    //         const result = await axios.get("https://api.currencyfreaks.com/latest?apikey=13c39624b2be49dcae2e987f4200390e")
-    //         if( result.status === 200){
-    //             setMoneyInfo(result.data)
-    //         }
-    //     } catch (err){
-    //         console.log(err)
-    //     }
-    // }
 
     //환율 데이터 로딩 중 또는 에러 처리
     if (moneyLoading) {
@@ -123,38 +126,6 @@ const ProductDetail = () => {
                                 </SwiperSlide>
                             ))}
                         </Swiper>
-                        {/*<Swiper*/}
-                        {/*    onSwiper={setThumbsSwiper}*/}
-                        {/*    spaceBetween={16}*/}
-                        {/*    slidesPerView={4}*/}
-                        {/*    freeMode={true}*/}
-                        {/*    watchSlidesProgress={true}*/}
-                        {/*    modules={[FreeMode, Thumbs]}*/}
-                        {/*    className="mySwiper mt-4"*/}
-                        {/*>*/}
-                        {console.log("1111111111",data)}
-                        {/*{data?.productImg === null || undefined ? null : (*/}
-                        {/*    <>*/}
-                        {/*        {console.log("11111111111111",data)}*/}
-                        {/*    /!*{data?.productImg?.map((img, index) => (*!/*/}
-                        {/*    /!*    <SwiperSlide key={index}>*!/*/}
-                        {/*    /!*        <div className="relative overflow-hidden rounded-2xl bg-gray-100 pt-[100%]">*!/*/}
-                        {/*    /!*            <div className="absolute inset-0 translate-x-1/2 translate-y-1/2">*!/*/}
-                        {/*    /!*                <LazyLoadImage*!/*/}
-                        {/*    /!*                    src={img}*!/*/}
-                        {/*    /!*                    alt={data.desc}*!/*/}
-                        {/*    /!*                    effect="blur"*!/*/}
-                        {/*    /!*                    className="absolute top-0 left-0 h-full w-auto -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75"*!/*/}
-                        {/*    /!*                />*!/*/}
-                        {/*    /!*            </div>*!/*/}
-                        {/*    /!*        </div>*!/*/}
-
-                        {/*    /!*    </SwiperSlide>*!/*/}
-
-                        {/*    /!*))}*!/*/}
-                        {/*    </>*/}
-                        {/*) }*/}
-                        {/*</Swiper>*/}
 
                     </div>
                     {/* Product info */}
@@ -169,16 +140,6 @@ const ProductDetail = () => {
                             <h2 className="sr-only">Product information</h2>
                             <p className="mt-4 text-3xl tracking-tight text-gray-900">
                                 ${data?.price}
-                                {/*{moneyInfo ? (*/}
-                                {/*    <h5>*/}
-                                {/*        Korea is {data?.price * moneyInfo.rates.KRW}원*/}
-                                {/*    </h5>*/}
-                                {/*) : null}*/}
-                                {/*{moneyInfo ? (*/}
-                                {/*    <h5>*/}
-                                {/*        Japan is {data?.price * moneyInfo.rates.JPY}엔*/}
-                                {/*    </h5>*/}
-                                {/*) : null}*/}
                                 <h5 className={"mt-4"}>korea is {(data?.price * moneyInfo?.rates.KRW.slice(0,5)).toLocaleString()}원</h5>
                                 <h5 className={"mt-3"}>Japan is {(data?.price * moneyInfo?.rates.JPY.slice(0,7)).toLocaleString()}엔</h5>
                             </p>
@@ -220,34 +181,114 @@ const ProductDetail = () => {
                         <Button
                             text="Reservation"
                             onClick={() => {
-                                setShowReservationModal(true);
+                                setShowReservationModal(true)
                             }}
-                            // onClick={() => {
-                            //     const id = ?.id;
-                            //     const image = productData?.image[0];
-                            //     const title = productData?.title;
-                            //     const price = productData?.price;
-                            //     return checkCartItem({
-                            //         id,
-                            //         image,
-                            //         title,
-                            //         price,
-                            //     });
-                            // }}
                             className="mt-10 flex max-h-[44px] w-full items-center justify-center rounded-md border border-transparent bg-violet-500 py-2 px-8 text-base font-medium leading-7 text-white hover:bg-violet-600"
                         />
                         {showReservationModal && (
-                            <ReservationModal
-                                productData={data}
-                                onClose={() => {
-                                    // When the modal is closed, set the state to hide the modal
-                                    setShowReservationModal(false);
-                                }}
-                            />
-                        )}
+                            <div className="modal-container" > {/* CSS 클래스를 추가합니다. */}
+                                <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                                    <div className="relative w-full h-full max-w-5xl mx-auto my-4">
+                                        <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+                                            <div className="flex items-start justify-between p-3 border-b border-solid rounded-t border-blueGray-200">
+                                                <h3 className="text-3xl font-semibold">Reservation</h3>
+                                                <button
+                                                    className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                    onClick={() => setShowReservationModal(false)}
+                                                >
+                                                    <span className="text-black h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
+                                                </button>
+                                            </div>
+                                            <div className="relative p-6 flex-auto max-h-[80vh] min-h-[50vh] flex justify-center">
+                                                <div className="mx-4 flex-1 ml-8" style={{ marginBottom: '1px' }}>
+                                                    <MapContainer />
+                                                </div>
+                                                <div className="mx-4 flex-1 text-left ">
+                                                    <div className="mt-4">
+                                                        <h1 className="text-xl font-semibold">Seller information</h1>
+                                                    </div>
+                                                    <div>
+                                                        <div className={"mb-1"}>
+                                                            <span className="font-semibold">seller name:</span> {data.seller.name}
+                                                        </div>
+                                                        <div className={"mb-1, mt-2"}>
+                                                            <span className="font-semibold">seller email:</span> {data.seller.email}
+                                                            <Card className={"mb-2, mt-3"} style={{width: '24rem'}}>
+                                                                <Calendar
+                                                                    showTime
+                                                                    hourFormat="24"
+                                                                    // value={dateTime}
+                                                                    // onChange={e => setDateTime(e.target.value)}
+                                                                    // onChange={onChange}
+                                                                    // value={dateValue}
+                                                                    placeholder={getToday()} //현재 시간 가이드 오늘날짜로 보여줌
+                                                                />
+                                                            </Card>
+                                                            <form className="flex w-full max-w-sm flex-col">
+                                                                <Input
+                                                                    {...register("reservation_location")}
+                                                                    error={errors?.reservation_location?.message}
+                                                                    ariaInvalid={isDirty}
+                                                                    labelText="location"
+                                                                    type="text"
+                                                                    className="mt-3"
+                                                                    autocomplete="on"
+                                                                    style={{width: '24rem'}}
+                                                                />
+                                                                <Input
+                                                                    {...register("reservation_desc")}
+                                                                    error={errors?.reservation_desc?.message}
+                                                                    ariaInvalid={isDirty}
+                                                                    labelText="desc"
+                                                                    type="text"
+                                                                    className="mt-3"
+                                                                    autocomplete="on"
+                                                                    style={{width: '24rem'}}
+                                                                />
 
-                        {/*    /!*</div>*!/*/}
-                        {/*</div>*/}
+                                                                <button
+                                                                    className="flex select-none items-center gap-3 rounded-lg bg-violet-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-3"
+                                                                    // onClick={() => console.log("dasdaeweqeqwrtd")}
+                                                                    onClick={() => reservationSubmit()}
+                                                                    data-ripple-light="true"
+                                                                >
+                                                                    <svg
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none"
+                                                                        viewBox="0 0 24 24"
+                                                                        stroke-width="2"
+                                                                        stroke="currentColor"
+                                                                        aria-hidden="true"
+                                                                        className="h-5 w-5"
+                                                                    >
+                                                                        <path
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+                                                                        ></path>
+                                                                    </svg>
+                                                                    reservation
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center justify-end p-6 border-t border-solid rounded-b border-blueGray-200">
+                                                <button
+                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                                                    type="button"
+                                                    onClick={() => setShowReservationModal(false)}
+                                                >
+                                                    닫기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        )}
 
 
                         <div className="py-10 lg:border-gray-200 lg:pt-6 lg:pb-16">
@@ -277,7 +318,7 @@ const ProductDetail = () => {
                                             <span className="text-gray-600">{c.desc}  이름: {c.user.name}</span>
                                         </p>
                                     ))}
-                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(onSubmit)}>
+                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(commentSubmit)}>
                                         <Input
                                             {...register('desc', {
                                                 required: '',
@@ -296,73 +337,55 @@ const ProductDetail = () => {
                                             type={"submit"}
                                             />
                                     </form>
-
-                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(submit)}>
+                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(reservationSubmit)}>
                                         <Input
-                                            {...register('location', {
-                                                required: '',
-                                            })}
-                                            error={errors.desc?.message}
+                                            {...register("reservation_location")}
+                                            error={errors?.reservation_location?.message}
                                             ariaInvalid={isDirty}
                                             labelText="location"
                                             type="text"
-                                            className="mb-3"
+                                            className="mt-3"
                                             autocomplete="on"
+                                            style={{width: '24rem'}}
                                         />
                                         <Input
-                                            {...register('desc', {
-                                                required: '',
-                                            })}
-                                            error={errors.desc?.message}
+                                            {...register("reservation_desc")}
+                                            error={errors?.reservation_desc?.message}
                                             ariaInvalid={isDirty}
                                             labelText="desc"
                                             type="text"
-                                            className="mb-3"
+                                            className="mt-3"
                                             autocomplete="on"
+                                            style={{width: '24rem'}}
                                         />
-                                        {/*<Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">*/}
-                                        {/*    <Form.Label>메모</Form.Label>*/}
-                                        {/*    <Form.Control*/}
-                                        {/*        as="textarea"*/}
-                                        {/*        rows={3}*/}
-                                        {/*        placeholder={"memo"}*/}
-                                        {/*        // value={memo}*/}
-                                        {/*        // onChange={e => setMemo(e.target.value)}*/}
-                                        {/*    />*/}
-                                        {/*</Form.Group>*/}
-                                        {/*<Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">*/}
-                                        {/*    <Form.Label>약속장소</Form.Label>*/}
-                                        {/*    <Form.Control*/}
-                                        {/*        as="textarea"*/}
-                                        {/*        rows={3}*/}
-                                        {/*        placeholder={"location"}*/}
-                                        {/*        // value={location}*/}
-                                        {/*        // onChange={e => setLocation(e.target.value)}*/}
-                                        {/*    />*/}
-                                        {/*</Form.Group>*/}
-                                        <Button
-                                            text="reservation"
-                                            // disabled={isSubmitting}
-                                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
-                                            type={"submit"}
-                                        />
+
+                                        <button
+                                            className="flex select-none items-center gap-3 rounded-lg bg-violet-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-3"
+                                            // onClick={() => console.log("dasdaeweqeqwrtd")}
+                                            onSubmit={() => console.log("eqwecxzx")}
+                                            data-ripple-light="true"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="2"
+                                                stroke="currentColor"
+                                                aria-hidden="true"
+                                                className="h-5 w-5"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+                                                ></path>
+                                            </svg>
+                                            reservation
+                                        </button>
                                     </form>
                                 </p>
                             </div>
                         </div>
-
-
-                        {/*    <div className="mt-10">*/}
-                        {/*        <h2 className="text-sm font-medium text-gray-900">Details</h2>*/}
-
-                        {/*        <div className="mt-4 space-y-6">*/}
-                        {/*            <p className="text-sm text-gray-600">*/}
-                        {/*                {data?.desc}*/}
-                        {/*            </p>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-
-                        {/*</div>*/}
                     </div>
                 </div>
             </div>

@@ -4,9 +4,9 @@ import { Map, GoogleApiWrapper } from 'google-maps-react';
 class MapContainer extends React.Component {
     render() {
         const mapStyles = {
-            width: '400px',
-            height: '300px',
-            marginTop: '30px'
+            width: '450px',
+            height: '370px',
+            marginTop: '25px'
         };
         return (
             <Map
