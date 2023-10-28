@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "documentation:serve":"npx @compodoc/compodoc -p tsconfig.json --serve" ,
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -20,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@compodoc/compodoc": "^1.1.22",
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
