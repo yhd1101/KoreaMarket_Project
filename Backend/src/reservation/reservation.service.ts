@@ -5,6 +5,7 @@ import { Reservation } from '@reservation/entities/reservation.entity';
 import { CreateReservationDto } from '@reservation/dto/create-reservation.dto';
 import { User } from '@users/entities/user.entity';
 import { Product } from '@product/entities/product.entity';
+import {use} from "passport";
 
 @Injectable()
 export class ReservationService {
@@ -22,6 +23,7 @@ export class ReservationService {
       ...createReservationDto,
       user,
     });
+    console.log(newReservation)
     await this.reservationRepository.save(newReservation);
     return newReservation;
   }
@@ -56,10 +58,17 @@ export class ReservationService {
   }
 
   async deleteReservationById(id: string, user: User) {
-    const res = await this.reservationRepository.findOneBy({id})
-    if(res.user === user) {
-      const reservation = await this.reservationRepository.delete(id)
-      return reservation
+    const reservation = await this.reservationRepository.findOne({
+      where: { id },
+      relations: ['user', 'product'],
+    });
+    console.log("++++++++++++++++++", reservation.user)
+    console.log("------", reservation.user.id === user.id)
+    // if (reservation) return reservation;
+    if(reservation.user.id === user.id) {
+      await this.reservationRepository.delete(id)
+
+      return "deleted reservation"
 
     }
     throw new HttpException("not reservation", HttpStatus.FORBIDDEN)

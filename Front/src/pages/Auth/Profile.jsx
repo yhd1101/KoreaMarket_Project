@@ -19,6 +19,7 @@ import fetchReservations from "../../services/fetchReservations";
 import useFetchCommentById from "../../services/fetchCommentById";
 import ReservationItem from "../../components/ui/ReservationItem";
 import useChangePassword from "../../services/changePassword";
+import useFetchDeleteReservation from "../../services/deleteReservation";
 
 
 const Profile = () => {
@@ -31,7 +32,13 @@ const Profile = () => {
     const {user} = useAuthContext()
     const { data: changePasswordData, isLoading: passwordLoading, error: passwordError, mutateAsync} = useChangePassword()
     const shouldShowNavbarAndFooter = false;
-    console.log("222222",data)
+    const reservationIds = data?.profile?.reservation.map(reservation => reservation.id);
+
+    const {mutateAsync: deleteMutateAsync, isLoading: deleteReservationLoading, error: deleteReservationError } = useFetchDeleteReservation()
+
+
+
+    console.log("resevationId: ", reservationIds)
 
     const {
         register,
@@ -64,6 +71,13 @@ const Profile = () => {
         navigate("/")
 
     }
+    const deleteSubmit = async (id) => {
+        console.log("#######",id)
+        await deleteMutateAsync(id)
+        alert('deleted')
+    }
+
+
     //
     // if (reservationLoading) {
     //     return  <LoadingSkeleton/>
@@ -217,6 +231,7 @@ const Profile = () => {
                             {error && <ErrorMessage />}
                             {data?.profile.reservation?.map((c, index) => (
                                 <Fragment key={index}>
+                                    {console.log("+++++++",c.id)}
                                     <ReservationItem key={index}
                                                      id={c?.product?.id}
                                                      img={c?.product.productImg[0]}
@@ -230,8 +245,17 @@ const Profile = () => {
                                         <p className="mb-1">Location: {c.location}</p>
                                         <p className="mb-1">{c.reservationDate.slice(0,10)}</p>
 
+                                        <Button
+                                            text="Cancel"
+                                            disabled={isSubmitting}
+                                            className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
+                                            onClick={() => deleteSubmit(c.id)}
+                                        />
+
 
                                     </div>
+
+
                                     {/*<div>*/}
                                     {/*    {c.product.name}*/}
                                     {/*    <br/>*/}

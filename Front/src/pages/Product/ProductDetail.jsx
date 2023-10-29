@@ -202,97 +202,38 @@ const ProductDetail = ( onClose) => {
                                             <div className="relative p-6 flex-auto max-h-[80vh] min-h-[50vh] flex justify-center">
                                                 <div className="mx-4 flex-1 ml-8" style={{ marginBottom: '1px' }}>
                                                     <MapContainer />
-                                                </div>
-                                                <div className="mx-4 flex-1 text-left ">
-                                                    <div className="mt-4">
-                                                        <h1 className="text-xl font-semibold">Seller information</h1>
-                                                    </div>
-                                                    <div>
-                                                        <div className={"mb-1"}>
-                                                            <span className="font-semibold">seller name:</span> {data.seller.name}
-                                                        </div>
-                                                        <div className={"mb-1, mt-2"}>
-                                                            <span className="font-semibold">seller email:</span> {data.seller.email}
-                                                            <Card className={"mb-2, mt-3"} style={{width: '24rem'}}>
-                                                                <Calendar
-                                                                    showTime
-                                                                    hourFormat="24"
-                                                                    // value={dateTime}
-                                                                    // onChange={e => setDateTime(e.target.value)}
-                                                                    // onChange={onChange}
-                                                                    // value={dateValue}
-                                                                    placeholder={getToday()} //현재 시간 가이드 오늘날짜로 보여줌
-                                                                />
-                                                            </Card>
-                                                            <form className="flex w-full max-w-sm flex-col">
-                                                                <Input
-                                                                    {...register("reservation_location")}
-                                                                    error={errors?.reservation_location?.message}
-                                                                    ariaInvalid={isDirty}
-                                                                    labelText="location"
-                                                                    type="text"
-                                                                    className="mt-3"
-                                                                    autocomplete="on"
-                                                                    style={{width: '24rem'}}
-                                                                />
-                                                                <Input
-                                                                    {...register("reservation_desc")}
-                                                                    error={errors?.reservation_desc?.message}
-                                                                    ariaInvalid={isDirty}
-                                                                    labelText="desc"
-                                                                    type="text"
-                                                                    className="mt-3"
-                                                                    autocomplete="on"
-                                                                    style={{width: '24rem'}}
-                                                                />
 
-                                                                <button
-                                                                    className="flex select-none items-center gap-3 rounded-lg bg-violet-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-3"
-                                                                    // onClick={() => console.log("dasdaeweqeqwrtd")}
-                                                                    onClick={() => reservationSubmit()}
-                                                                    data-ripple-light="true"
-                                                                >
-                                                                    <svg
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        fill="none"
-                                                                        viewBox="0 0 24 24"
-                                                                        stroke-width="2"
-                                                                        stroke="currentColor"
-                                                                        aria-hidden="true"
-                                                                        className="h-5 w-5"
-                                                                    >
-                                                                        <path
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
-                                                                        ></path>
-                                                                    </svg>
-                                                                    reservation
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center justify-end p-6 border-t border-solid rounded-b border-blueGray-200">
+                                            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                                 <button
-                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                                                    onClick={() => console.log("dsadadwwqeqr")}
                                                     type="button"
-                                                    onClick={() => setShowReservationModal(false)}
+                                                    class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                                                 >
-                                                    닫기
+                                                    Deactivate
                                                 </button>
+                                                <button
+                                                    onClick={() => setShowReservationModal(false)}
+                                                    type="button"
+                                                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                >
+                                                    Cancel
+                                                </button>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         )}
 
 
-                        <div className="py-10 lg:border-gray-200 lg:pt-6 lg:pb-16">
-                            Description
+                        <div className=" lg:border-gray-200 lg:pr-8 mt-3">
+                            <p className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+                                Description
+                            </p>
+
                             <div className="mt-4">
                                 <ul
                                     role="list"
@@ -306,84 +247,50 @@ const ProductDetail = ( onClose) => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="py-10 lg:border-gray-200 lg:pt-6 lg:pb-16">
-                            Comment
-                            <div className="mt-4">
-                                <p
-                                    role="list"
-                                    className="list-disc space-y-2 pl-4 text-sm"
-                                >
-                                    {data?.comments?.map((c, index) => (
-                                        <p key={index} className="text-gray-400">
-                                            <span className="text-gray-600">{c.desc}  이름: {c.user.name}</span>
-                                        </p>
-                                    ))}
-                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(commentSubmit)}>
-                                        <Input
-                                            {...register('desc', {
-                                                required: '',
-                                            })}
-                                            error={errors.desc?.message}
-                                            ariaInvalid={isDirty}
-                                            labelText="desc"
-                                            type="text"
-                                            className="mb-3"
-                                            autocomplete="on"
-                                            />
-                                        <Button
-                                            text="comment"
-                                            disabled={isSubmitting}
-                                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
-                                            type={"submit"}
-                                            />
-                                    </form>
-                                    <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(reservationSubmit)}>
-                                        <Input
-                                            {...register("reservation_location")}
-                                            error={errors?.reservation_location?.message}
-                                            ariaInvalid={isDirty}
-                                            labelText="location"
-                                            type="text"
-                                            className="mt-3"
-                                            autocomplete="on"
-                                            style={{width: '24rem'}}
-                                        />
-                                        <Input
-                                            {...register("reservation_desc")}
-                                            error={errors?.reservation_desc?.message}
-                                            ariaInvalid={isDirty}
-                                            labelText="desc"
-                                            type="text"
-                                            className="mt-3"
-                                            autocomplete="on"
-                                            style={{width: '24rem'}}
-                                        />
 
-                                        <button
-                                            className="flex select-none items-center gap-3 rounded-lg bg-violet-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-3"
-                                            // onClick={() => console.log("dasdaeweqeqwrtd")}
-                                            onSubmit={() => console.log("eqwecxzx")}
-                                            data-ripple-light="true"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="2"
-                                                stroke="currentColor"
-                                                aria-hidden="true"
-                                                className="h-5 w-5"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
-                                                ></path>
-                                            </svg>
-                                            reservation
-                                        </button>
-                                    </form>
-                                </p>
+
+
+
+                        <div className=" lg:border-gray-200 lg:pr-8 mt-3 justify-left">
+                            <p className="text-xl font-bold justify-left tracking-tight text-gray-900 sm:text-2xl">
+                                Comment
+                            </p>
+                            <form  onSubmit={handleSubmit(commentSubmit)} className="mb-3">
+                                <div className="relative flex h-15 w-full min-w-[200px] max-w-[40rem]">
+                                    <input
+                                        {...register('desc', {
+                                            required: '',
+                                        })}
+                                        type="text"
+                                        // className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg"
+                                        className="peer h-full w-full rounded-[7px] border border-blue-gray-200  px-3 py-2.5 pr-20 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200  disabled:border-0 disabled:bg-blue-gray-50"
+                                        placeholder="Insert Comment"
+                                        required
+                                    />
+                                    <button
+                                        disabled={isSubmitting}
+                                        type={"submit"}
+                                        className="!absolute right-1 top-1 z-10 select-none rounded bg-blue-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none peer-placeholder-shown:pointer-events-none peer-placeholder-shown:bg-blue-gray-500 peer-placeholder-shown:opacity-50 peer-placeholder-shown:shadow-none"
+                                        data-ripple-light="true"
+                                    >
+                                        Comment
+                                    </button>
+
+                                </div>
+                            </form>
+                            <div className="grid grid-cols-5 w-full min-w-[200px] max-w-[40rem] ">
+                                {data?.comments?.map((c, index) => (
+                                    <>
+                                       <div class="col-start-1 col-span-4">
+                                           <p className="text-gray-600 text-lg text-base/6">{c.desc} </p>
+                                           <p className="text-sm/4"> {c.createdAt.slice(0,10)}</p>
+                                       </div>
+                                        <div class="col-end-7 col-span-2">
+                                             <p className="flex flex-col items-left">글쓴이: {c.user.name}</p>
+                                        </div>
+                                   </>
+
+                                ))}
                             </div>
                         </div>
                     </div>
