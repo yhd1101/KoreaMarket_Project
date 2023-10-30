@@ -53,10 +53,11 @@ const ProductDetail = ( onClose) => {
         const {location, desc, purchase, reservationDate} = values
         console.log("ddddwdads",values)
         const userInput = {
-            location, desc, purchase, reservationDate, product: id
+             purchase: false, product: id,desc, location,
+            reservationDate
         }
 
-        await reservationMutateAsync(userInput)
+        // await reservationMutateAsync(userInput)
         console.log("5555555", userInput)
     }
 
@@ -204,24 +205,84 @@ const ProductDetail = ( onClose) => {
                                                     <MapContainer />
 
                                                 </div>
-                                            </div>
-                                            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                                <button
-                                                    onClick={() => console.log("dsadadwwqeqr")}
-                                                    type="button"
-                                                    class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                                >
-                                                    Deactivate
-                                                </button>
-                                                <button
-                                                    onClick={() => setShowReservationModal(false)}
-                                                    type="button"
-                                                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                                >
-                                                    Cancel
-                                                </button>
+                                                <div className="mx-4 flex-1 text-left ">
+                                                    <div className="mt-4">
+                                                        <h1 className="text-xl font-semibold">Seller information</h1>
+                                                    </div>
+                                                    <div>
+                                                        <div className={"mb-1"}>
+                                                            <span className="font-semibold">seller name:</span> {data.seller.name}
+                                                        </div>
+                                                        <div className={"mb-1, mt-2"}>
+                                                            <span className="font-semibold">seller email:</span> {data.seller.email}
+                                                            <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(reservationSubmit)}>
+                                                                <Card className={"mb-2, mt-3"} style={{width: '24rem'}}>
+                                                                    <Calendar
+                                                                        showTime
+                                                                        hourFormat="24"
+                                                                        placeholder={getToday()}
+                                                                    />
 
+                                                                    {/*<Calendar*/}
+                                                                    {/*    showTime*/}
+                                                                    {/*    hourFormat="24"*/}
+                                                                    {/*    // value={dateTime}*/}
+                                                                    {/*    // onChange={e => setDateTime(e.target.value)}*/}
+                                                                    {/*    // onChange={onChange}*/}
+                                                                    {/*    // value={dateValue}*/}
+                                                                    {/*    placeholder={getToday()} //현재 시간 가이드 오늘날짜로 보여줌*/}
+                                                                    {/*/>*/}
+                                                                </Card>
+                                                                <Input
+                                                                    {...register('desc', {
+                                                                        required: 'Please provide a name.',
+                                                                        maxLength: {
+                                                                            value: 20,
+                                                                            message: 'Name needs to be between 1 to 20 characters.',
+                                                                        },
+                                                                    })}
+                                                                    ariaInvalid={isDirty}
+                                                                    labelText="Desc"
+                                                                    type="text"
+                                                                    className="mb-3"
+                                                                    autocomplete="on"
+                                                                />
+                                                                <Input
+                                                                    {...register('location', {
+                                                                        required: 'location',
+                                                                    })}
+                                                                    ariaInvalid={isDirty}
+                                                                    labelText="location"
+                                                                    type="text"
+                                                                    className="mb-3 mt-3"
+                                                                    autocomplete="on"
+                                                                />
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+
+
+                                            <form onSubmit={handleSubmit(reservationSubmit)}>
+                                                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                                    <button
+                                                        onClick={() => console.log("dsadadwwqeqr")}
+                                                        type="submit"
+                                                        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                                                    >
+                                                        Reservation
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setShowReservationModal(false)}
+                                                        type="button"
+                                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                    >
+                                                        Cancel
+                                                    </button>
+
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
