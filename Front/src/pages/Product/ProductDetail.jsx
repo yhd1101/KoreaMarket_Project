@@ -21,7 +21,7 @@ import {Calendar} from "primereact/calendar";
 const ProductDetail = ( onClose) => {
     const { id } = useParams()
     const { data, isLoading, error} = useFetchProductById(id)
-    const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
+    // const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
     const [showReservationModal, setShowReservationModal] = useState(false); // 모달 가시성을 제어하는 상태
     const { data: createComment, mutateAsync} = useCreateComment()
@@ -50,15 +50,16 @@ const ProductDetail = ( onClose) => {
     }
 
     const reservationSubmit = async (values) => {
-        const {location, desc, purchase, reservationDate} = values
+        const {location, description, purchase, reservationDate} = values
         console.log("ddddwdads",values)
         const userInput = {
-             purchase: false, product: id,desc, location,
+             purchase: false, product: id,desc: description, location,
             reservationDate
         }
 
-        // await reservationMutateAsync(userInput)
+        await reservationMutateAsync(userInput)
         console.log("5555555", userInput)
+        setShowReservationModal(false)
     }
 
 
@@ -73,18 +74,18 @@ const ProductDetail = ( onClose) => {
     }
 
 
-    //환율 데이터 로딩 중 또는 에러 처리
-    if (moneyLoading) {
-        return <LoadingSkeleton />;
-    }
-
-    if (moneyError) {
-        return (
-            <div className="mt-20">
-                <ErrorMessage />
-            </div>
-        );
-    }
+    // //환율 데이터 로딩 중 또는 에러 처리
+    // if (moneyLoading) {
+    //     return <LoadingSkeleton />;
+    // }
+    //
+    // if (moneyError) {
+    //     return (
+    //         <div className="mt-20">
+    //             <ErrorMessage />
+    //         </div>
+    //     );
+    // }
     // Error Message
     if (error) {
         return (
@@ -141,8 +142,8 @@ const ProductDetail = ( onClose) => {
                             <h2 className="sr-only">Product information</h2>
                             <p className="mt-4 text-3xl tracking-tight text-gray-900">
                                 ${data?.price}
-                                <h5 className={"mt-4"}>korea is {(data?.price * moneyInfo?.rates.KRW.slice(0,5)).toLocaleString()}원</h5>
-                                <h5 className={"mt-3"}>Japan is {(data?.price * moneyInfo?.rates.JPY.slice(0,7)).toLocaleString()}엔</h5>
+                            {/*    <h5 className={"mt-4"}>korea is {(data?.price * moneyInfo?.rates.KRW.slice(0,5)).toLocaleString()}원</h5>*/}
+                            {/*    <h5 className={"mt-3"}>Japan is {(data?.price * moneyInfo?.rates.JPY.slice(0,7)).toLocaleString()}엔</h5>*/}
                             </p>
                         </div>
 
@@ -234,7 +235,7 @@ const ProductDetail = ( onClose) => {
                                                                     {/*/>*/}
                                                                 </Card>
                                                                 <Input
-                                                                    {...register('desc', {
+                                                                    {...register('description', {
                                                                         required: 'Please provide a name.',
                                                                         maxLength: {
                                                                             value: 20,

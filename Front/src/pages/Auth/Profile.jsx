@@ -243,7 +243,7 @@ const Profile = () => {
                                         <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
                                         <p className="mb-1">Seller: {c.product.seller.name}</p>
                                         <p className="mb-1">Location: {c.location}</p>
-                                        <p className="mb-1">{c.reservationDate.slice(0,10)}</p>
+                                        {/*<p className="mb-1">{c.reservationDate.slice(0,10)}</p>*/}
 
                                         <Button
                                             text="Cancel"
