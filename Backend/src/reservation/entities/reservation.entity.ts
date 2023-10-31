@@ -31,7 +31,7 @@ export class Reservation extends CommonEntity {
   @Column()
   public desc: string;
 
-  // @Column({ type: 'timestamptz'} )
-  // public reservationDate: Date;
+  @Column({ type: 'timestamptz'} )
+  public reservationDate: Date;
 
 }

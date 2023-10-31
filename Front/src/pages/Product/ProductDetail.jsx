@@ -222,6 +222,7 @@ const ProductDetail = ( onClose) => {
                                                                         showTime
                                                                         hourFormat="24"
                                                                         placeholder={getToday()}
+                                                                        {...register('reservationDate')}
                                                                     />
 
                                                                     {/*<Calendar*/}
