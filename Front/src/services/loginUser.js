@@ -2,6 +2,7 @@ import authApi from "./api";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
 import {useAuthContext} from "../context/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 const loginUser = async (userInput) => {
     const { data } = await axios.post("http://localhost:8000/api/auth/login", userInput)
@@ -22,6 +23,12 @@ const useLoginUser = () => {
             queryClient.invalidateQueries({
                 queryKey: ['users'],
             })
+        },
+        onError:(err) => {
+            if(err.response.data.statusCode === 400) {
+                alert("please check email and password")
+
+            }
         }
     })
 }

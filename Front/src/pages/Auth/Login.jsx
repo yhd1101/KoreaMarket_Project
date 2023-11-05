@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom'
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
@@ -16,9 +16,7 @@ import KakaoLoginButton from "../../components/ui/KakaoLoginButton";
 
 const Login = () => {
     const navigate = useNavigate()
-    const { data, isLoading, error, mutateAsync } = useLoginUser()
-    console.log("9999999999999", data)
-
+    const { data, isLoading, isError, mutateAsync } = useLoginUser()
 
     const {
         register,
@@ -60,6 +58,10 @@ const Login = () => {
     // const onSubmit = handleSubmit((data) => {
     //     console.log(data)
     // })
+    // if (error.response.data.statusCode === 400) {
+    //     alert("please check email and password")
+    // }
+
     return (
         <section className="m-auto grid min-h-[calc(100vh-65px)] w-full grid-cols-10">
             <div className="col-span-10 flex h-full w-full grow flex-col items-center justify-center bg-white shadow-slate-50 drop-shadow-md lg:col-span-4">
