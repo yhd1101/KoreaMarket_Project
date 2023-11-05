@@ -10,7 +10,7 @@ import { CommonEntity } from '@common/entities/common.entity';
 import { Product } from '@product/entities/product.entity';
 import { User } from '@users/entities/user.entity';
 
-@Entity({synchronize: false})
+@Entity()
 export class Reservation extends CommonEntity {
   @Column()
   public location: string;

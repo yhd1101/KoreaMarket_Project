@@ -226,6 +226,9 @@ const Profile = () => {
                             </div>
                         </div>
 
+
+
+
                         <ul className="grid grid-cols-1 gap-6  sm:grid-cols-2 md:grid-cols-4 mt-3">
 
                             {error && <ErrorMessage />}
@@ -236,8 +239,8 @@ const Profile = () => {
                                                      id={c?.product?.id}
                                                      img={c?.product.productImg[0]}
                                     />
-                                    <div >
-                                        <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '350px' }}>
+                                    <div>
+                                        <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '600px' }}>
                                             {c.product.name}
                                         </p>
                                         <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
