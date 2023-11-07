@@ -187,6 +187,7 @@ const Signup = () => {
     const [email, setEmail] =useState(0)
     const { error: sendError, data: sendMail, mutateAsync: mutateAsyncVerifyMail } = useVerifyEmail()
     const { data: confrimMail, mutateAsync: mutateAsyncConfrimMail } = useConfrimMail()
+    const [emailValue, setEmailValue] = useState(""); // 이메일 값 상태 추가
     const [isOpen, setIsOpen] = useState(false)
 
     const formRef = useRef()
@@ -199,12 +200,14 @@ const Signup = () => {
             email
         }
         console.log("data:", userInput)
-        mutateAsyncVerifyMail(userInput)
         if(userInput) {
+            mutateAsyncVerifyMail(userInput)
             setIsOpen(true)
             formRef.current.reset();
             alert("Please confirm your email");
         }
+
+
 
     }
 
@@ -222,14 +225,16 @@ const Signup = () => {
     //     await mutateAsyncVerifyMail(values)
     // }
 
-    const confrimSubmit = async (values, e) => {
+    const confrimSubmit = async  (e) => {
         e.preventDefault()
-        const event = formRef.current.myInput.value;
-        const {confrimEmail, code } = values;
+        const confrimEmail=  formRef.current.myInput.value;
+        const code =  formRef.current.code.value;
         const userInput = {
             email: confrimEmail, code
         }
+        console.log("value:",userInput )
         await  mutateAsyncConfrimMail(userInput)
+        alert("success")
         formRef.current.valueOf().reset()
     }
 
@@ -293,18 +298,29 @@ const Signup = () => {
                 </div>
                 <div className="flex flex-col items-center" >
                     <form className="flex w-full max-w-sm flex-col" ref={formRef}>
+                        {/*<Input*/}
+                        {/*    {...register('email', )}*/}
+                        {/*    name="myInput"*/}
+                        {/*    error={errors.email?.message}*/}
+                        {/*    // ariaInvalid={isDirty}*/}
+                        {/*    labelText="Email"*/}
+                        {/*    type="email"*/}
+                        {/*    className="mb-3"*/}
+                        {/*    autofocus*/}
+                        {/*    autocomplete="on"*/}
+                        {/*  //  value={emailValue} // 이메일 값을 상태에서 가져옴// isOpen이 true일 때 비활성화*/}
+                        {/*/>*/}
+
                         <Input
-                            {...register('email', )}
+                            {...register("email")}
                             name="myInput"
                             error={errors.email?.message}
-                            // ariaInvalid={isDirty}
                             labelText="Email"
                             type="email"
                             className="mb-3"
                             autofocus
                             autocomplete="on"
                         />
-
                         <Button
                             name="submit1"
                             variant="contained"
@@ -318,19 +334,19 @@ const Signup = () => {
                         {isOpen ? (
                             <>
                                 <Input
+                                    {...register('code', )}
+                                    name="code"
                                     labelText="Code"
                                     type="text"
                                     className="mb-3"
                                     autofocus
                                     autocomplete="on"
-                                    // value={code}
-                                    // onChange={(e) => setCode(e.target.value)}
                                 />
 
                                 <Button
-                                    text="Verify"
+                                    text="Confrim"
                                     className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
-                                    // onClick={verifyEmailHandler}
+                                    onClick={confrimSubmit}
                                 />
                             </>
                         ): null}
