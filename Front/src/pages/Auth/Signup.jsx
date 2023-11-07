@@ -187,8 +187,10 @@ const Signup = () => {
     const [email, setEmail] =useState(0)
     const { error: sendError, data: sendMail, mutateAsync: mutateAsyncVerifyMail } = useVerifyEmail()
     const { data: confrimMail, mutateAsync: mutateAsyncConfrimMail } = useConfrimMail()
+    const [isOpen, setIsOpen] = useState(false)
 
     const formRef = useRef()
+    console.log("data:!" , data)
 
     const submitHandler = async (event) => {
         event.preventDefault();
@@ -196,10 +198,14 @@ const Signup = () => {
         const userInput ={
             email
         }
-        console.log("value:", email);
+        console.log("data:", userInput)
         mutateAsyncVerifyMail(userInput)
-        formRef.current.reset();
-        alert("Please confirm your email");
+        if(userInput) {
+            setIsOpen(true)
+            formRef.current.reset();
+            alert("Please confirm your email");
+        }
+
     }
 
     const {
@@ -230,9 +236,13 @@ const Signup = () => {
 
 
 
-    const onSubmit = async (values) => {
-
-        const {email, name, password, confirmPassword } = values
+    const onSubmit = async (e) => {
+        e.preventDefault()
+        // const {email, name, password, confirmPassword } = values
+        const email =  formRef.current.myInput.value;
+        const password =  formRef.current.password.value;
+        const name =  formRef.current.name.value;
+        const confirmPassword =  formRef.current.confrimpassword.value;
         if (password !== confirmPassword) {
             alert("password dzo not match")
             return
@@ -242,7 +252,10 @@ const Signup = () => {
             provider: "local"
         }
         console.log("+++++++++++++++", userInput)
+
         await mutateAsync(userInput)
+        formRef.current.reset();
+        alert("Singup!")
         navigate("/login")
     }
 
@@ -300,12 +313,33 @@ const Signup = () => {
                             className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
                             type="submit"
                             onClick={submitHandler}
+
                         />
+                        {isOpen ? (
+                            <>
+                                <Input
+                                    labelText="Code"
+                                    type="text"
+                                    className="mb-3"
+                                    autofocus
+                                    autocomplete="on"
+                                    // value={code}
+                                    // onChange={(e) => setCode(e.target.value)}
+                                />
+
+                                <Button
+                                    text="Verify"
+                                    className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
+                                    // onClick={verifyEmailHandler}
+                                />
+                            </>
+                        ): null}
+
 
 
                         <Input
                             {...register('name')}
-                            // name="myInput"
+                            name="name"
                             error={errors.name?.message}
                             // ariaInvalid={isDirty}
                             labelText="Name"
@@ -316,7 +350,7 @@ const Signup = () => {
 
                         <Input
                             {...register('password')}
-                            // name="myInput"
+                            name="password"
                             error={errors.password?.message}
                             // ariaInvalid={isDirty}
                             labelText="Password"
@@ -327,7 +361,7 @@ const Signup = () => {
 
                         <Input
                             {...register('confirmPassword')}
-                            // name="myInput"
+                            name="confrimpassword"
                             error={errors.confirmPassword?.message}
                             // ariaInvalid={isDirty}
                             labelText="Confirm Password"
