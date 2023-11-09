@@ -10,206 +10,59 @@ import React, { useState} from "react";
 import { useRef } from "react";
 import useVerifyEmail from "../../services/verifyEmail";
 import useConfrimMail from "../../services/confirmEmail";
+import {useQueries} from "@tanstack/react-query";
 import axios from "axios";
-//
-
-// import React, {useState} from 'react';
-// import Input from "../../components/ui/Input";
-// import Button from "../../components/ui/Button";
-// import AuthImageContainer from "../../components/ui/AuthImageContainer";
-// import {Link, useNavigate} from "react-router-dom";
-// import axios from "axios";
-//
-// const Signup = () => {
-//     const navigate = useNavigate()
-//     const [email, setEmail] = useState("")
-//     const [name, setName] = useState("")
-//     const [password, setPassword] = useState("")
-//     const [code, setCode] = useState(0)
-//     const [isOpen, setIsOpen] = useState(false)
-//     const [confirmPassword, setConfirmPassword] = useState("")
-//
-//     const sendEmailHandler = async (e) => {
-//         e.preventDefault()
-//         try{
-//             const userInput = {
-//                 email
-//             }
-//             const {data, status} = await axios.post("http://localhost:8000/api/auth/send/email", userInput)
-//             console.log("111111", data)
-//             if ( data.statusCode === 200) {
-//                 alert("confrim email")
-//                 setIsOpen(true)
-//             }
-//
-//         } catch (err) {
-//             console.log(err)
-//         }
-//
-//     }
-//
-//     const verifyEmailHandler = async (e) => {
-//         e.preventDefault()
-//
-//         try{
-//             const userInput = {
-//                 email, code
-//             }
-//             const {data, status} = await axios.post("http://localhost:8000/api/auth/confirm/email", userInput)
-//             if( data.statusCode === 200) {
-//                 alert("verify")
-//                 setIsOpen(false)
-//             }
-//         } catch (err) {
-//             console.log(err)
-//         }
-//     }
-//
-//     const signupHandler = async (e) => {
-//         e.preventDefault()
-//         if (password !== confirmPassword) {
-//             alert("password do not match")
-//         }
-//         const userInput = {
-//             email, name, password, provider: "local"
-//         }
-//         const {data, status } = await axios.post("http://localhost:8000/api/auth/signup",userInput)
-//         if(data.statusCode === 200) {
-//             navigate("/login")
-//         }
-//         console.log("ddddd", userInput)
-//     }
-//
-//
-//     return (
-//         <section className="m-auto grid min-h-[calc(100vh-65px)] w-full grid-cols-10">
-//             <div className="col-span-10 flex h-full w-full grow flex-col items-center justify-center bg-white shadow-slate-50 drop-shadow-md lg:col-span-4">
-//                 <div className="mb-14 flex-col items-center text-center">
-//                     <h2 className="mb-2 text-3xl font-bold">Get started</h2>
-//                     <p className="text-slate-500">Create your account now.</p>
-//                 </div>
-//                 <div className="flex flex-col items-center" >
-//                     <form className="flex w-full max-w-sm flex-col">
-//                         <Input
-//                             labelText="Email"
-//                             type="email"
-//                             className="mb-3"
-//                             autofocus
-//                             autocomplete="on"
-//                             value={email}
-//                             onChange={(e) => setEmail(e.target.value)}
-//                         />
-//
-//                         <Button
-//                             text="Send"
-//                             type="submit"
-//                             className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
-//                             onClick={sendEmailHandler}
-//                         />
-//                         {isOpen ? (
-//                             <>
-//                                 <Input
-//                                     labelText="Code"
-//                                     type="text"
-//                                     className="mb-3"
-//                                     autofocus
-//                                     autocomplete="on"
-//                                     value={code}
-//                                     onChange={(e) => setCode(e.target.value)}
-//                                 />
-//
-//                                 <Button
-//                                     text="Verify"
-//                                     className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
-//                                     onClick={verifyEmailHandler}
-//                                 />
-//                             </>
-//                         ): null}
-//
-//                         <Input
-//                             labelText="name"
-//                             type="text"
-//                             className="mb-3"
-//                             autofocus
-//                             autocomplete="on"
-//                             value={name}
-//                             onChange={(e) => setName(e.target.value)}
-//                         />
-//                         <Input
-//                             // ariaInvalid={isDirty}
-//                             labelText="Password"
-//                             type="password"
-//                             className="mb-3"
-//                             autocomplete="off"
-//                             value={password}
-//                             onChange={(e) => setPassword(e.target.value)}
-//                         />
-//                         <Input
-//                             // ariaInvalid={isDirty}
-//                             labelText="Confirm Password"
-//                             type="password"
-//                             className="mb-3"
-//                             autocomplete="off"
-//                             value={confirmPassword}
-//                             onChange={(e) => setConfirmPassword(e.target.value)}
-//                         />
-//                         <Button
-//                             text="Create account"
-//                             className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
-//                             onClick={signupHandler}
-//                             // type={"submit"}
-//                         />
-//                     </form>
-//                     <div className="mt-10 text-slate-500">
-//                         Already have an account?
-//                         <Link to="/login" className="p-2 font-semibold text-violet-500">
-//                             Log in
-//                         </Link>
-//                     </div>
-//                 </div>
-//             </div>
-//
-//             <AuthImageContainer
-//                 image={"/images/register.webp"}
-//                 firstText={"unlock the Shopping world"}
-//                 secondText={"Enjoy Shopping"}
-//             />
-//         </section>
-//     );
-// };
-//
-// export default Signup;
-
 const Signup = () => {
     const navigate = useNavigate()
     const { data, isLoading, error, mutateAsync } = useSignupUser()
-    // console.log("77777777777", data)
     const [email, setEmail] =useState(0)
     const { error: sendError, data: sendMail, mutateAsync: mutateAsyncVerifyMail } = useVerifyEmail()
     const { data: confrimMail, mutateAsync: mutateAsyncConfrimMail } = useConfrimMail()
     const [emailValue, setEmailValue] = useState(""); // 이메일 값 상태 추가
     const [isOpen, setIsOpen] = useState(false)
 
-    const formRef = useRef()
-    console.log("data:!" , data)
 
-    const submitHandler = async (event) => {
-        event.preventDefault();
-        const email =  formRef.current.myInput.value;
-        const userInput ={
-            email
-        }
-        console.log("data:", userInput)
-        if(userInput) {
-            mutateAsyncVerifyMail(userInput)
-            setIsOpen(true)
-            formRef.current.reset();
-            alert("Please confirm your email");
-        }
+    const [postsQuery, usersQuery] = useQueries({
+        queries: [
+            {
+                queryKey: ['posts'],
+                queryFn: () =>
+                    axios
+                        .post('http://localhost:8000/auth/signup')
+                        .then((res) => res.data),
+            },
+
+            {
+                queryKey: ['users'],
+                queryFn: () =>
+                    axios
+                        .post('http://localhost:8000/api/auth/send/email')
+                        .then((res) => res.data),
+            },
+        ],
+    });
 
 
-
-    }
+    // const formRef = useRef()
+    // console.log("data:!" , data)
+    //
+    // const submitHandler = async (event) => {
+    //     event.preventDefault();
+    //     const email =  formRef.current.myInput.value;
+    //     const userInput ={
+    //         email
+    //     }
+    //     console.log("data:", userInput)
+    //     if(userInput) {
+    //         mutateAsyncVerifyMail(userInput)
+    //         setIsOpen(true)
+    //         formRef.current.reset();
+    //         alert("Please confirm your email");
+    //     }
+    //
+    //
+    //
+    // }
 
     const {
         register,
@@ -221,74 +74,79 @@ const Signup = () => {
         formState: { isSubmitting, errors, isDirty}
     } = useForm()
 
+
+    const onSubmit_2 = handleSubmit((data) => {
+        const userInput = {
+            email: data.email,
+            username: data.name,
+            password: data.password
+        }
+        console.log("____",userInput)
+        mutateAsync(userInput)
+    });
+
+    const onSubmit_1 = handleSubmit((data) => {
+        const { email } = data
+        console.log("data+++++++++++++++++++++", email)
+        alert("confrim email")
+        mutateAsyncVerifyMail(email)
+        setIsOpen(true)
+    });
+
+    //
+    // if (postsQuery.isLoading) return 'Loading Posts...';
+    // if (usersQuery.isLoading) return 'Loading Users...';
+
+
+
     // const mailSubmit = async (values) => {
     //     await mutateAsyncVerifyMail(values)
     // }
 
-    const confrimSubmit = async  (e) => {
-        e.preventDefault()
-        const confrimEmail=  formRef.current.myInput.value;
-        const code =  formRef.current.code.value;
-        const userInput = {
-            email: confrimEmail, code
-        }
-        console.log("value:",userInput )
-        await  mutateAsyncConfrimMail(userInput)
-        alert("success")
-        formRef.current.valueOf().reset()
-    }
-
-
-
-
-    const onSubmit = async (e) => {
-        e.preventDefault()
-        // const {email, name, password, confirmPassword } = values
-        const email =  formRef.current.myInput.value;
-        const password =  formRef.current.password.value;
-        const name =  formRef.current.name.value;
-        const confirmPassword =  formRef.current.confrimpassword.value;
-        if (password !== confirmPassword) {
-            alert("password dzo not match")
-            return
-        }
-        const userInput = {
-            email, name, password,
-            provider: "local"
-        }
-        console.log("+++++++++++++++", userInput)
-
-        await mutateAsync(userInput)
-        formRef.current.reset();
-        alert("Singup!")
-        navigate("/login")
-    }
-
-    if(sendError) {
-        alert(sendError)
-    }
-
-
-    // 전체 동의 체크박스 선택/해제 시 모든 항목 체크/해제 함수
-
-    // const handleAllAgreementChange = (e) => {
-    //     const isChecked = e.target.checked;
-    //     setValue('allAgreement', isChecked);
+    // const confrimSubmit = async  (e) => {
+    //     e.preventDefault()
+    //     const confrimEmail=  formRef.current.myInput.value;
+    //     const code =  formRef.current.code.value;
+    //     const userInput = {
+    //         email: confrimEmail, code
+    //     }
+    //     console.log("value:",userInput )
+    //     await  mutateAsyncConfrimMail(userInput)
+    //     alert("success")
+    //     formRef.current.valueOf().reset()
+    // }
     //
-    //     // 모든 항목 체크/해제
-    //     const agreementFieldNames = ['agreement1', 'agreement2', 'agreement3','agreement4','agreement5']; // 필요한 약관 항목 이름 추가
-    //     agreementFieldNames.forEach((fieldName) => {
-    //         setValue(fieldName, isChecked);
-    //     });
-    // };
-
-    // const onSubmit = handleSubmit((data) => {
-    //     console.log(data)
-    // })
     //
-    // useEffect(() => {
-    //     // setUsers(userData)
-    // }, [])
+    //
+    //
+    // const onSubmit = async (e) => {
+    //     e.preventDefault()
+    //     const {email, name, password, confirmPassword } = values
+    //     const email =  formRef.current.myInput.value;
+    //     const password =  formRef.current.password.value;
+    //     const name =  formRef.current.name.value;
+    //     const confirmPassword =  formRef.current.confrimpassword.value;
+    //     if (password !== confirmPassword) {
+    //         alert("password dzo not match")
+    //         return
+    //     }
+    //     const userInput = {
+    //         email, name, password,
+    //         provider: "local"
+    //     }
+    //     console.log("+++++++++++++++", userInput)
+    //
+    //     await mutateAsync(userInput)
+    //     formRef.current.reset();
+    //     alert("Singup!")
+    //     navigate("/login")
+    // }
+    //
+    // if(sendError) {
+    //     alert(sendError)
+    // }
+
+
     return (
         <section className="m-auto grid min-h-[calc(100vh-65px)] w-full grid-cols-10">
             <div className="col-span-10 flex h-full w-full grow flex-col items-center justify-center bg-white shadow-slate-50 drop-shadow-md lg:col-span-4">
@@ -296,84 +154,104 @@ const Signup = () => {
                     <h2 className="mb-2 text-3xl font-bold">Get started</h2>
                     <p className="text-slate-500">Create your account now.</p>
                 </div>
+                {postsQuery.data?.length}
                 <div className="flex flex-col items-center" >
-                    <form className="flex w-full max-w-sm flex-col" ref={formRef}>
+                    <form className="flex w-full max-w-sm flex-col">
+                        <input
+                            {...register('email', {
+                                required: 'Please provide an email.'
+                            })}
+                            type="email"
+                            className="mb-3"
+                            placeholder={"Email Address"}
+                        />
                         {/*<Input*/}
-                        {/*    {...register('email', )}*/}
+                        {/*    {...register("email")}*/}
                         {/*    name="myInput"*/}
                         {/*    error={errors.email?.message}*/}
-                        {/*    // ariaInvalid={isDirty}*/}
                         {/*    labelText="Email"*/}
                         {/*    type="email"*/}
                         {/*    className="mb-3"*/}
                         {/*    autofocus*/}
                         {/*    autocomplete="on"*/}
-                        {/*  //  value={emailValue} // 이메일 값을 상태에서 가져옴// isOpen이 true일 때 비활성화*/}
                         {/*/>*/}
-
-                        <Input
-                            {...register("email")}
-                            name="myInput"
-                            error={errors.email?.message}
-                            labelText="Email"
-                            type="email"
-                            className="mb-3"
-                            autofocus
-                            autocomplete="on"
-                        />
-                        <Button
-                            name="submit1"
-                            variant="contained"
-                            text="Verify"
-                            disabled={isSubmitting}
-                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
-                            type="submit"
-                            onClick={submitHandler}
-
-                        />
+                        {usersQuery.data?.length}
                         {isOpen ? (
-                            <>
-                                <Input
-                                    {...register('code', )}
-                                    name="code"
-                                    labelText="Code"
-                                    type="text"
-                                    className="mb-3"
-                                    autofocus
-                                    autocomplete="on"
-                                />
+                            <input
+                                {...register('code', {
+                                    required: 'Please provide an email.'
+                                })}
+                                type="code"
+                                className="mb-3"
+                                placeholder={"Code"}
+                            />
+                        ) : null}
+                        <Button
+                            onClick={onSubmit_1}
+                            // name="submit1"
+                            // variant="contained"
+                            text="email send"
+                            // disabled={isSubmitting}
+                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
+                            // type="submit"
 
-                                <Button
-                                    text="Confrim"
-                                    className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
-                                    onClick={confrimSubmit}
-                                />
-                            </>
-                        ): null}
+                        />
+                        {/*{isOpen ? (*/}
+                        {/*    <>*/}
+                        {/*        <Input*/}
+                        {/*            {...register('code', )}*/}
+                        {/*            name="code"*/}
+                        {/*            labelText="Code"*/}
+                        {/*            type="text"*/}
+                        {/*            className="mb-3"*/}
+                        {/*            autofocus*/}
+                        {/*            autocomplete="on"*/}
+                        {/*        />*/}
 
+                        {/*        <Button*/}
+                        {/*            text="Confrim"*/}
+                        {/*            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"*/}
+                        {/*            onClick={confrimSubmit}*/}
+                        {/*        />*/}
+                        {/*    </>*/}
+                        {/*): null}*/}
 
-
-                        <Input
+                        <input
                             {...register('name')}
-                            name="name"
-                            error={errors.name?.message}
-                            // ariaInvalid={isDirty}
-                            labelText="Name"
                             type="text"
-                            className="mb-3 mt-1"
-                            autocomplete="on"
+                            className="mb-3"
+                            placeholder={"User name"}
                         />
 
-                        <Input
+                        <input
                             {...register('password')}
-                            name="password"
-                            error={errors.password?.message}
-                            // ariaInvalid={isDirty}
-                            labelText="Password"
                             type="password"
                             className="mb-3"
-                            autocomplete="off"
+                            placeholder={"password"}
                         />
+
+
+                        {/*<Input*/}
+                        {/*    {...register('name')}*/}
+                        {/*    name="name"*/}
+                        {/*    error={errors.name?.message}*/}
+                        {/*    // ariaInvalid={isDirty}*/}
+                        {/*    labelText="Name"*/}
+                        {/*    type="text"*/}
+                        {/*    className="mb-3 mt-1"*/}
+                        {/*    autocomplete="on"*/}
+                        {/*/>*/}
+
+                        {/*<Input*/}
+                        {/*    {...register('password')}*/}
+                        {/*    name="password"*/}
+                        {/*    error={errors.password?.message}*/}
+                        {/*    // ariaInvalid={isDirty}*/}
+                        {/*    labelText="Password"*/}
+                        {/*    type="password"*/}
+                        {/*    className="mb-3"*/}
+                        {/*    autocomplete="off"*/}
+                        {/*/>*/}
 
                         <Input
                             {...register('confirmPassword')}
@@ -386,123 +264,16 @@ const Signup = () => {
                             autocomplete="off"
                         />
 
-                        {/*/!* 전체 동의 체크박스 *!/*/}
-                        {/*/!*<div className="mb-3">*!/*/}
-                        {/*/!*    <label className="block text-sm font-medium text-gray-700">Full agreement</label>*!/*/}
-                        {/*/!*    <input*!/*/}
-                        {/*/!*        type="checkbox"*!/*/}
-                        {/*/!*        id="allAgreement"*!/*/}
-                        {/*/!*        {...register('allAgreement')}*!/*/}
-                        {/*/!*        onChange={handleAllAgreementChange}*!/*/}
-                        {/*/!*        className="mr-2"*!/*/}
-                        {/*/!*    />*!/*/}
-                        {/*/!*    <label htmlFor="allAgreement" className="text-sm text-gray-900">*!/*/}
-                        {/*/!*        I totally agree*!/*/}
-                        {/*/!*    </label>*!/*/}
-                        {/*/!*</div>*!/*/}
-
-                        {/*/!*<div className="mb-3">*!/*/}
-                        {/*/!*    <label className="block text-sm font-medium text-gray-700">Acceptance of Terms</label>*!/*/}
-                        {/*/!*    <div className="space-y-2">*!/*/}
-                        {/*/!*        <div className="flex items-center">*!/*/}
-                        {/*/!*            <input*!/*/}
-                        {/*/!*                type="checkbox"*!/*/}
-                        {/*/!*                id="agreement1"*!/*/}
-                        {/*/!*                {...register('agreement1', { required: 'Check to Acceptance of Terms' })}*!/*/}
-                        {/*/!*                className="mr-2"*!/*/}
-                        {/*/!*            />*!/*/}
-                        {/*/!*            <label htmlFor="agreement1" className="text-sm text-gray-900">*!/*/}
-                        {/*/!*                14 years of age or older*!/*/}
-                        {/*/!*            </label>*!/*/}
-                        {/*/!*        </div>*!/*/}
-                        {/*/!*        /!* 이하 약관 목록 추가 *!/*!/*/}
-                        {/*/!*        <div className="flex items-center">*!/*/}
-                        {/*/!*            <input*!/*/}
-                        {/*/!*                type="checkbox"*!/*/}
-                        {/*/!*                id="agreement2"*!/*/}
-                        {/*/!*                {...register('agreement2', { required: 'Check to Acceptance of Terms' })}*!/*/}
-                        {/*/!*                className="mr-2"*!/*/}
-                        {/*/!*            />*!/*/}
-                        {/*/!*            <label htmlFor="agreement2" className="text-sm text-gray-900">*!/*/}
-                        {/*/!*                Terms of Use*!/*/}
-                        {/*/!*            </label>*!/*/}
-                        {/*/!*        </div>*!/*/}
-                        {/*/!*        <div className="flex items-center">*!/*/}
-                        {/*/!*            <input*!/*/}
-                        {/*/!*                type="checkbox"*!/*/}
-                        {/*/!*                id="agreement3"*!/*/}
-                        {/*/!*                {...register('agreement3', { required: 'Check to Acceptance of Terms' })}*!/*/}
-                        {/*/!*                className="mr-2"*!/*/}
-                        {/*/!*            />*!/*/}
-                        {/*/!*            <label htmlFor="agreement3" className="text-sm text-gray-900">*!/*/}
-                        {/*/!*                consent to collection of personal information*!/*/}
-                        {/*/!*            </label>*!/*/}
-                        {/*/!*        </div>*!/*/}
-                        {/*/!*        <div className="flex items-center">*!/*/}
-                        {/*/!*            <input*!/*/}
-                        {/*/!*                type="checkbox"*!/*/}
-                        {/*/!*                id="agreement4"*!/*/}
-                        {/*/!*                {...register('agreement4', { required: 'Check to Acceptance of Terms' })}*!/*/}
-                        {/*/!*                value="개인정보 마케팅 활용 동의"*!/*/}
-                        {/*/!*                className="mr-2"*!/*/}
-                        {/*/!*            />*!/*/}
-                        {/*/!*            <label htmlFor="agreement4" className="text-sm text-gray-900">*!/*/}
-                        {/*/!*                i agree to the above terms and conditions*!/*/}
-                        {/*/!*            </label>*!/*/}
-                        {/*/!*        </div>*!/*/}
-                        {/*/!*        <div className="flex items-center">*!/*/}
-                        {/*/!*            <input*!/*/}
-                        {/*/!*                type="checkbox"*!/*/}
-                        {/*/!*                id="agreement5"*!/*/}
-                        {/*/!*                {...register('agreement5', { required: 'Check to Acceptance of Terms' })}*!/*/}
-                        {/*/!*                value="이벤트, 쿠폰, 특가 알림 메일 및 SMS 등 수신"*!/*/}
-                        {/*/!*                className="mr-2"*!/*/}
-                        {/*/!*            />*!/*/}
-                        {/*/!*            <label htmlFor="agreement5" className="text-sm text-gray-900">*!/*/}
-                        {/*/!*                system event notification services*!/*/}
-                        {/*/!*            </label>*!/*/}
-                        {/*/!*        </div>*!/*/}
-
-                        {/*/!*    </div>*!/*/}
-                        {/*/!*    {errors.agreement && (*!/*/}
-                        {/*/!*        <p className="text-sm text-red-600 mt-1">{errors.agreement.message}</p>*!/*/}
-                        {/*/!*    )}*!/*/}
-                        {/*/!*</div>*!/*/}
 
                         <Button
                             text="Create account"
                             disabled={isSubmitting}
                             className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
                             type={"submit"}
-                            onClick={onSubmit}
+                            onClick={onSubmit_2}
                         />
                     </form>
 
-                    {/*<div className="form-check">*/}
-                    {/*    <input*/}
-                    {/*        type="checkbox"*/}
-                    {/*        className="form-check-input"*/}
-                    {/*        name="allSelect"*/}
-                    {/*        // checked={*/}
-                    {/*        //   users.filter((user) => user?.isChecked !== true).length < 1*/}
-                    {/*        // }*/}
-                    {/*        checked={!users.some((user) => user?.isChecked !== true)}*/}
-                    {/*        onChange={handleChange}*/}
-                    {/*    />*/}
-                    {/*    <label className="form-check-label ms-2">All Select</label>*/}
-                    {/*</div>*/}
-                    {/*{users.map((user, index) =>(*/}
-                    {/*    <div className="form-check" key={index}>*/}
-                    {/*        <input*/}
-                    {/*            type="checkbox"*/}
-                    {/*            className="form-check-input"*/}
-                    {/*            name={user.name}*/}
-                    {/*            checked={user?.isChecked || false}*/}
-                    {/*            onChange={handleChange}*/}
-                    {/*        />*/}
-                    {/*        <label className="form-check-label ms-2">{user.name}</label>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
                     <div className="mt-10 text-slate-500">
                         Already have an account?
                         <Link to="/login" className="p-2 font-semibold text-violet-500">
