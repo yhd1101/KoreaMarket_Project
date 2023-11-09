@@ -28,7 +28,7 @@ const Signup = () => {
                 queryKey: ['posts'],
                 queryFn: () =>
                     axios
-                        .post('http://localhost:8000/auth/signup')
+                        .post('http://localhost:8000/api/auth/signup')
                         .then((res) => res.data),
             },
 
@@ -37,6 +37,13 @@ const Signup = () => {
                 queryFn: () =>
                     axios
                         .post('http://localhost:8000/api/auth/send/email')
+                        .then((res) => res.data),
+            },
+            {
+                queryKey: ['confrim'],
+                queryFn: () =>
+                    axios
+                        .post('http://localhost:8000/api/auth/confirm/email')
                         .then((res) => res.data),
             },
         ],
@@ -78,19 +85,69 @@ const Signup = () => {
     const onSubmit_2 = handleSubmit((data) => {
         const userInput = {
             email: data.email,
-            username: data.name,
-            password: data.password
+            name: data.name,
+            password: data.password,
+            provider: "local",
         }
-        console.log("____",userInput)
-        mutateAsync(userInput)
+        console.log(userInput)
+        // 회원가입을 서버에 요청하는 예시
+        axios.post('http://localhost:8000/api/auth/signup', userInput)
+            .then((res) => {
+                // 서버의 응답을 처리할 수 있습니다.
+                console.log("회원가입 성공:", res.data);
+                alert("success")
+                navigate("/login")
+                // 추가로 필요한 작업이 있다면 수행하세요.
+            })
+            .catch((error) => {
+                // 오류가 발생한 경우 처리할 수 있습니다.
+                console.error("회원가입 오류:", error.response.data);
+                // 추가로 필요한 작업이 있다면 수행하세요.
+            });
+
     });
 
     const onSubmit_1 = handleSubmit((data) => {
         const { email } = data
         console.log("data+++++++++++++++++++++", email)
-        alert("confrim email")
-        mutateAsyncVerifyMail(email)
-        setIsOpen(true)
+        // 서버에 이메일을 전송하는 예시
+        axios.post('http://localhost:8000/api/auth/send/email', { email })
+            .then((res) => {
+                // 서버의 응답을 처리할 수 있습니다.
+                console.log("이메일 전송 성공:", res.data);
+                alert("confrim email")
+                setIsOpen(true)
+            })
+            .catch((error) => {
+                // 오류가 발생한 경우 처리할 수 있습니다.
+                console.error("이메일 전송 오류:", error.response.data);
+            });
+
+
+
+    });
+
+    const onSubmit_3 = handleSubmit((data) => {
+        const userInput = {
+            email: data.email,
+            code: data.code,
+        }
+
+        console.log("data+++++++++++++++++++++", userInput)
+        axios.post('http://localhost:8000/api/auth/confirm/email', userInput)
+            .then((res) => {
+                // 서버의 응답을 처리할 수 있습니다.
+                console.log("이메일 전송 성공:", res.data);
+                alert("cofrim email")
+                setIsOpen(false)
+            })
+            .catch((error) => {
+                // 오류가 발생한 경우 처리할 수 있습니다.
+                console.error("이메일 전송 오류:", error.response.data);
+            });
+
+
+
     });
 
     //
@@ -177,14 +234,26 @@ const Signup = () => {
                         {/*/>*/}
                         {usersQuery.data?.length}
                         {isOpen ? (
-                            <input
-                                {...register('code', {
-                                    required: 'Please provide an email.'
-                                })}
-                                type="code"
-                                className="mb-3"
-                                placeholder={"Code"}
-                            />
+                            <>
+                                <input
+                                    {...register('code', {
+                                        required: 'Please provide an email.'
+                                    })}
+                                    type="code"
+                                    className="mb-3"
+                                    placeholder={"Code"}
+                                />
+                                <Button
+                                    onClick={onSubmit_3}
+                                    // name="submit1"
+                                    // variant="contained"
+                                    text="confrim"
+                                    // disabled={isSubmitting}
+                                    className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
+                                    // type="submit"
+
+                                />
+                            </>
                         ) : null}
                         <Button
                             onClick={onSubmit_1}
