@@ -21,7 +21,7 @@ import {Calendar} from "primereact/calendar";
 const ProductDetail = ( onClose) => {
     const { id } = useParams()
     const { data, isLoading, error} = useFetchProductById(id)
-    // const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
+    const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
     const [showReservationModal, setShowReservationModal] = useState(false); // 모달 가시성을 제어하는 상태
     const { data: createComment, mutateAsync} = useCreateComment()
@@ -142,8 +142,8 @@ const ProductDetail = ( onClose) => {
                             <h2 className="sr-only">Product information</h2>
                             <p className="mt-4 text-3xl tracking-tight text-gray-900">
                                 ${data?.price}
-                            {/*    <h5 className={"mt-4"}>korea is {(data?.price * moneyInfo?.rates.KRW.slice(0,5)).toLocaleString()}원</h5>*/}
-                            {/*    <h5 className={"mt-3"}>Japan is {(data?.price * moneyInfo?.rates.JPY.slice(0,7)).toLocaleString()}엔</h5>*/}
+                                <h5 className={"mt-4"}>korea is {(data?.price * moneyInfo?.rates.KRW.slice(0,5)).toLocaleString()}원</h5>
+                                <h5 className={"mt-3"}>Japan is {(data?.price * moneyInfo?.rates.JPY.slice(0,7)).toLocaleString()}엔</h5>
                             </p>
                         </div>
 
