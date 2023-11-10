@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchMoneyInfo = async () => {
-    const { data } = await axios.get("https://api.currencyfreaks.com/latest?apikey=13c39624b2be49dcae2e987f4200390e");
+    const { data } = await axios.get("https://api.currencyfreaks.com/latest?apikey=a5ee29096c0f4d4f92c8dd7c4fd86a2a");
     return data;
 };
 

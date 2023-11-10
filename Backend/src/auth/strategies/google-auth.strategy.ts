@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth2'; //확인 잘하기
+import { Strategy, VerifyCallback } from 'passport-google-oauth20'; //확인 잘하기
 import { ConfigService } from '@nestjs/config';
 import { Provider } from '@users/entities/provider.enum';
 import { UsersService } from '@users/users.service';
@@ -29,16 +29,17 @@ export class GoogleAuthStrategy extends PassportStrategy(
     done: VerifyCallback,
   ): Promise<any> {
     // done(null, profile);
-    const { displayName, email, provider, picture } = profile;
+    const { displayName, emails, provider, picture } = profile;
+    const emailValue = emails.length > 0 ? emails[0].value : null;
     const userInput = {
       name: displayName,
-      email,
+      email: emailValue,
       provider,
       picture,
     };
     console.log(userInput);
     try {
-      const user = await this.usersService.getUserByEmail(email);
+      const user = await this.usersService.getUserByEmail(emailValue);
       //로그인 처리
       if (user.provider !== provider) {
         throw new HttpException(
@@ -46,13 +47,12 @@ export class GoogleAuthStrategy extends PassportStrategy(
           HttpStatus.CONFLICT,
         );
       }
-      console.log('dddddd', user);
       done(null, user);
     } catch (err) {
       //이메일이 없으면 회원가입
       if (err.status === 404) {
         const newUser = await this.usersService.CreateUser({
-          email,
+          email: emailValue,
           name: displayName,
           provider,
           profileImg: picture,

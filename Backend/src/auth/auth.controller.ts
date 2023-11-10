@@ -8,7 +8,9 @@ import {
   Get,
   HttpStatus,
   Res,
-  Request, Query, Param
+  Request,
+  Query,
+  Param,
 } from '@nestjs/common';
 
 import {
@@ -32,9 +34,9 @@ import { GoogleAuthGuard } from '@auth/guards/google-auth.guard';
 import { KakaoAuthGuard } from '@auth/guards/kakao-auth.guard';
 import { NaverAuthGuard } from '@auth/guards/naver-auth.guard';
 import { Response } from 'express';
-import {NewPasswordDto} from "@users/dto/new-password.dto";
-import {Reservation} from "@reservation/entities/reservation.entity";
-import {Product} from "@product/entities/product.entity";
+import { NewPasswordDto } from '@users/dto/new-password.dto';
+import { Reservation } from '@reservation/entities/reservation.entity';
+import { Product } from '@product/entities/product.entity';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -84,14 +86,16 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
   @UseGuards(JwtAuthGuard)
-  async getUserInfoByToken(@Param('id') id: string, @Query('reservation') reservationQuery?: Reservation){
+  async getUserInfoByToken(
+    @Param('id') id: string,
+    @Query('reservation') reservationQuery?: Reservation,
+  ) {
     // const { user } = req;
     // user.password = undefined;
-    const data = await this.authService.profile( id, reservationQuery); // user를 profile 메서드에 전달
+    const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
     // console.log("dsdad",reservationQuery)
     return { data };
   }
-
 
   @Post('forgot/password') //비밀번호 재설정위한 메일전송
   @ApiOperation({
@@ -112,15 +116,18 @@ export class AuthController {
   @Post('newpassword')
   @ApiOperation({ summary: '비밀번호 바꾸기', description: '비밀번호 수정' })
   @UseGuards(JwtAuthGuard)
-  async newPassword(@Body() newPasswordDto: NewPasswordDto,   @Req() req: RequestWithUserInterface,) {
+  async newPassword(
+    @Body() newPasswordDto: NewPasswordDto,
+    @Req() req: RequestWithUserInterface,
+  ) {
     const newPassword = newPasswordDto.newPassword;
     const user = req.user.email;
-    const updatedUser = await this.authService.changePasswordWithToken(user, newPassword);
-    return updatedUser
-
+    const updatedUser = await this.authService.changePasswordWithToken(
+      user,
+      newPassword,
+    );
+    return updatedUser;
   }
-
-
 
   //구글에 접속하는 코드(로그인요청 코드)
   @HttpCode(200)
@@ -130,29 +137,14 @@ export class AuthController {
     return HttpStatus.OK;
   }
 
-  //요청을 받고 구글에서 던져주는 정보를 아래 api에 받겠다.
   @HttpCode(200)
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
-  async googleLoginCallBack(
-    @Req() req: RequestWithUserInterface,
-    @Res() res: Response,
-  ): Promise<any> {
-    //token 생성
+  async googleLoginCallBack(@Req() req: any): Promise<any> {
     const { user } = req;
     const token = await this.authService.generateAccessToken(user.id);
-    console.log('adadsdad', token);
-    const mainPageUrl = 'http://localhost:3000';
-
-    const script = `
-      <script>
-        window.opener.postMessage('loginComplete', '${mainPageUrl}');
-        window.localStorage.setItem('user', '${JSON.stringify(user)}');
-        window.localStorage.setItem('token', '${token}');
-        window.close();
-      </script>
-    `;
-    res.send(script);
+    return { token, user };
+    // return req.user;
   }
 
   @HttpCode(200)

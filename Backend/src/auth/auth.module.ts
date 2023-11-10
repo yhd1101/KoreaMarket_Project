@@ -8,9 +8,9 @@ import { AuthController } from '@auth/auth.controller';
 import { AuthService } from '@auth/auth.service';
 import { LocalAuthStrategy } from '@auth/strategies/local-auth.strategy';
 import { JwtAuthStrategy } from '@auth/strategies/jwt-auth.strategy';
-import { GoogleAuthStrategy } from '@auth/strategies/google-auth.strategy';
 import { KakaoAuthStrategy } from '@auth/strategies/kakao-auth.strategy';
 import { NaverAuthStrategy } from '@auth/strategies/naver-auth.strategy';
+import { GoogleAuthStrategy } from '@auth/strategies/google-auth.strategy';
 
 @Module({
   imports: [
@@ -24,8 +24,8 @@ import { NaverAuthStrategy } from '@auth/strategies/naver-auth.strategy';
   providers: [
     AuthService,
     LocalAuthStrategy,
-    JwtAuthStrategy,
     GoogleAuthStrategy,
+    JwtAuthStrategy,
     KakaoAuthStrategy,
     NaverAuthStrategy,
   ],
