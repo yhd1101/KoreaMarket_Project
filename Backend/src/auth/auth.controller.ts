@@ -7,8 +7,6 @@ import {
   Req,
   Get,
   HttpStatus,
-  Res,
-  Request,
   Query,
   Param,
 } from '@nestjs/common';
@@ -33,15 +31,19 @@ import { ChangePasswordDto } from '@users/dto/change-password.dto';
 import { GoogleAuthGuard } from '@auth/guards/google-auth.guard';
 import { KakaoAuthGuard } from '@auth/guards/kakao-auth.guard';
 import { NaverAuthGuard } from '@auth/guards/naver-auth.guard';
-import { Response } from 'express';
 import { NewPasswordDto } from '@users/dto/new-password.dto';
 import { Reservation } from '@reservation/entities/reservation.entity';
-import { Product } from '@product/entities/product.entity';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('1234')
+  async test(): Promise<any> {
+    return 'ok';
+  }
+
   //회원가입
   @Post('signup')
   @ApiCreatedResponse({
@@ -81,20 +83,18 @@ export class AuthController {
     // return await this.authService.Login(loginUserDto);
   }
 
-  @Get(':id')
-  @ApiBearerAuth('access-token')
-  @HttpCode(200)
+  @Get()
+  // @ApiBearerAuth('access-token')
+  // @HttpCode(200)
   @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
   @UseGuards(JwtAuthGuard)
-  async getUserInfoByToken(
-    @Param('id') id: string,
-    @Query('reservation') reservationQuery?: Reservation,
-  ) {
+  async getUserInfoByToken() {
+    // @Query('reservation') reservationQuery?: Reservation, // @Param('id') id: string,
     // const { user } = req;
     // user.password = undefined;
-    const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
-    // console.log("dsdad",reservationQuery)
-    return { data };
+    // const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
+    // // console.log("dsdad",reservationQuery)
+    // return { data };
   }
 
   @Post('forgot/password') //비밀번호 재설정위한 메일전송
@@ -134,9 +134,10 @@ export class AuthController {
   @Get('google')
   @UseGuards(GoogleAuthGuard)
   async googleLogin(): Promise<any> {
+    console.log('google');
     return HttpStatus.OK;
   }
-
+  //
   @HttpCode(200)
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)

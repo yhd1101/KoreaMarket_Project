@@ -1,15 +1,12 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import {
-  ClassSerializerInterceptor,
-  HttpException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { SwaggerModule } from '@nestjs/swagger';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { BaseAPIDocument } from '@common/config/swagger.document';
 import { AppModule } from '@root/app.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +14,7 @@ async function bootstrap() {
   app.enableCors();
   // 기본 URL 프리픽스 설정
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));

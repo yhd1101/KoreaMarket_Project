@@ -17,11 +17,11 @@ import { AppConfigModule } from '@common/config/config.module';
 @Module({
   imports: [
     AppConfigModule,
+    DatabaseModule,
+    AuthModule,
     ProductModule,
     OrderModule,
-    DatabaseModule,
     UsersModule,
-    AuthModule,
     EmailModule,
     RedisModule,
     CommentModule,

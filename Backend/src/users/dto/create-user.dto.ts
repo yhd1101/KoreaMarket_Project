@@ -40,7 +40,7 @@ export class CreateUserDto {
     default: 'local',
   }) //swag적용
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   provider?: Provider;
 
   @ApiProperty() //swag적용

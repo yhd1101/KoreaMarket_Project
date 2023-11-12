@@ -14,18 +14,18 @@ import { GoogleAuthStrategy } from '@auth/strategies/google-auth.strategy';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule,
     JwtModule.register({}),
     PassportModule,
     EmailModule,
+    UsersModule,
   ], //service형태로 내보냄
   controllers: [AuthController],
   providers: [
     AuthService,
+    JwtAuthStrategy,
     LocalAuthStrategy,
     GoogleAuthStrategy,
-    JwtAuthStrategy,
     KakaoAuthStrategy,
     NaverAuthStrategy,
   ],
