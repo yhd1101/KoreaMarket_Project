@@ -83,18 +83,20 @@ export class AuthController {
     // return await this.authService.Login(loginUserDto);
   }
 
-  @Get()
-  // @ApiBearerAuth('access-token')
-  // @HttpCode(200)
+  @Get('/profile/:id')
+  @ApiBearerAuth('access-token')
+  @HttpCode(200)
   @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
   @UseGuards(JwtAuthGuard)
-  async getUserInfoByToken() {
-    // @Query('reservation') reservationQuery?: Reservation, // @Param('id') id: string,
+  async getUserInfoByToken(
+    @Param('id') id: string,
+    @Query('reservation') reservationQuery?: Reservation,
+  ) {
     // const { user } = req;
     // user.password = undefined;
-    // const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
-    // // console.log("dsdad",reservationQuery)
-    // return { data };
+    const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
+    // console.log("dsdad",reservationQuery)
+    return { data };
   }
 
   @Post('forgot/password') //비밀번호 재설정위한 메일전송

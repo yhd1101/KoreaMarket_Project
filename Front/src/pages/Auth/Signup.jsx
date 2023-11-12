@@ -51,27 +51,6 @@ const Signup = () => {
     });
 
 
-    // const formRef = useRef()
-    // console.log("data:!" , data)
-    //
-    // const submitHandler = async (event) => {
-    //     event.preventDefault();
-    //     const email =  formRef.current.myInput.value;
-    //     const userInput ={
-    //         email
-    //     }
-    //     console.log("data:", userInput)
-    //     if(userInput) {
-    //         mutateAsyncVerifyMail(userInput)
-    //         setIsOpen(true)
-    //         formRef.current.reset();
-    //         alert("Please confirm your email");
-    //     }
-    //
-    //
-    //
-    // }
-
     const {
         register,
         handleSubmit,
@@ -91,20 +70,6 @@ const Signup = () => {
             provider: "local",
         }
         console.log(userInput)
-        // 회원가입을 서버에 요청하는 예시
-        // axios.post('http://localhost:8000/api/auth/signup', userInput)
-        //     .then((res) => {
-        //         // 서버의 응답을 처리할 수 있습니다.
-        //         console.log("회원가입 성공:", res.data);
-        //         alert("success")
-        //         navigate("/login")
-        //         // 추가로 필요한 작업이 있다면 수행하세요.
-        //     })
-        //     .catch((error) => {
-        //         // 오류가 발생한 경우 처리할 수 있습니다.
-        //         console.error("회원가입 오류:", error.response.data);
-        //         // 추가로 필요한 작업이 있다면 수행하세요.
-        //     });
 
     });
 
@@ -114,19 +79,6 @@ const Signup = () => {
         const userInput = {email}
         mutateAsyncVerifyMail(userInput)
         setIsOpen(true)
-        // 서버에 이메일을 전송하는 예시
-        // axios.post('http://localhost:8000/api/auth/send/email', { email })
-        //     .then((res) => {
-        //         // 서버의 응답을 처리할 수 있습니다.
-        //         console.log("이메일 전송 성공:", res.data);
-        //         alert("confrim email")
-        //         setIsOpen(true)
-        //     })
-        //     .catch((error) => {
-        //         // 오류가 발생한 경우 처리할 수 있습니다.
-        //         console.error("이메일 전송 오류:", error.response.data);
-        //     });
-
 
 
     });
@@ -142,74 +94,10 @@ const Signup = () => {
         mutateAsyncConfrimMail(userInput)
         setIsOpen(false)
         setBtnDisable(false)
-        // axios.post('http://localhost:8000/api/auth/confirm/email', userInput)
-        //     .then((res) => {
-        //         // 서버의 응답을 처리할 수 있습니다.
-        //         console.log("이메일 전송 성공:", res.data);
-        //         alert("cofrim email")
-        //         setIsOpen(false)
-        //     })
-        //     .catch((error) => {
-        //         // 오류가 발생한 경우 처리할 수 있습니다.
-        //         console.error("이메일 전송 오류:", error.response.data);
-        //     });
 
 
 
     });
-
-    //
-    // if (postsQuery.isLoading) return 'Loading Posts...';
-    // if (usersQuery.isLoading) return 'Loading Users...';
-
-
-
-    // const mailSubmit = async (values) => {
-    //     await mutateAsyncVerifyMail(values)
-    // }
-
-    // const confrimSubmit = async  (e) => {
-    //     e.preventDefault()
-    //     const confrimEmail=  formRef.current.myInput.value;
-    //     const code =  formRef.current.code.value;
-    //     const userInput = {
-    //         email: confrimEmail, code
-    //     }
-    //     console.log("value:",userInput )
-    //     await  mutateAsyncConfrimMail(userInput)
-    //     alert("success")
-    //     formRef.current.valueOf().reset()
-    // }
-    //
-    //
-    //
-    //
-    // const onSubmit = async (e) => {
-    //     e.preventDefault()
-    //     const {email, name, password, confirmPassword } = values
-    //     const email =  formRef.current.myInput.value;
-    //     const password =  formRef.current.password.value;
-    //     const name =  formRef.current.name.value;
-    //     const confirmPassword =  formRef.current.confrimpassword.value;
-    //     if (password !== confirmPassword) {
-    //         alert("password dzo not match")
-    //         return
-    //     }
-    //     const userInput = {
-    //         email, name, password,
-    //         provider: "local"
-    //     }
-    //     console.log("+++++++++++++++", userInput)
-    //
-    //     await mutateAsync(userInput)
-    //     formRef.current.reset();
-    //     alert("Singup!")
-    //     navigate("/login")
-    // }
-    //
-    // if(sendError) {
-    //     alert(sendError)
-    // }
 
 
     return (
@@ -230,16 +118,6 @@ const Signup = () => {
                             className="mb-3"
                             placeholder={"Email Address"}
                         />
-                        {/*<Input*/}
-                        {/*    {...register("email")}*/}
-                        {/*    name="myInput"*/}
-                        {/*    error={errors.email?.message}*/}
-                        {/*    labelText="Email"*/}
-                        {/*    type="email"*/}
-                        {/*    className="mb-3"*/}
-                        {/*    autofocus*/}
-                        {/*    autocomplete="on"*/}
-                        {/*/>*/}
                         {usersQuery.data?.length}
                         {isOpen ? (
                             <>
@@ -270,37 +148,6 @@ const Signup = () => {
                                 className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
                             />
                         )}
-
-                        {/*<Button*/}
-                        {/*    onClick={onSubmit_1}*/}
-                        {/*    // name="submit1"*/}
-                        {/*    // variant="contained"*/}
-                        {/*    text="email send"*/}
-                        {/*    // disabled={isSubmitting}*/}
-                        {/*    className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"*/}
-                        {/*    // type="submit"*/}
-
-                        {/*/>*/}
-                        {/*{isOpen ? (*/}
-                        {/*    <>*/}
-                        {/*        <Input*/}
-                        {/*            {...register('code', )}*/}
-                        {/*            name="code"*/}
-                        {/*            labelText="Code"*/}
-                        {/*            type="text"*/}
-                        {/*            className="mb-3"*/}
-                        {/*            autofocus*/}
-                        {/*            autocomplete="on"*/}
-                        {/*        />*/}
-
-                        {/*        <Button*/}
-                        {/*            text="Confrim"*/}
-                        {/*            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"*/}
-                        {/*            onClick={confrimSubmit}*/}
-                        {/*        />*/}
-                        {/*    </>*/}
-                        {/*): null}*/}
-
                         <input
                             {...register('name')}
                             type="text"
@@ -314,29 +161,6 @@ const Signup = () => {
                             className="mb-3"
                             placeholder={"password"}
                         />
-
-
-                        {/*<Input*/}
-                        {/*    {...register('name')}*/}
-                        {/*    name="name"*/}
-                        {/*    error={errors.name?.message}*/}
-                        {/*    // ariaInvalid={isDirty}*/}
-                        {/*    labelText="Name"*/}
-                        {/*    type="text"*/}
-                        {/*    className="mb-3 mt-1"*/}
-                        {/*    autocomplete="on"*/}
-                        {/*/>*/}
-
-                        {/*<Input*/}
-                        {/*    {...register('password')}*/}
-                        {/*    name="password"*/}
-                        {/*    error={errors.password?.message}*/}
-                        {/*    // ariaInvalid={isDirty}*/}
-                        {/*    labelText="Password"*/}
-                        {/*    type="password"*/}
-                        {/*    className="mb-3"*/}
-                        {/*    autocomplete="off"*/}
-                        {/*/>*/}
 
                         <Input
                             {...register('confirmPassword')}

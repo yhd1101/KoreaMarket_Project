@@ -69,7 +69,7 @@ const MenuDesktop = forwardRef(
             return (
                 <nav
                     className={`mt-auto border-t border-gray-200 ${
-                        navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === `/profile/${id}` || navigation.pathname === "/order"
+                        navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === `/profile/${id}` || navigation.pathname === "/order" 
                             ? "hidden"
                             : "block"
                     }`}
@@ -128,7 +128,7 @@ const MenuDesktop = forwardRef(
                                         )}
                                         {userData && (
                                             <div className="flex items-center">
-                                                <Popover className="relative hidden leading-3 md:block">
+                                                <Popover className="relative hidden leading-1 md:block">
                                                     {({ open }) => (
                                                         <>
                                                             {/*<div>*/}
@@ -157,56 +157,62 @@ const MenuDesktop = forwardRef(
                                                                     leaveFrom="opacity-100 translate-y-0"
                                                                     leaveTo="opacity-0 translate-y-1"
                                                                 >
-                                                                    <Popover.Panel className="absolute left-32 z-50 mt-0 w-[250px] max-w-sm -translate-x-1/2 px-4 pt-3 sm:px-0 lg:max-w-3xl">
+                                                                    <Popover.Panel className="absolute left-32 z-40 mt-0  w-[265px] max-w-sm -translate-x-1/2 px-4 pt-1 sm:px-0 lg:max-w-1xl">
                                                                         <div
                                                                             className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5"
                                                                             onMouseEnter={onMouseEnter.bind(null, open)}
                                                                             onMouseLeave={onMouseLeave.bind(null, open)}
                                                                         >
-                                                                            <div className="relative grid  bg-white ">
-                                                                                <div className="p-4">
+
+
+                                                                        <div className="relative grid  bg-white ">
+                                                                                <div className="p-2">
                                                                                     <Popover.Button
-                                                                                        // onClick={() => navigate(`/profile/${id}`)}
-                                                                                        className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"
+                                                                                        onClick={() => navigate(`profile/${userData?.["id"]}`)}
+                                                                                        className="flex w-full items-center rounded-lg p-2 hover:bg-gray-50"
                                                                                     >
-                                                                                        <Link to={`profile/${userData?.["id"]}`}>
-                                                                                            <PencilSquareIcon className="h-4 w-4" />
-                                                                                                <p className="ml-3 text-base font-medium text-gray-900">
-                                                                                                    Edit Profile
-                                                                                                </p>
-                                                                                        </Link>
+                                                                                        <PencilSquareIcon className="h-4 w-4" />
+                                                                                            <p className="ml-2 text-base font-normal text-gray-900 mt-1">
+                                                                                                Edit Profile
+                                                                                            </p>
                                                                                     </Popover.Button>
-                                                                                    {/*<Popover.Button*/}
-                                                                                    {/*    onClick={() => navigate(`/profile/${id}`)}*/}
-                                                                                    {/*    className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"*/}
-                                                                                    {/*>*/}
-                                                                                    {/*    <PencilSquareIcon className="h-4 w-4" />*/}
-                                                                                    {/*    <p className="ml-3 text-base font-medium text-gray-900">*/}
-                                                                                    {/*        Edit Profile*/}
-                                                                                    {/*    </p>*/}
-                                                                                    {/*</Popover.Button>*/}
                                                                                     <Popover.Button
                                                                                         onClick={() => navigate('/order')}
-                                                                                        className="flex w-full items-center rounded-lg p-3 hover:bg-gray-50"
+                                                                                        className="flex w-full items-center rounded-lg p-2 hover:bg-gray-50 mb-1"
                                                                                     >
                                                                                         <ClockIcon className="h-4 w-4" />
-                                                                                        <p className="ml-3 text-base font-medium text-gray-900">
+                                                                                        <p className="ml-2 text-base font-normal text-gray-900 mt-1">
                                                                                             Order History
                                                                                         </p>
+
+
+
+
+                                                                                    </Popover.Button>
+                                                                                    <Popover.Button
+                                                                                        onClick={() => navigate('/register')}
+                                                                                        className="flex w-full items-center rounded-lg p-2 hover:bg-gray-50 mb-1"
+                                                                                    >
+                                                                                        <ShoppingBagIcon
+                                                                                            className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-500"
+                                                                                            aria-hidden="true"
+                                                                                        />
+                                                                                        Register product
                                                                                     </Popover.Button>
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="flex items-center bg-gray-50 py-4 px-8">
+                                                                            <div className="flex items-center bg-gray-50 py-1 px-8">
                                                                                 <Popover.Button
                                                                                     className="flex items-center text-sm font-medium text-violet-500 hover:text-violet-600"
                                                                                     onClick={logout}
                                                                                 >
-                                                                                    <ArrowLeftOnRectangleIcon className="h-4 w-4" />
-                                                                                    <p className="ml-3 text-base font-medium text-violet-500">
+                                                                                    <ArrowLeftOnRectangleIcon className="h-2 w-4" />
+                                                                                    <p className="ml-1 text-base font-medium text-violet-500">
                                                                                         Sign out
                                                                                     </p>
                                                                                 </Popover.Button>
                                                                             </div>
+
                                                                         </div>
                                                                     </Popover.Panel>
                                                                 </Transition>
@@ -332,15 +338,7 @@ const MenuDesktop = forwardRef(
                                 {/*    </span>*/}
                                 {/*</div>*/}
                                 {/* Cart */}
-                                <div className="ml-4 flow-root lg:ml-6">
-                                    <Link to="/carts" className="group -m-2 flex items-center p-2">
-                                        <ShoppingBagIcon
-                                            className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-500"
-                                            aria-hidden="true"
-                                        />
-                                        <CartStatus />
-                                    </Link>
-                                </div>
+
                             </div>
                         </div>
                     </div>

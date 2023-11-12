@@ -10,7 +10,7 @@ const fetchProfileById = async (id) => {
             Authorization: "Bearer " + token
         }
     }
-    const { data } = await axios.get(`http://localhost:8000/api/auth/${id}`, config)
+    const { data } = await axios.get(`http://localhost:8000/api/auth/profile/${id}`, config)
     return data.data.data; // 데이터를 반환합니다.
 }
 const useFetchProfileById = (id) =>

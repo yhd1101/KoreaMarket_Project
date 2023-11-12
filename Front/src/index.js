@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import NotFound from "./pages/NotFound";
@@ -22,6 +21,7 @@ import "primereact/resources/primereact.min.css";                  //core css
 import "./lang/i18n"
 
 import Profile from "./pages/Auth/Profile";
+import ProductPost from "./pages/Product/ProductPost";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -64,6 +64,10 @@ const router = createBrowserRouter([
             {
                 path: "/order",
                 element: <Orders/>
+            },
+            {
+                path: "/register",
+                element: <ProductPost/>
             }
         ]
     }

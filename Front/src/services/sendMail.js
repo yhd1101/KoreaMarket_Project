@@ -10,12 +10,6 @@ const useSendMail = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (userInput) => sendMail(userInput),
-        // onSuccess: (data) => {
-        //     localStorage.setItem("token", data.token)
-        //     queryClient.invalidateQueries({
-        //         queryKey: ['result'],
-        //     })
-        // }
     })
 }
 export default useSendMail;

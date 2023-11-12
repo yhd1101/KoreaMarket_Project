@@ -6,7 +6,6 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Thumbs} from "swiper";
 import Button from "../../components/ui/Button";
-import ReservationModal from '../../components/ui/ReservationModal';
 import LoadingSkeleton from "../../components/ui/LoadingSkeleton";
 import useFetchMoney from "../../services/fetchMoneyInfo";
 import useFetchCommentById from "../../services/fetchCommentById";
@@ -15,7 +14,6 @@ import {useForm} from "react-hook-form";
 import Input from "../../components/ui/Input";
 import useCreateReservation from "../../services/createReservation";
 import MapContainer from "../../components/Maps";
-import {Card} from "react-bootstrap";
 import {Calendar} from "primereact/calendar";
 
 const ProductDetail = ( onClose) => {
@@ -217,7 +215,7 @@ const ProductDetail = ( onClose) => {
                                                         <div className={"mb-1, mt-2"}>
                                                             <span className="font-semibold">seller email:</span> {data.seller.email}
                                                             <form className="flex w-full max-w-sm flex-col" onSubmit={handleSubmit(reservationSubmit)}>
-                                                                <Card className={"mb-2, mt-3"} style={{width: '24rem'}}>
+                                                                <div className="max-w-sm rounded overflow-hidden shadow-lg">
                                                                     <Calendar
                                                                         showTime
                                                                         hourFormat="24"
@@ -234,8 +232,8 @@ const ProductDetail = ( onClose) => {
                                                                     {/*    // value={dateValue}*/}
                                                                     {/*    placeholder={getToday()} //현재 시간 가이드 오늘날짜로 보여줌*/}
                                                                     {/*/>*/}
-                                                                </Card>
-                                                                <Input
+                                                                </div>
+                                                                <input
                                                                     {...register('description', {
                                                                         required: 'Please provide a name.',
                                                                         maxLength: {
