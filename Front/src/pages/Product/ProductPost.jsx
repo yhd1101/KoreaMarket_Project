@@ -1,20 +1,23 @@
 import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {MultiSelect} from "primereact/multiselect";
+import useCreateProduct from "../../services/createProduct";
 const ProductPost = () => {
 
     const [categories, setCategories] = useState([])
+    const { data, mutateAsync } = useCreateProduct()
 
     const categoryList = [
-        { name: 'digital', code: 'digital' },
-        { name: 'top', code: 'top' },
-        { name: 'bottom', code: 'bottom' },
-        { name: 'shoes', code: 'shoes' },
-        { name: 'caps', code: 'caps' },
-        { name: 'sports', code: 'sports'},
-        { name: 'socks', code: 'socks'},
-        {name: 'beauty', code: 'beauty'},
-        {name: 'onepiece', code: 'onepiece'}
+        { name: 'Digital', code: 'Digital' },
+        { name: 'Top', code: 'Top' },
+        { name: 'Bottom', code: 'Bottom' },
+        { name: 'Shoes', code: 'Shoes' },
+        { name: 'Caps', code: 'Caps' },
+        { name: 'Sports', code: 'Sports'},
+        { name: 'Socks', code: 'Socks'},
+        {name: 'Beauty', code: 'Beauty'},
+        {name: 'Onepiece', code: 'onepiece'},
+        {name: 'Shirt', code: 'Shirt'}
     ];
     const {
         register,
@@ -27,10 +30,15 @@ const ProductPost = () => {
     } = useForm()
     const onSubmit = async (values) => {
         const { name, desc, price, productImg, category, region, brand} = values
+        const numePrice = parseFloat(price)
+        const descArray = desc.split('\n')
+        const productImgArray = productImg.split(',')
        const userInput ={
-           name, desc, price, productImg, region, brand,
+           name, desc: descArray, price: isNaN(numePrice) ? null : numePrice, productImg: productImgArray, region, brand,
            category: categories.map(item => item.name)
        }
+       mutateAsync(userInput)
+        alert('Register Product!')
        console.log("ddddd", userInput)
     }
 
@@ -89,22 +97,6 @@ const ProductPost = () => {
                                     </div>
                                     <div className="mb-6">
                                         <label htmlFor="large-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark">Category</label>
-                                        {/*<input*/}
-                                        {/*    {...register('Category')}*/}
-                                        {/*    type="text"*/}
-                                        {/*    id="large-input"*/}
-                                        {/*    className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-dark-800 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"*/}
-                                        {/*/>*/}
-                                        {/*<select data-te-select-init multiple className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-dark-800 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500">*/}
-                                        {/*    <option value="1">One</option>*/}
-                                        {/*    <option value="2">Two</option>*/}
-                                        {/*    <option value="3">Three</option>*/}
-                                        {/*    <option value="4">Four</option>*/}
-                                        {/*    <option value="5">Five</option>*/}
-                                        {/*    <option value="6">Six</option>*/}
-                                        {/*    <option value="7">Seven</option>*/}
-                                        {/*    <option value="8">Eight</option>*/}
-                                        {/*</select>*/}
                                         <MultiSelect
                                             value={categories}
                                             onChange={(e) => setCategories(e.value)}
@@ -112,6 +104,7 @@ const ProductPost = () => {
                                             optionLabel="name"
                                             placeholder="Select Categories"
                                             display={"chip"}
+                                            className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-dark-800 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         />
 
                                     </div>
@@ -131,12 +124,24 @@ const ProductPost = () => {
                                             type="text"
                                             id="large-input"
                                             className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-dark-800 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
                                         />
                                     </div>
                                     <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
-                                    <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                    <textarea
+                                        {...register('desc')}
+                                        id="message"
+                                        rows="4"
+                                        className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-dark-800 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write your thoughts here..."
+                                    />
 
-                                    <button type="submit" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                                    <button type="submit"
+                                            // class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+
+                                            className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-dark-800 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+                                    >
                                             Publish post
                                         </button>
 
