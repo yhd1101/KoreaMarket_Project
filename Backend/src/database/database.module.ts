@@ -20,7 +20,7 @@ import DatabaseLogger from './databaseLogger';
         entities: [__dirname + '/../**/*.entity{.ts,.js}'], //entity기반으로 모델기반
         autoLoadEntities: true,
         synchronize: true,
-        logger: new DatabaseLogger(),
+        // logger: new DatabaseLogger(),
       }),
     }),
   ],
