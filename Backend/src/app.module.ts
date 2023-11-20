@@ -13,6 +13,7 @@ import { RatingModule } from '@rating/rating.module';
 import { RedisModule } from '@redis/redis.module';
 import { CommentModule } from '@comment/comment.module';
 import { AppConfigModule } from '@common/config/config.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AppConfigModule } from '@common/config/config.module';
     CommentModule,
     ReservationModule,
     RatingModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

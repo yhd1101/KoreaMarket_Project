@@ -7,13 +7,17 @@ import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { BaseAPIDocument } from '@common/config/swagger.document';
 import { AppModule } from '@root/app.module';
 import * as cookieParser from 'cookie-parser';
+import CustomLogger from './logger/customLogger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
 
   app.enableCors();
   // 기본 URL 프리픽스 설정
   app.setGlobalPrefix('api');
+  app.useLogger(app.get(CustomLogger));
   app.use(cookieParser());
 
   app.useGlobalFilters(new HttpExceptionFilter());
