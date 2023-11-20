@@ -318,7 +318,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ApiProperty({description: &#x27;insert provider&#x27;, default: &#x27;local&#x27;})<br />@IsString()<br />@IsNotEmpty()<br />
+                            @ApiProperty({description: &#x27;insert provider&#x27;, default: &#x27;local&#x27;})<br />@IsString()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
@@ -385,7 +385,7 @@ export class CreateUserDto {
     default: &#x27;local&#x27;,
   }) //swag적용
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   provider?: Provider;
 
   @ApiProperty() //swag적용

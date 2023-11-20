@@ -6,6 +6,7 @@ import {
   Body,
   Get,
   Param,
+  NotFoundException,
 } from '@nestjs/common';
 
 import {
@@ -19,6 +20,7 @@ import { CommentService } from '@comment/comment.service';
 import { CreateCommentDto } from '@comment/dto/create-comment.dto';
 import { RequestWithUserInterface } from '@auth/interfaces/requestWithUser.interface';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { catchError } from 'rxjs';
 
 @ApiTags('Comment')
 @Controller('comment')
@@ -42,7 +44,11 @@ export class CommentController {
 
   @Get(':id')
   async getCommentById(@Param('id') id: string) {
-    const comment = await this.commentService.commentGeyById(id);
-    return comment;
+    try {
+      const comment = await this.commentService.commentGeyById(id);
+      return comment;
+    } catch (err) {
+      throw new NotFoundException('No Comment');
+    }
   }
 }

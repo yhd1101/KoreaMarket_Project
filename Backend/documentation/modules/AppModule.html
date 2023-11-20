@@ -355,11 +355,11 @@ import { AppConfigModule } from &#x27;@common/config/config.module&#x27;;
 @Module({
   imports: [
     AppConfigModule,
+    DatabaseModule,
+    AuthModule,
     ProductModule,
     OrderModule,
-    DatabaseModule,
     UsersModule,
-    AuthModule,
     EmailModule,
     RedisModule,
     CommentModule,

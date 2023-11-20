@@ -286,23 +286,23 @@ import { AuthController } from &#x27;@auth/auth.controller&#x27;;
 import { AuthService } from &#x27;@auth/auth.service&#x27;;
 import { LocalAuthStrategy } from &#x27;@auth/strategies/local-auth.strategy&#x27;;
 import { JwtAuthStrategy } from &#x27;@auth/strategies/jwt-auth.strategy&#x27;;
-import { GoogleAuthStrategy } from &#x27;@auth/strategies/google-auth.strategy&#x27;;
 import { KakaoAuthStrategy } from &#x27;@auth/strategies/kakao-auth.strategy&#x27;;
 import { NaverAuthStrategy } from &#x27;@auth/strategies/naver-auth.strategy&#x27;;
+import { GoogleAuthStrategy } from &#x27;@auth/strategies/google-auth.strategy&#x27;;
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule,
     JwtModule.register({}),
     PassportModule,
     EmailModule,
+    UsersModule,
   ], //service형태로 내보냄
   controllers: [AuthController],
   providers: [
     AuthService,
-    LocalAuthStrategy,
     JwtAuthStrategy,
+    LocalAuthStrategy,
     GoogleAuthStrategy,
     KakaoAuthStrategy,
     NaverAuthStrategy,

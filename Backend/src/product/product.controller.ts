@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 
 import {
@@ -71,8 +72,12 @@ export class ProductController {
     description: '상품 상세정보를 불러온다.',
   })
   async getProductById(@Param('id') id: string) {
-    const product = await this.productService.productGetById(id);
-    return product;
+    try {
+      const product = await this.productService.productGetById(id);
+      return product;
+    } catch (err) {
+      throw new NotFoundException('No Product');
+    }
   }
 
   //product update
@@ -82,7 +87,11 @@ export class ProductController {
     @Body() createProductDto: CreateProductDto,
     @Param('id') id: string,
   ) {
-    return await this.productService.productUpdateById(id, createProductDto);
+    try {
+      return await this.productService.productUpdateById(id, createProductDto);
+    } catch (err) {
+      throw new NotFoundException('No Product');
+    }
   }
   //product delete
   @Delete(':id')

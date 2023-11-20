@@ -9,6 +9,8 @@ import {
   HttpStatus,
   Query,
   Param,
+  Res,
+  NotFoundException,
 } from '@nestjs/common';
 
 import {
@@ -33,6 +35,7 @@ import { KakaoAuthGuard } from '@auth/guards/kakao-auth.guard';
 import { NaverAuthGuard } from '@auth/guards/naver-auth.guard';
 import { NewPasswordDto } from '@users/dto/new-password.dto';
 import { Reservation } from '@reservation/entities/reservation.entity';
+import { Response } from 'express';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -92,11 +95,13 @@ export class AuthController {
     @Param('id') id: string,
     @Query('reservation') reservationQuery?: Reservation,
   ) {
-    // const { user } = req;
-    // user.password = undefined;
-    const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
-    // console.log("dsdad",reservationQuery)
-    return { data };
+    try {
+      const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
+      // console.log("dsdad",reservationQuery)
+      return { data };
+    } catch (err) {
+      throw new NotFoundException('No Profile');
+    }
   }
 
   @Post('forgot/password') //비밀번호 재설정위한 메일전송
@@ -143,11 +148,25 @@ export class AuthController {
   @HttpCode(200)
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
-  async googleLoginCallBack(@Req() req: any): Promise<any> {
+  async googleLoginCallBack(
+    @Req() req: RequestWithUserInterface,
+    @Res() res: Response,
+  ): Promise<any> {
     const { user } = req;
     const token = await this.authService.generateAccessToken(user.id);
-    return { token, user };
-    // return req.user;
+    const mainPageUrl = 'http://localhost:3000';
+    // 사용자에게 로그인이 완료되었음을 안내하는 메시지를 표시
+    const script = `
+    <script>
+      window.localStorage.setItem('user', '${JSON.stringify(user)}');
+      window.localStorage.setItem('token', '${token}');
+      window.opener.postMessage('loginComplete', '${mainPageUrl}');
+      alert('Login completed. You can now close this window.');
+    </script>
+  `;
+
+    res.send(script);
+    res.send(script);
   }
 
   @HttpCode(200)

@@ -18,20 +18,20 @@ services:
 #    networks:
 #      - koreanmarket-network
 #
-#  nestjs_api:
-#    build:
-#      dockerfile: Dockerfile
-#      context: Backend
-#      target: development
-#    volumes:
-#      - ./Backend:/usr/src/app
-#    env_file:
-#      - ./Backend/.env
-#    command: npm run start:dev
-#    ports:
-#      - 8000:8000
-#    networks:
-#      - koreanmarket-network
+  nestjs_api:
+    build:
+      dockerfile: Dockerfile
+      context: Backend
+      target: development
+    volumes:
+      - ./Backend:/usr/src/app
+    env_file:
+      - ./Backend/.env
+    command: npm run start:dev
+    ports:
+      - 8000:8000
+    networks:
+      - koreanmarket-network
 
 
 #  react_app:

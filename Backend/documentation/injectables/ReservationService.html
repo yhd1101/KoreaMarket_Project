@@ -123,7 +123,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/reservation/reservation.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/reservation/reservation.service.ts:11</a></div>
                             </td>
                         </tr>
 
@@ -188,8 +188,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="58"
-                                    class="link-to-prism">src/reservation/reservation.service.ts:58</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/reservation/reservation.service.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -269,8 +269,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="17"
-                                    class="link-to-prism">src/reservation/reservation.service.ts:17</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="18"
+                                    class="link-to-prism">src/reservation/reservation.service.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -350,8 +350,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/reservation/reservation.service.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/reservation/reservation.service.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -431,8 +431,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/reservation/reservation.service.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/reservation/reservation.service.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -491,6 +491,7 @@ import { Reservation } from &#x27;@reservation/entities/reservation.entity&#x27;
 import { CreateReservationDto } from &#x27;@reservation/dto/create-reservation.dto&#x27;;
 import { User } from &#x27;@users/entities/user.entity&#x27;;
 import { Product } from &#x27;@product/entities/product.entity&#x27;;
+import {use} from &quot;passport&quot;;
 
 @Injectable()
 export class ReservationService {
@@ -508,6 +509,7 @@ export class ReservationService {
       ...createReservationDto,
       user,
     });
+    console.log(newReservation)
     await this.reservationRepository.save(newReservation);
     return newReservation;
   }
@@ -542,10 +544,17 @@ export class ReservationService {
   }
 
   async deleteReservationById(id: string, user: User) {
-    const res &#x3D; await this.reservationRepository.findOneBy({id})
-    if(res.user &#x3D;&#x3D;&#x3D; user) {
-      const reservation &#x3D; await this.reservationRepository.delete(id)
-      return reservation
+    const reservation &#x3D; await this.reservationRepository.findOne({
+      where: { id },
+      relations: [&#x27;user&#x27;, &#x27;product&#x27;],
+    });
+    console.log(&quot;++++++++++++++++++&quot;, reservation.user)
+    console.log(&quot;------&quot;, reservation.user.id &#x3D;&#x3D;&#x3D; user.id)
+    // if (reservation) return reservation;
+    if(reservation.user.id &#x3D;&#x3D;&#x3D; user.id) {
+      await this.reservationRepository.delete(id)
+
+      return &quot;deleted reservation&quot;
 
     }
     throw new HttpException(&quot;not reservation&quot;, HttpStatus.FORBIDDEN)

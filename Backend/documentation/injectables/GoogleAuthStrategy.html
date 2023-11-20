@@ -317,16 +317,17 @@ export class GoogleAuthStrategy extends PassportStrategy(
     done: VerifyCallback,
   ): Promise&lt;any&gt; {
     // done(null, profile);
-    const { displayName, email, provider, picture } &#x3D; profile;
+    const { displayName, emails, provider, picture } &#x3D; profile;
+    const emailValue &#x3D; emails.length &gt; 0 ? emails[0].value : null;
     const userInput &#x3D; {
       name: displayName,
-      email,
+      email: emailValue,
       provider,
       picture,
     };
     console.log(userInput);
     try {
-      const user &#x3D; await this.usersService.getUserByEmail(email);
+      const user &#x3D; await this.usersService.getUserByEmail(emailValue);
       //로그인 처리
       if (user.provider !&#x3D;&#x3D; provider) {
         throw new HttpException(
@@ -334,13 +335,12 @@ export class GoogleAuthStrategy extends PassportStrategy(
           HttpStatus.CONFLICT,
         );
       }
-      console.log(&#x27;dddddd&#x27;, user);
       done(null, user);
     } catch (err) {
       //이메일이 없으면 회원가입
       if (err.status &#x3D;&#x3D;&#x3D; 404) {
         const newUser &#x3D; await this.usersService.CreateUser({
-          email,
+          email: emailValue,
           name: displayName,
           provider,
           profileImg: picture,

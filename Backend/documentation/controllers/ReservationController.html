@@ -247,7 +247,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteReservationById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, res: <a href="../interfaces/RequestWithUserInterface.html" target="_self">RequestWithUserInterface</a>)</code>
+                    <code>deleteReservationById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, req: <a href="../interfaces/RequestWithUserInterface.html" target="_self">RequestWithUserInterface</a>)</code>
                 </td>
             </tr>
 
@@ -295,7 +295,7 @@
 
                                         </tr>
                                         <tr>
-                                                <td>res</td>
+                                                <td>req</td>
                                             <td>
                                                             <code><a href="../interfaces/RequestWithUserInterface.html" target="_self" >RequestWithUserInterface</a></code>
                                             </td>
@@ -568,10 +568,9 @@ export class ReservationController {
   @Delete(&#x27;:id&#x27;)
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: &#x27;예약취소&#x27;, description: &#x27;예약삭제 api&#x27;})
-  async deleteReservationById(@Param(&#x27;id&#x27;) id: string, @Res() res: RequestWithUserInterface) {
-    const { user } &#x3D; res;
-    const reservation &#x3D; await this.reservationService.deleteReservationById(id, user);
-    return reservation;
+  async deleteReservationById(@Param(&#x27;id&#x27;) id: string, @Req() req: RequestWithUserInterface) {
+    const { user } &#x3D; req;
+    return  await this.reservationService.deleteReservationById(id, user);
   }
 
 }
