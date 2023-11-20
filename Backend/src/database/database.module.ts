@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as process from 'process';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import DatabaseLogger from './databaseLogger';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         entities: [__dirname + '/../**/*.entity{.ts,.js}'], //entity기반으로 모델기반
         autoLoadEntities: true,
         synchronize: true,
+        logger: new DatabaseLogger(),
       }),
     }),
   ],
