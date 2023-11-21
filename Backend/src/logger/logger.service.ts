@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Log } from '@root/logger/entities/logger.entity';
 import { Repository } from 'typeorm';
-import { CreateLoggerDto } from '@root/logger/dto/create-logger.dto';
+import { Log } from './entities/logger.entity';
+import { CreateLoggerDto } from './dto/create-logger.dto';
 
 @Injectable()
 export default class LogsService {
-  constructor(@InjectRepository(Log) private logRepository: Repository<Log>) {}
+  constructor(
+    @InjectRepository(Log)
+    private logsRepository: Repository<Log>,
+  ) {}
 
   async createLog(log: CreateLoggerDto) {
-    const newLog = await this.logRepository.create(log);
-    await this.logRepository.save(newLog, {
+    const newLog = await this.logsRepository.create(log);
+    await this.logsRepository.save(newLog, {
       data: {
-        isCreateLogs: true,
+        isCreatingLogs: true,
       },
     });
+    return newLog;
   }
 }

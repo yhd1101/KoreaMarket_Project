@@ -4,8 +4,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import LogsService from '@root/logger/logger.service';
-import getLogLevels from '@root/utills/getLogLevels';
+import getLogLevels from '../utills/getLogLevels';
+import LogsService from './logger.service';
 
 @Injectable()
 class CustomLogger extends ConsoleLogger {
@@ -50,7 +50,7 @@ class CustomLogger extends ConsoleLogger {
     this.logsService.createLog({
       message,
       context,
-      level: 'error',
+      level: 'warn',
     });
   }
 
@@ -60,7 +60,7 @@ class CustomLogger extends ConsoleLogger {
     this.logsService.createLog({
       message,
       context,
-      level: 'error',
+      level: 'debug',
     });
   }
 

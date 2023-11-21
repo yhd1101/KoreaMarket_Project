@@ -31,12 +31,15 @@ class DatabaseLogger implements TypeOrmLogger {
   }
   log(level: 'log' | 'info' | 'warn', message: string) {
     if (level === 'log') {
+      console.log('----', message);
       return this.logger.log(message);
     }
     if (level === 'info') {
+      console.log('+++', message);
       return this.logger.debug(message);
     }
     if (level === 'warn') {
+      console.log('111111', message);
       return this.logger.warn(message);
     }
   }

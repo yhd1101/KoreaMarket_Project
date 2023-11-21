@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 class LogsMiddleware implements NestMiddleware {
-  private readonly logger = new Logger('HTTP');
+  private readonly logger = new Logger('HTTP'); // 'HTTP'를 원하는 context로 변경하세요.
 
   use(req: Request, res: Response, next: NextFunction) {
     res.on('finish', () => {
