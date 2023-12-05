@@ -18,9 +18,9 @@ import { CommonEntity } from '@common/entities/common.entity';
 import { Product } from '@product/entities/product.entity';
 import { Reservation } from '@reservation/entities/reservation.entity';
 import { Provider } from '@users/entities/provider.enum';
-import { Rating } from '@rating/entities/rating.entity';
 import { Comment } from '@comment/entities/comment.entity';
 import { Order } from '@order/entities/order.entity';
+import { Rating } from '@rating/entities/rating.entity';
 
 @Entity()
 export class User extends CommonEntity {
@@ -34,11 +34,12 @@ export class User extends CommonEntity {
   @OneToMany(() => Product, (product: Product) => product.seller)
   public products: Product[];
 
-  // @OneToMany(() => Reservation, (reservation: Reservation) => reservation.user)
-  // public reservations: Reservation[];
   @OneToMany(() => Reservation, (reservation: Reservation) => reservation.user)
   @JoinColumn()
   public reservation: Reservation[];
+
+  @OneToMany(() => Rating, (rating: Rating) => rating.buyer)
+  ratings: Rating[];
 
   @Column({
     type: 'enum',
@@ -52,10 +53,6 @@ export class User extends CommonEntity {
 
   @Column({ nullable: true })
   public profileImg?: string;
-
-  @ManyToMany(() => Rating, (rating: Rating) => rating.buyer)
-  @JoinColumn()
-  public rating: Rating;
 
   @OneToMany(() => Order, (order: Order) => order.user)
   public orders: Order[];

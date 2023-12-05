@@ -5,6 +5,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Order } from '@order/entities/order.entity';
 import { Repository } from 'typeorm';
 import { User } from '@users/entities/user.entity';
+import { Reservation } from '@reservation/entities/reservation.entity';
 
 @Injectable()
 export class OrderService {
@@ -22,16 +23,12 @@ export class OrderService {
     return newOrder;
   }
 
-  async orderGetById(id: string) {
-    // const order = await this.orderRepository.findOneBy({ id });
-    const order = await this.orderRepository
-      .createQueryBuilder('order')
-      .leftJoinAndSelect('order', 'order')
-      .where('order.id = :id', { id })
-      .getOne();
+  async orderGetById(id: string, reservation?: Reservation) {
+    const order = await this.orderRepository.findOne({
+      where: { id },
+      relations: ['order'],
+    });
 
-    if (!order) {
-      throw new HttpException('No id', HttpStatus.NOT_FOUND);
-    }
+    return { order };
   }
 }

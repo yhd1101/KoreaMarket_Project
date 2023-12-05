@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -22,6 +23,7 @@ import { CreateOrderDto } from '@order/dto/create-order.dto';
 import { UpdateOrderDto } from '@order/dto/update-order.dto';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { RequestWithUserInterface } from '@auth/interfaces/requestWithUser.interface';
+import { Reservation } from '@reservation/entities/reservation.entity';
 
 @ApiTags('Order') //api문서화 카테고리
 @Controller('order')
@@ -47,9 +49,12 @@ export class OrderController {
   }
 
   @Get(':id')
-  async getOrderById(@Param('id') id: string) {
+  async getOrderById(
+    @Param('id') id: string,
+    @Query('reservation') reservationQuery?: Reservation,
+  ) {
     try {
-      const order = await this.orderService.orderGetById(id);
+      const order = await this.orderService.orderGetById(id, reservationQuery);
       return order;
     } catch (err) {
       throw new NotFoundException('No Order');

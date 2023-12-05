@@ -5,7 +5,7 @@ import { Reservation } from '@reservation/entities/reservation.entity';
 import { CreateReservationDto } from '@reservation/dto/create-reservation.dto';
 import { User } from '@users/entities/user.entity';
 import { Product } from '@product/entities/product.entity';
-import {use} from "passport";
+import { use } from 'passport';
 
 @Injectable()
 export class ReservationService {
@@ -23,7 +23,7 @@ export class ReservationService {
       ...createReservationDto,
       user,
     });
-    console.log(newReservation)
+    console.log(newReservation);
     await this.reservationRepository.save(newReservation);
     return newReservation;
   }
@@ -53,6 +53,9 @@ export class ReservationService {
       where: { id },
       relations: ['user', 'product', 'product.seller'],
     });
+    if (reservation.order !== null) {
+      reservation.purchase === false;
+    }
     if (reservation) return reservation;
     throw new HttpException('No reservation', HttpStatus.NOT_FOUND);
   }
@@ -62,16 +65,14 @@ export class ReservationService {
       where: { id },
       relations: ['user', 'product'],
     });
-    console.log("++++++++++++++++++", reservation.user)
-    console.log("------", reservation.user.id === user.id)
+    console.log('++++++++++++++++++', reservation.user);
+    console.log('------', reservation.user.id === user.id);
     // if (reservation) return reservation;
-    if(reservation.user.id === user.id) {
-      await this.reservationRepository.delete(id)
+    if (reservation.user.id === user.id) {
+      await this.reservationRepository.delete(id);
 
-      return "deleted reservation"
-
+      return 'deleted reservation';
     }
-    throw new HttpException("not reservation", HttpStatus.FORBIDDEN)
-
+    throw new HttpException('not reservation', HttpStatus.FORBIDDEN);
   }
 }

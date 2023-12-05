@@ -9,11 +9,11 @@ import { DatabaseModule } from '@database/database.module';
 import { UsersModule } from '@users/users.module';
 import { EmailModule } from '@email/email.module';
 import { ReservationModule } from '@reservation/reservation.module';
-import { RatingModule } from '@rating/rating.module';
 import { RedisModule } from '@redis/redis.module';
 import { CommentModule } from '@comment/comment.module';
 import { AppConfigModule } from '@common/config/config.module';
 import { LoggerModule } from './logger/logger.module';
+import { RatingModule } from './rating/rating.module';
 
 @Module({
   imports: [
@@ -27,8 +27,8 @@ import { LoggerModule } from './logger/logger.module';
     RedisModule,
     CommentModule,
     ReservationModule,
-    RatingModule,
     LoggerModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
