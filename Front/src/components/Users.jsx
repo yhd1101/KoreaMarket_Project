@@ -1,9 +1,9 @@
-export default function User({ displayName, profileImg, mobile }) {
+export default function Users({ displayName, profileImg, mobile }) {
     return (
         <div className="flex items-left">
-            {!mobile && <p className="mr-2">{displayName}</p>}
+            {!mobile && <p className="mr-2 mt-2">{displayName}</p>}
             <img
-                className="h-[90px] w-[90px] rounded border border-gray-300"
+                className="h-10 w-10 rounded border border-gray-300"
                 src={
                     profileImg === 'default' || !profileImg
                         ? '/images/default_image.webp'

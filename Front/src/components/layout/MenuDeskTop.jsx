@@ -12,6 +12,7 @@ import {useTranslation} from "react-i18next";
 import LocaleContext from "../../LocaleContext";
 import useFetchProfileById from "../../services/fetchProfileById";
 import {useAuthContext} from "../../context/AuthContext";
+import Users from "../Users";
 const MenuDesktop = forwardRef(
     function (
         {
@@ -142,7 +143,7 @@ const MenuDesktop = forwardRef(
                                                                     onMouseEnter={onMouseEnter.bind(null, open)}
                                                                     onMouseLeave={onMouseLeave.bind(null, open)}
                                                                 >
-                                                                    <User
+                                                                    <Users
                                                                         displayName={userData.name}
                                                                         profileImg={userData.profileImg}
                                                                         mobile={false}

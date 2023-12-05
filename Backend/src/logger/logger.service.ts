@@ -11,6 +11,16 @@ export default class LogsService {
     private logsRepository: Repository<Log>,
   ) {}
 
+  // async createLog(log: CreateLoggerDto) {
+  //   const newLog = await this.logsRepository.create(log);
+  //   await this.logsRepository.save(newLog, {
+  //     data: {
+  //       isCreatingLogs: true,
+  //     },
+  //   });
+  //   return newLog;
+  // }
+
   async createLog(log: CreateLoggerDto) {
     const newLog = await this.logsRepository.create(log);
     await this.logsRepository.save(newLog, {

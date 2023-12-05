@@ -2,6 +2,7 @@ import axios from "axios";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const changePassword = async (userInput) => {
+
     const { data } = await axios.post("http://localhost:8000/api/auth/change/password", userInput)
     return data
 }

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import ProfileTitle from "../../components/ui/ProfileTitle";
 import useFetchProfileById from "../../services/fetchProfileById";
 import ErrorMessage from "../../components/ui/ErrorMessage";
@@ -23,14 +23,14 @@ import useFetchDeleteReservation from "../../services/deleteReservation";
 
 
 const Profile = () => {
+    // const [newPassword, setNewPassword] = useState("")
     const {id} = useParams()
     const { data , isLoading, error } = useFetchProfileById(id)
     const navigate = useNavigate()
     const location = useLocation()
-    const searchParams = new URLSearchParams(location.search);
-    const token = searchParams.get('token');
+    const searchParams = new URLSearchParams(location.search);;
+    const { data: newPassword, mutateAsync} = useNewPassword()
     const {user} = useAuthContext()
-    const { data: changePasswordData, isLoading: passwordLoading, error: passwordError, mutateAsync} = useChangePassword()
     const shouldShowNavbarAndFooter = false;
     const reservationIds = data?.profile?.reservation.map(reservation => reservation.id);
 
@@ -38,7 +38,8 @@ const Profile = () => {
 
 
 
-    console.log("resevationId: ", reservationIds)
+
+
 
     const {
         register,
@@ -48,28 +49,18 @@ const Profile = () => {
         // setError,
         // clearErrors,
         formState: { isSubmitting, errors, isDirty}
-    } = useForm({
-        defaultValues: {
-            password: "",
-            confirmPassword: "",
-        }
-    })
-
-    const onSubmit = async (values) => {
-        console.log("dsdsadad2eq", values)
-        const {password, confirmPassword } = values
-        if (password !== confirmPassword) {
-            alert("password do not match")
-            return
-        }
+    } = useForm()
+    // const testButton = async (e) => {
+    //     e.preventDefault()
+    //     console.log(newPassword)
+    // }
+    const changePasswordSubmit =  (values)  =>{
+        const { newPassword } = values
         const userInput = {
-            token,
-            newPassword: password
+            password: newPassword
         }
-        console.log("2q2313",userInput)
-        await mutateAsync(userInput)
-        navigate("/")
-
+        console.log("newPassword: ", userInput)
+        mutateAsync(userInput)
     }
     const deleteSubmit = async (id) => {
         console.log("#######",id)
@@ -101,12 +92,13 @@ const Profile = () => {
             </div>
         );
     }
-    if (isLoading) {
+    if (isLoading ) {
         return (
             <LoadingSkeleton/>
         )
     }
     return (
+
         <div>
             {shouldShowNavbarAndFooter && <Navbar />}
             <div className={"bg-white"}>
@@ -114,20 +106,56 @@ const Profile = () => {
                     <div className="flex items-end justify-between border-b border-gray-200 pt-24 pb-6">
                         <ProfileTitle title={"Profile"}/>
                     </div>
-                    <div className="flex flex-col items-center mt-5" >
-                        <div className={"flex items-center md-5"}>
-                            <User
-                                profileImg={data.profileImg}
-                                mobile={false}
-                            />
-                            <button
-                                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                                style={{ marginLeft: '15px' }} // 오른쪽 마진을 추가
-                            >
-                                change
-                            </button>
+                    <div className="flex flex-col items-center mt-5 " >
+                        <div className="flex ml-20 md-5 w-[30%]">
+                                <User
+                                    profileImg={data.profileImg}
+                                    mobile={false}
+                                />
+                            {/*<div className="border border-blue-500 p-4  ml-5 grid grid-cols-3 w-[280px]">*/}
+                            <div className=" ml-10 container m-auto grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                                <div>
+                                    <span>Score</span>
+                                    <br/>
+                                    <span className="ml-2">3.5</span>
+                                </div>
+                                <div className="border-r border-blue-300"/>
+                                <div className="...">
+                                    <span>Buy</span>
+                                    <br/>
+                                    <span className="ml-2">5</span>
+                                </div>
+                                <div className="border-r border-blue-500"/>
+                                <div className="...">
+                                    <span>Sell</span>
+                                    <br/>
+                                    <span className="ml-2">4</span>
+                                </div>
+                            </div>
+                            {/*<div className="border border-blue-500 p-4 ml-2 grid-cols-3">*/}
+                            {/*    <div>*/}
+                            {/*        <span>score</span>*/}
+                            {/*        <br/>*/}
+                            {/*        <span className="ml-3">1.5</span>*/}
+                            {/*    </div>*/}
+                            {/*    <div>*/}
+                            {/*        <span>score</span>*/}
+                            {/*        <br/>*/}
+                            {/*        <span className="ml-3">1.5</span>*/}
+                            {/*    </div>*/}
+                            {/*   /!* <span className="ml-2">buy</span>*!/*/}
+                            {/*   /!* <span className="ml-2">sell</span>*!/*/}
+                            {/*   /!* <br/>*!/*/}
+
+                            {/*   /!* <span className="ml-6">2</span>*!/*/}
+                            {/*   /!* <span className="ml-6">5</span>*!/*/}
+
+                            {/*</div>*/}
+
                         </div>
-                        <form className="ml-4 mt-3"  onSubmit={handleSubmit(onSubmit)}>
+                        <div className="border: 10px soild blue padding: 20px ">
+                        </div>
+                        <form className="ml-4 mt-3 w-[30%]" onSubmit={handleSubmit(changePasswordSubmit)}>
 
                             <Input
                                 {...register('email', {
@@ -142,7 +170,7 @@ const Profile = () => {
                                 disabled
                                 labelText="Email"
                                 type="email"
-                                className="mb-3"
+                                className="mb-3 w-full"
                                 autofocus
                                 autocomplete="on"
                             />
@@ -163,17 +191,7 @@ const Profile = () => {
                             />
 
                             <Input
-                                {...register('password', {
-                                    required: 'Please provide a password.',
-                                    minLength: {
-                                        value: 6,
-                                        message: 'Password needs to be between 6 to 20 characters.',
-                                    },
-                                    maxLength: {
-                                        value: 20,
-                                        message: 'Password needs to be between 6 to 20 characters.',
-                                    },
-                                })}
+                                {...register('password', )}
                                 error={errors.password?.message}
                                 ariaInvalid={isDirty}
                                 labelText="Password"
@@ -181,30 +199,7 @@ const Profile = () => {
                                 className="mb-3"
                                 autocomplete="off"
                             />
-                            <Input
-                                {...register('confirmPassword', {
-                                    required: 'Please provide a confirm password.',
-                                    minLength: {
-                                        value: 6,
-                                        message: 'Password needs to be between 6 to 20 characters.',
-                                    },
-                                    maxLength: {
-                                        value: 20,
-                                        message: 'Password needs to be between 6 to 20 characters.',
-                                    },
-                                    validate: (val) => {
-                                        if (watch('password') !== val) {
-                                            return 'Please make sure your passwords match.';
-                                        }
-                                    },
-                                })}
-                                error={errors.confirmPassword?.message}
-                                ariaInvalid={isDirty}
-                                labelText="Confirm Password"
-                                type="password"
-                                className="mb-3"
-                                autocomplete="off"
-                            />
+
 
                             <Button
                                 text="Save"
