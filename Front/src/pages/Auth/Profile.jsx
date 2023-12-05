@@ -20,16 +20,17 @@ import useFetchCommentById from "../../services/fetchCommentById";
 import ReservationItem from "../../components/ui/ReservationItem";
 import useChangePassword from "../../services/changePassword";
 import useFetchDeleteReservation from "../../services/deleteReservation";
+import axios from "axios";
 
 
 const Profile = () => {
-    // const [newPassword, setNewPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("")
     const {id} = useParams()
     const { data , isLoading, error } = useFetchProfileById(id)
     const navigate = useNavigate()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);;
-    const { data: newPassword, mutateAsync} = useNewPassword()
+    const { data: newPasswordData, mutateAsync} = useNewPassword()
     const {user} = useAuthContext()
     const shouldShowNavbarAndFooter = false;
     const reservationIds = data?.profile?.reservation.map(reservation => reservation.id);
@@ -54,14 +55,36 @@ const Profile = () => {
     //     e.preventDefault()
     //     console.log(newPassword)
     // }
-    const changePasswordSubmit =  (values)  =>{
-        const { newPassword } = values
-        const userInput = {
-            password: newPassword
+
+    const newPasswordHandler = async (e) => {
+        e.preventDefault()
+        try{
+            const token = await localStorage.getItem("token")
+            const config = {
+                headers: {
+                    Authorization: "bearer " + token
+                }
+            }
+            const userInput = {
+                newPassword
+            }
+            const { data, status } = await axios.post("http://localhost:8000/api/auth/newpassword", userInput, config)
+            console.log("password: ", data)
+            if (data.statusCode === 200) {
+                alert('change Password')
+            }
+        } catch (err) {
+            console.log(err)
         }
-        console.log("newPassword: ", userInput)
-        mutateAsync(userInput)
     }
+    // const changePasswordSubmit =  (values)  =>{
+    //     const { newPassword } = values
+    //     const userInput = {
+    //         password: newPassword
+    //     }
+    //     console.log("newPassword: ", userInput)
+    //     mutateAsync(userInput)
+    // }
     const deleteSubmit = async (id) => {
         console.log("#######",id)
         await deleteMutateAsync(id)
@@ -155,7 +178,7 @@ const Profile = () => {
                         </div>
                         <div className="border: 10px soild blue padding: 20px ">
                         </div>
-                        <form className="ml-4 mt-3 w-[30%]" onSubmit={handleSubmit(changePasswordSubmit)}>
+                        <form className="ml-4 mt-3 w-[30%]" >
 
                             <Input
                                 {...register('email', {
@@ -191,13 +214,14 @@ const Profile = () => {
                             />
 
                             <Input
-                                {...register('password', )}
+                                value={newPassword}
                                 error={errors.password?.message}
                                 ariaInvalid={isDirty}
                                 labelText="Password"
                                 type="password"
                                 className="mb-3"
                                 autocomplete="off"
+                                onChange={(e) => setNewPassword(e.target.value)}
                             />
 
 
@@ -205,7 +229,7 @@ const Profile = () => {
                                 text="Save"
                                 disabled={isSubmitting}
                                 className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                type={"submit"}
+                                onClick={newPasswordHandler}
                             />
                         </form>
                     </div>
