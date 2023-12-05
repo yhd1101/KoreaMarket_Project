@@ -9,6 +9,8 @@ import {
 import { CommonEntity } from '@common/entities/common.entity';
 import { Product } from '@product/entities/product.entity';
 import { User } from '@users/entities/user.entity';
+import { Order } from '@order/entities/order.entity';
+import Joi from '@hapi/joi';
 
 @Entity()
 export class Reservation extends CommonEntity {
@@ -31,7 +33,10 @@ export class Reservation extends CommonEntity {
   @Column()
   public desc: string;
 
-  @Column({ type: 'timestamptz'} )
+  @Column({ type: 'timestamptz' })
   public reservationDate: Date;
 
+  @ManyToOne(() => Order, (order: Order) => order.order)
+  @JoinColumn()
+  public order: Order;
 }

@@ -20,6 +20,7 @@ import { Reservation } from '@reservation/entities/reservation.entity';
 import { Provider } from '@users/entities/provider.enum';
 import { Rating } from '@rating/entities/rating.entity';
 import { Comment } from '@comment/entities/comment.entity';
+import { Order } from '@order/entities/order.entity';
 
 @Entity()
 export class User extends CommonEntity {
@@ -55,6 +56,9 @@ export class User extends CommonEntity {
   @ManyToMany(() => Rating, (rating: Rating) => rating.buyer)
   @JoinColumn()
   public rating: Rating;
+
+  @OneToMany(() => Order, (order: Order) => order.user)
+  public orders: Order[];
 
   @BeforeInsert() //데이터를 넣기전에 실행하는 함수
   async beforeSaveFunction(): Promise<void> {
