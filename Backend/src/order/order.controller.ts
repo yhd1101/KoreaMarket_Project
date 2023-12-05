@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -43,5 +44,15 @@ export class OrderController {
     @Body() createOrderDto: CreateOrderDto,
   ) {
     return await this.orderService.createOrder(createOrderDto, req.user);
+  }
+
+  @Get(':id')
+  async getOrderById(@Param('id') id: string) {
+    try {
+      const order = await this.orderService.orderGetById(id);
+      return order;
+    } catch (err) {
+      throw new NotFoundException('No Order');
+    }
   }
 }
