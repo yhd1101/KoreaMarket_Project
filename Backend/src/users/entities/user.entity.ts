@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToMany,
+  ManyToOne,
   OneToMany,
 } from 'typeorm';
 
@@ -38,8 +39,9 @@ export class User extends CommonEntity {
   @JoinColumn()
   public reservation: Reservation[];
 
-  @OneToMany(() => Rating, (rating: Rating) => rating.buyer)
-  ratings: Rating[];
+  @ManyToOne(() => Rating, (rating: Rating) => rating.buyer)
+  @JoinColumn()
+  ratings: Rating;
 
   @Column({
     type: 'enum',

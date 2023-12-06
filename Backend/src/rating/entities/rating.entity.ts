@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '@common/entities/common.entity';
 import { User } from '@users/entities/user.entity';
 import Joi from '@hapi/joi';
@@ -9,7 +9,7 @@ export class Rating extends CommonEntity {
     default: 1,
   })
   public rating: number;
-  @ManyToOne(() => User, (user: User) => user.ratings)
-  @JoinColumn()
-  public buyer: User;
+
+  @OneToMany(() => User, (user: User) => user.ratings)
+  public buyer: User[];
 }

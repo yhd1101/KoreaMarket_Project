@@ -20,6 +20,8 @@ const ProductPost = () => {
         {name: 'Shirt', code: 'Shirt'},
         {name: 'Accessory', code: 'Accessory'},
         {name: 'Laptop',code: 'Laptop' },
+        {name: 'Outer', code: 'Outer'},
+        {name: 'Jacket', code: 'Jacket'},
     ];
     const {
         register,
