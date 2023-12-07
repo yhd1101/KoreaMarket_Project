@@ -54,17 +54,6 @@ export class UsersService {
       ],
     });
     return { profile };
-    // const queryBuilder = await this.userRepository.createQueryBuilder(
-    //     'user',
-    // );
-    // queryBuilder.leftJoinAndSelect('user.reservation', 'users');
-    //
-    // if (reservation) {
-    //   queryBuilder.where('user.reservation = :reservation', { reservation });
-    // }
-    //
-    // const { entities } = await queryBuilder.getRawAndEntities();
-    // return entities;
   }
 
   //user생성로직

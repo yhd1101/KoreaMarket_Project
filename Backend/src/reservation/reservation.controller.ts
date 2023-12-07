@@ -70,13 +70,15 @@ export class ReservationController {
   }
 
   @Get('/purchase')
-  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '판매된 예약상품',
     description: '판매완료된 예약상품 API',
   })
+  @UseGuards(JwtAuthGuard)
   async purchasedReservation(@Req() req: RequestWithUserInterface) {
-    return await this.reservationService.purchasedReservation(req.user.id);
+    const { user } = req;
+    const data = await this.reservationService.purchasedReservation(user.id);
+    return data;
   }
 
   @Get(':id')

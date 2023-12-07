@@ -83,10 +83,10 @@ export class ReservationService {
 
     if (purchase) {
       const reservations = await this.reservationRepository.find({
-        where: { id },
+        where: { user: { id }, purchase: true },
         relations: ['user', 'product'], //관계형으로 이어진것을 보여줌
       });
-      return { count: reservations.length, reservations };
+      return reservations;
     } else {
       throw new HttpException('No purchase', HttpStatus.NOT_FOUND);
     }
