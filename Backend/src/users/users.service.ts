@@ -1,13 +1,13 @@
-import {Injectable, NotFoundException, Req} from '@nestjs/common';
+import { Injectable, NotFoundException, Req } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import {FindOperator, Repository} from 'typeorm';
+import { FindOperator, Repository } from 'typeorm';
 
 import * as bcrypt from 'bcryptjs';
 import { User } from '@users/entities/user.entity';
 import { CreateUserDto } from '@users/dto/create-user.dto';
-import {Reservation} from "@reservation/entities/reservation.entity";
-import {Product} from "@product/entities/product.entity";
+import { Reservation } from '@reservation/entities/reservation.entity';
+import { Product } from '@product/entities/product.entity';
 
 @Injectable()
 export class UsersService {
@@ -44,12 +44,16 @@ export class UsersService {
   //   return query.getOne()
   // }
 
-  async userGetAll( id: string,reservation?: Reservation) {
-    const profile = await  this.userRepository.findOne({
-      where: {id},
-      relations : ['reservation', 'reservation.product', 'reservation.product.seller']
+  async userGetAll(id: string, reservation?: Reservation) {
+    const profile = await this.userRepository.findOne({
+      where: { id },
+      relations: [
+        'reservation',
+        'reservation.product',
+        'reservation.product.seller',
+      ],
     });
-    return { profile }
+    return { profile };
     // const queryBuilder = await this.userRepository.createQueryBuilder(
     //     'user',
     // );
@@ -95,5 +99,4 @@ export class UsersService {
     user.password = await bcrypt.hash(password, 10);
     return this.userRepository.save(user);
   }
-
 }

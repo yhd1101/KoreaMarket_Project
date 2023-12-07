@@ -6,7 +6,11 @@ import {
   Param,
   UseGuards,
   Req,
-  Query, Delete, Res,
+  Query,
+  Delete,
+  Res,
+  Put,
+  Patch,
 } from '@nestjs/common';
 
 import {
@@ -22,6 +26,7 @@ import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { RequestWithUserInterface } from '@auth/interfaces/requestWithUser.interface';
 import { User } from '@users/entities/user.entity';
 import { Product } from '@product/entities/product.entity';
+import { PageOptionsDto } from '@common/dtos/page-options.dto';
 
 @ApiTags('Reservation')
 @Controller('reservation')
@@ -64,6 +69,16 @@ export class ReservationController {
     return reservations;
   }
 
+  @Get('/purchase')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '판매된 예약상품',
+    description: '판매완료된 예약상품 API',
+  })
+  async purchasedReservation(@Req() req: RequestWithUserInterface) {
+    return await this.reservationService.purchasedReservation(req.user.id);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: '예약조회', description: '예약 조회' })
   async getReservationById(@Param('id') id: string) {
@@ -71,12 +86,27 @@ export class ReservationController {
     return reservation;
   }
 
-  @Delete(':id')
+  @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: '예약취소', description: '예약삭제 api'})
-  async deleteReservationById(@Param('id') id: string, @Req() req: RequestWithUserInterface) {
-    const { user } = req;
-    return  await this.reservationService.deleteReservationById(id, user);
+  @ApiOperation({ summary: '예약수정', description: '예약수정' })
+  async updatedReservationById(
+    @Param('id') id: string,
+    @Body() createReservationDto: CreateReservationDto,
+  ) {
+    return await this.reservationService.updateReservation(
+      id,
+      createReservationDto,
+    );
   }
 
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '예약취소', description: '예약삭제 api' })
+  async deleteReservationById(
+    @Param('id') id: string,
+    @Req() req: RequestWithUserInterface,
+  ) {
+    const { user } = req;
+    return await this.reservationService.deleteReservationById(id, user);
+  }
 }

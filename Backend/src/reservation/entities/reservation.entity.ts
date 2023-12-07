@@ -9,8 +9,8 @@ import {
 import { CommonEntity } from '@common/entities/common.entity';
 import { Product } from '@product/entities/product.entity';
 import { User } from '@users/entities/user.entity';
-import { Order } from '@order/entities/order.entity';
 import Joi from '@hapi/joi';
+import { flatten } from '@nestjs/common';
 
 @Entity()
 export class Reservation extends CommonEntity {
@@ -22,8 +22,8 @@ export class Reservation extends CommonEntity {
   public product: Product;
 
   @Column({
-    default: true,
-  })
+    default: false,
+  }) //true면 판매
   public purchase: boolean;
 
   @ManyToOne(() => User, (user: User) => user.reservation)
@@ -35,8 +35,4 @@ export class Reservation extends CommonEntity {
 
   @Column({ type: 'timestamptz' })
   public reservationDate: Date;
-
-  @ManyToOne(() => Order, (order: Order) => order.order)
-  @JoinColumn()
-  public order: Order;
 }

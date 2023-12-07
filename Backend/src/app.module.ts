@@ -4,7 +4,6 @@ import { AppController } from '@root/app.controller';
 import { AppService } from '@root/app.service';
 import { AuthModule } from '@auth/auth.module';
 import { ProductModule } from '@product/product.module';
-import { OrderModule } from '@order/order.module';
 import { DatabaseModule } from '@database/database.module';
 import { UsersModule } from '@users/users.module';
 import { EmailModule } from '@email/email.module';
@@ -21,7 +20,6 @@ import { RatingModule } from './rating/rating.module';
     DatabaseModule,
     AuthModule,
     ProductModule,
-    OrderModule,
     UsersModule,
     EmailModule,
     RedisModule,

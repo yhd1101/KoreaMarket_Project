@@ -18,10 +18,10 @@ import { verificationEmail } from '@common/template/verificationEmail';
 import { ConfirmEmailDto } from '@users/dto/confirm-email.dto';
 import { VerificationTokenPayloadInterface } from '@auth/interfaces/verificationTokenPayload.interface';
 import { ChangePasswordDto } from '@users/dto/change-password.dto';
-import {NewPasswordDto} from "@users/dto/new-password.dto";
-import {User} from "@users/entities/user.entity";
-import {Reservation} from "@reservation/entities/reservation.entity";
-import {Product} from "@product/entities/product.entity";
+import { NewPasswordDto } from '@users/dto/new-password.dto';
+import { User } from '@users/entities/user.entity';
+import { Reservation } from '@reservation/entities/reservation.entity';
+import { Product } from '@product/entities/product.entity';
 
 @Injectable()
 export class AuthService {
@@ -72,7 +72,6 @@ export class AuthService {
     return token;
   }
 
-
   async sendEmail(email: string) {
     const generateNumber = this.generateOTP();
     await this.cacheManger.set(email, generateNumber);
@@ -120,15 +119,12 @@ export class AuthService {
     ); //패스워드바꾸기 함수 먼저만들고하기
   }
 
-  async newPassword(newPasswordDto: NewPasswordDto) {
+  async newPassword(newPasswordDto: NewPasswordDto) {}
 
-  }
-
-  async profile( id: string, reservation?: Reservation) {
-    const queryBuilder = await this.usersService.userGetAll( id, reservation); // user를 userGetAll 메서드에 전달
+  async profile(id: string, reservation?: Reservation) {
+    const queryBuilder = await this.usersService.userGetAll(id, reservation); // user를 userGetAll 메서드에 전달
     return queryBuilder;
   }
-
 
   //토큰 푸는 함수
   public async decodedConfirmationToken(token: string) {
@@ -148,9 +144,11 @@ export class AuthService {
 
   //토큰 비밀번호
   async changePasswordWithToken(userId: string, newPassword: string) {
-    const updatedUser = await this.usersService.changePassword(userId, newPassword)
+    const updatedUser = await this.usersService.changePassword(
+      userId,
+      newPassword,
+    );
     return updatedUser;
-
   }
 
   //랜덤함수

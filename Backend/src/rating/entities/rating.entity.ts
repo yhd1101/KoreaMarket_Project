@@ -12,4 +12,5 @@ export class Rating extends CommonEntity {
 
   @OneToMany(() => User, (user: User) => user.ratings)
   public buyer: User[];
+  //프로덕트
 }

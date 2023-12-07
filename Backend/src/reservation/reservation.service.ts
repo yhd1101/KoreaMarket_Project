@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from '@reservation/entities/reservation.entity';
@@ -6,6 +11,9 @@ import { CreateReservationDto } from '@reservation/dto/create-reservation.dto';
 import { User } from '@users/entities/user.entity';
 import { Product } from '@product/entities/product.entity';
 import { use } from 'passport';
+import { PageOptionsDto } from '@common/dtos/page-options.dto';
+import { PageMetaDto } from '@common/dtos/page-meta.dto';
+import { PageDto } from '@common/dtos/page.dto';
 
 @Injectable()
 export class ReservationService {
@@ -53,11 +61,35 @@ export class ReservationService {
       where: { id },
       relations: ['user', 'product', 'product.seller'],
     });
-    if (reservation.order !== null) {
-      reservation.purchase === false;
-    }
     if (reservation) return reservation;
     throw new HttpException('No reservation', HttpStatus.NOT_FOUND);
+  }
+  //수정 reservation
+  async updateReservation(
+    id: string,
+    createReservationDto: CreateReservationDto,
+  ) {
+    try {
+      console.log(createReservationDto);
+      await this.reservationRepository.update(id, createReservationDto);
+      return 'updated reservation';
+    } catch (err) {
+      throw new NotFoundException('reservation not found');
+    }
+  }
+
+  async purchasedReservation(id: string) {
+    const purchase = true;
+
+    if (purchase) {
+      const reservations = await this.reservationRepository.find({
+        where: { id },
+        relations: ['user', 'product'], //관계형으로 이어진것을 보여줌
+      });
+      return { count: reservations.length, reservations };
+    } else {
+      throw new HttpException('No purchase', HttpStatus.NOT_FOUND);
+    }
   }
 
   async deleteReservationById(id: string, user: User) {

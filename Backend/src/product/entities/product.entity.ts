@@ -40,7 +40,7 @@ export class Product extends CommonEntity {
   public region: string;
 
   @Column({
-    default: true,
+    default: false,
   })
   public isSelling: boolean;
 

@@ -86,22 +86,35 @@ export class AuthController {
     // return await this.authService.Login(loginUserDto);
   }
 
-  @Get('/profile/:id')
+  // @Get('/profile')
+  // @ApiBearerAuth('access-token')
+  // @HttpCode(200)
+  // @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
+  // @UseGuards(JwtAuthGuard)
+  // async getUserInfoByToken(
+  //   @Query('reservation') reservationQuery?: Reservation,
+  // ) {
+  //   try {
+  //     const data = await this.authService.profile(reservationQuery); // user를 profile 메서드에 전달
+  //     return { data };
+  //   } catch (err) {
+  //     throw new NotFoundException('No Profile');
+  //   }
+  // }
+
+  @Get('/profile')
   @ApiBearerAuth('access-token')
   @HttpCode(200)
-  @ApiOperation({ summary: '프로필 정보', description: '프로필 정보' })
+  @ApiOperation({ summary: '프로필정보', description: '프로필정보 api' })
   @UseGuards(JwtAuthGuard)
   async getUserInfoByToken(
-    @Param('id') id: string,
+    @Req() req: RequestWithUserInterface,
     @Query('reservation') reservationQuery?: Reservation,
   ) {
-    try {
-      const data = await this.authService.profile(id, reservationQuery); // user를 profile 메서드에 전달
-      // console.log("dsdad",reservationQuery)
-      return { data };
-    } catch (err) {
-      throw new NotFoundException('No Profile');
-    }
+    const { user } = req;
+    const data = await this.authService.profile(user.id, reservationQuery);
+    user.password = undefined;
+    return { data };
   }
 
   @Post('forgot/password') //비밀번호 재설정위한 메일전송
