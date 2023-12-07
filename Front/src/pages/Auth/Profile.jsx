@@ -1,3 +1,4 @@
+
 import React, {Fragment, useState} from 'react';
 import ProfileTitle from "../../components/ui/ProfileTitle";
 import useFetchProfileById from "../../services/fetchProfileById";
@@ -26,7 +27,7 @@ import axios from "axios";
 const Profile = () => {
     const [newPassword, setNewPassword] = useState("")
     const {id} = useParams()
-    const { data , isLoading, error } = useFetchProfileById(id)
+    const { data , isLoading, error } = useFetchProfileById()
     const navigate = useNavigate()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);;
@@ -123,7 +124,7 @@ const Profile = () => {
     return (
 
         <div>
-            {shouldShowNavbarAndFooter && <Navbar />}
+            {/*{shouldShowNavbarAndFooter && <Navbar />}*/}
             <div className={"bg-white"}>
                 <main className="mx-auto mb-32 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-end justify-between border-b border-gray-200 pt-24 pb-6">

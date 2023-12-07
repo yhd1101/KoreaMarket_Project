@@ -70,7 +70,7 @@ const MenuDesktop = forwardRef(
             return (
                 <nav
                     className={`mt-auto border-t border-gray-200 ${
-                        navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === `/profile/${id}` || navigation.pathname === "/order" 
+                        navigation.pathname === "/login" || navigation.pathname === "/signup" || navigation.pathname === '/profile' || navigation.pathname === "/order" 
                             ? "hidden"
                             : "block"
                     }`}
@@ -169,7 +169,7 @@ const MenuDesktop = forwardRef(
                                                                         <div className="relative grid  bg-white ">
                                                                                 <div className="p-2">
                                                                                     <Popover.Button
-                                                                                        onClick={() => navigate(`profile/${userData?.["id"]}`)}
+                                                                                        onClick={() => navigate('/profile')}
                                                                                         className="flex w-full items-center rounded-lg p-2 hover:bg-gray-50"
                                                                                     >
                                                                                         <PencilSquareIcon className="h-4 w-4" />

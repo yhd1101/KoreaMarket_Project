@@ -11,18 +11,18 @@ import ProductItem from "../../components/ui/ProductItem";
 import {SwiperSlide} from "swiper/react";
 import ProductCard from "../../components/ui/ProductCard";
 import OrderTitle from "../../components/ui/OrderTitle";
+import useFetchPurchase from "../../services/purchase";
+import {useAuthContext} from "../../context/AuthContext";
+import OrderItem from "../../components/ui/OrderItem";
 
 const Products = () => {
     const [filters, setFilters] = useState([])
     const [isMenuOpen, setMenuOpen] = useState(false);
-    const {data, isLoading, error} = useFetchProducts()
-    console.log("ddddsdsa+=",data?.title)
-    console.log("dsdadwdqeq__", data?.name)
-
+    const { data, isLoading, error} = useFetchPurchase()
     const [isOpen, setIsOpen] = useState(true); // 상태 추가: 패널이 열려있는지 여부
     const [isOpen2, setIsOpen2] = useState(false);
 
-
+    console.log("dd212", data)
     const handleToggleMenu = () => {
         setMenuOpen(!isMenuOpen);
     };
@@ -110,40 +110,29 @@ const Products = () => {
                                 </ul>
                             )}
                             <ul className="grid grid-cols-1 gap-6  sm:grid-cols-2 md:grid-cols-4">
-                                {/*<>*/}
-                                {/*    {error && <ErrorMessage />}*/}
-                                {/*    {data?.map((product, index) => (*/}
-                                {/*        <Fragment key={index}*/}
+                                <>
+                                    {error && <ErrorMessage />}
+                                    {data?.map((order, index) => (
+                                        <Fragment key={index}
 
-                                {/*            // sizes={product.sizes}*/}
-                                {/*            // tags={product.tags}*/}
-                                {/*        >*/}
-                                {/*            <ProductItem key={index}*/}
-                                {/*                         id={product?.id}*/}
-                                {/*                         img={product.productImg[0]}*/}
-                                {/*                // img={"https://assets.burberry.com/is/image/Burberryltd/7F1F1853-CA91-43B6-B4B1-ADC28DE93F0F?$BBY_V3_SL_1$&wid=2500&hei=2500"}*/}
-                                {/*                         description={product?.desc[0]}*/}
-                                {/*                         title={product?.name}*/}
-                                {/*                         price={product?.price}*/}
-                                {/*                         category={product?.category[0]}*/}
-                                {/*                         location={product?.region}*/}
-                                {/*            />*/}
-                                {/*        </Fragment>*/}
+                                            // sizes={product.sizes}
+                                            // tags={product.tags}
+                                        >
+                                            <OrderItem key={index}
+                                                         id={order?.id}
+                                                         img={order?.product.productImg[0]}
+                                                // img={"https://assets.burberry.com/is/image/Burberryltd/7F1F1853-CA91-43B6-B4B1-ADC28DE93F0F?$BBY_V3_SL_1$&wid=2500&hei=2500"}
+                                                         description={order?.product?.desc[0]}
+                                                         title={order?.product?.name}
+                                                         price={order?.product?.price}
+                                                         category={order?.product?.category[0]}
+                                                         location={order?.product?.region}
+                                            />
+                                        </Fragment>
 
-                                {/*    ))}*/}
-                                {/*    /!*{data?.map((item, index) => (*!/*/}
-                                {/*    /!*    <Fragment key={index}>*!/*/}
-                                {/*    /!*        <ProductItem image={data?.productImg} title={data?.name} id={data?.id} />*!/*/}
-                                {/*    /!*        /!*<ProductItem image={data?.productImg[0]}  title={data?.name} id={data?.item.id} />*!/*!/*/}
-                                {/*    /!*    </Fragment>*!/*/}
-                                {/*    /!*))}*!/*/}
-                                {/*    /!*{data?.map((item, index)=> (*!/*/}
-                                {/*    /!*    <Fragment key={index}>*!/*/}
-                                {/*    /!*        /!*{data.id}*!/*!/*/}
-                                {/*    /!*        <ProductItem image={data?.productImg} title={data?.name} id={data?.id} />*!/*/}
-                                {/*    /!*    </Fragment>*!/*/}
-                                {/*    /!*))}*!/*/}
-                                {/*</>*/}
+                                    ))}
+
+                                </>
                             </ul>
                         </div>
                     </div>
