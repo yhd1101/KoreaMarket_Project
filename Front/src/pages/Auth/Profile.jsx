@@ -22,19 +22,25 @@ import ReservationItem from "../../components/ui/ReservationItem";
 import useChangePassword from "../../services/changePassword";
 import useFetchDeleteReservation from "../../services/deleteReservation";
 import axios from "axios";
+import useUpdateReservation from "../../services/reservationUpdate";
 
 
 const Profile = () => {
     const [newPassword, setNewPassword] = useState("")
     const {id} = useParams()
     const { data , isLoading, error } = useFetchProfileById()
+    const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(id)
     const navigate = useNavigate()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);;
     const { data: newPasswordData, mutateAsync} = useNewPassword()
     const {user} = useAuthContext()
     const shouldShowNavbarAndFooter = false;
-    const reservationIds = data?.profile?.reservation.map(reservation => reservation.id);
+    const productId= data?.profile?.reservation.map(reservation => reservation.product.id)[0];
+    const reservationLocation= data?.profile?.reservation.map(reservation => reservation.location)[0];
+    const reservationDesc= data?.profile?.reservation.map(reservation => reservation.desc)[0];
+    const date = data?.profile?.reservation.map(reservation => reservation.reservationDate)[0];
+
 
     const {mutateAsync: deleteMutateAsync, isLoading: deleteReservationLoading, error: deleteReservationError } = useFetchDeleteReservation()
 
@@ -86,6 +92,23 @@ const Profile = () => {
     //     console.log("newPassword: ", userInput)
     //     mutateAsync(userInput)
     // }
+
+    const updateSubmit = async (id,  desc, location, reservationDate, productId) => {
+        console.log("Reservation ID:", id); //
+        const userInput = {
+            product: productId,
+            reservationDate,
+            location,
+            desc,
+            purchase: true
+        };
+
+        console.log("User Input:", userInput);
+
+        updateMutateAsync(id, userInput);
+        alert('!!!');
+    };
+
     const deleteSubmit = async (id) => {
         console.log("#######",id)
         await deleteMutateAsync(id)
@@ -266,17 +289,24 @@ const Profile = () => {
                                         <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
                                         <p className="mb-1">Seller: {c.product.seller.name}</p>
                                         <p className="mb-1">Location: {c.location}</p>
-                                        <p className="mb-1">{c.reservationDate.slice(0,10)}</p>
+                                        <p className="mb-1">{c.reservationDate.slice(0, 10)}</p>
 
-                                        <Button
-                                            text="Cancel"
-                                            disabled={isSubmitting}
-                                            className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                            onClick={() => deleteSubmit(c.id)}
-                                        />
-
-
+                                        <div className="flex space-x-4">
+                                            <Button
+                                                text="Cancel"
+                                                disabled={isSubmitting}
+                                                className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
+                                                onClick={() => deleteSubmit(c.id)}
+                                            />
+                                            <Button
+                                                text="Purchase"
+                                                disabled={isSubmitting}
+                                                className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
+                                                onClick={() => updateSubmit(c.id, c.location, c.desc, c.reservationDate, c.product.id)}
+                                            />
+                                        </div>
                                     </div>
+
 
 
                                     {/*<div>*/}
