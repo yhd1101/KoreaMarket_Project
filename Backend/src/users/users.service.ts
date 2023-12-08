@@ -51,6 +51,7 @@ export class UsersService {
         'reservation',
         'reservation.product',
         'reservation.product.seller',
+        'rating',
       ],
     });
     return { profile };

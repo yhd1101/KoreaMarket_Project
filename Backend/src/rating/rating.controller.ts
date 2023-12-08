@@ -25,19 +25,16 @@ import { RequestWithUserInterface } from '@auth/interfaces/requestWithUser.inter
 export class RatingController {
   constructor(private readonly ratingService: RatingService) {}
 
-  @Post('create')
+  @Post()
   @ApiBody({ type: CreateRatingDto })
-  @ApiOperation({
-    summary: '신뢰도점수 ',
-    description: '상대를 점수를 주는 api',
-  })
+  @ApiOperation({ summary: '신뢰도점수', description: '신뢰도 점수 체크하기' })
   @ApiResponse({
-    description: 'rating user',
+    description: 'Rating success',
   })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   async createRating(@Body() createRatingDto: CreateRatingDto) {
-    console.log(createRatingDto); // 확인용 로그
-    return await this.ratingService.createRating(createRatingDto);
+    const newRating = await this.ratingService.createRating(createRatingDto);
+    return newRating;
   }
 }

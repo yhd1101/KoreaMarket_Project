@@ -1,6 +1,22 @@
 import { User } from '@users/entities/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString } from 'class-validator';
+import { Product } from '@product/entities/product.entity';
 
 export class CreateRatingDto {
+  @ApiProperty({
+    description: 'insert rating',
+    default: 1,
+  })
   rating: number;
-  buyer: User[];
+
+  @ApiProperty({
+    description: 'insert userId',
+  })
+  seller: User;
+
+  @ApiProperty({
+    description: 'insert productId',
+  })
+  productInfo: Product;
 }

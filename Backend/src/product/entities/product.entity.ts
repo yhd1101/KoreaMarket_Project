@@ -10,6 +10,7 @@ import { CommonEntity } from '../../common/entities/common.entity';
 import { User } from '@users/entities/user.entity';
 import { Reservation } from '@reservation/entities/reservation.entity';
 import { Comment } from '@comment/entities/comment.entity';
+import { Rating } from '@rating/entities/rating.entity';
 
 @Entity() //model
 export class Product extends CommonEntity {
@@ -60,4 +61,7 @@ export class Product extends CommonEntity {
   )
   @JoinColumn()
   public reservation: Reservation;
+
+  @OneToOne(() => Rating, (rating: Rating) => rating.productInfo)
+  public rating: Rating;
 }

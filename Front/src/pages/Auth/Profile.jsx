@@ -36,10 +36,6 @@ const Profile = () => {
     const { data: newPasswordData, mutateAsync} = useNewPassword()
     const {user} = useAuthContext()
     const shouldShowNavbarAndFooter = false;
-    const productId= data?.profile?.reservation.map(reservation => reservation.product.id)[0];
-    const reservationLocation= data?.profile?.reservation.map(reservation => reservation.location)[0];
-    const reservationDesc= data?.profile?.reservation.map(reservation => reservation.desc)[0];
-    const date = data?.profile?.reservation.map(reservation => reservation.reservationDate)[0];
 
 
     const {mutateAsync: deleteMutateAsync, isLoading: deleteReservationLoading, error: deleteReservationError } = useFetchDeleteReservation()
