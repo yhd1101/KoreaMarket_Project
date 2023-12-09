@@ -27,9 +27,15 @@ import useUpdateReservation from "../../services/reservationUpdate";
 
 const Profile = () => {
     const [newPassword, setNewPassword] = useState("")
-    const {id} = useParams()
+    const [desc, newDesc] = useState("")
+    const [productId, newProductId] = useState("")
+    const [reservationLocation, newReservationLocation] = useState("")
+    const [reservationDate, newReservationDate] = useState("")
+    const [reservationId, setReservationId] = useState("")
     const { data , isLoading, error } = useFetchProfileById()
-    const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(id)
+    console.log("111", data?.profile.reservation[0].id)
+    const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(reservationId)
+
     const navigate = useNavigate()
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);;
@@ -80,6 +86,33 @@ const Profile = () => {
             console.log(err)
         }
     }
+
+    const reservationHandler = async (id, productId, desc, location, reservationDate) => {
+        try{
+            const token = await localStorage.getItem("token")
+            const config = {
+                headers: {
+                    Authorization: "bearer " + token
+                }
+            }
+            const userInput = {
+                product: productId,
+                desc,
+                location,
+                reservationDate,
+                purchase: true
+            }
+           const {data, status} = await axios.put(`http://localhost:8000/api/reservation/${id}`, userInput, config)
+            console.log("ddsad", userInput)
+            console.log("id", id)
+            if (data.statusCode=== 200) {
+                alert("!!!!")
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     // const changePasswordSubmit =  (values)  =>{
     //     const { newPassword } = values
     //     const userInput = {
@@ -89,21 +122,36 @@ const Profile = () => {
     //     mutateAsync(userInput)
     // }
 
-    const updateSubmit = async (id,  desc, location, reservationDate, productId) => {
-        console.log("Reservation ID:", id); //
+    const updateSubmit = (data, id) => {
+        console.log("ResId: ",data);
+        setReservationId(id)
         const userInput = {
-            product: productId,
-            reservationDate,
-            location,
-            desc,
+            product: data.product.id,
+            desc: data.desc,
+            location: data.location,
+            reservationDate: data.reservationDate,
             purchase: true
-        };
+        }
+        console.log("userInput: ", userInput)
+        updateMutateAsync(userInput)
+        alert("!!!!")
+    }
 
-        console.log("User Input:", userInput);
-
-        updateMutateAsync(id, userInput);
-        alert('!!!');
-    };
+    // const updateSubmit = async (id, productId, desc, location, reservationDate) => {
+    //     console.log("Reservation ID:", id); //
+    //     const userInput = {
+    //         product: productId,
+    //         desc,
+    //         location,
+    //         reservationDate,
+    //         purchase: true
+    //     };
+    //
+    //     console.log("User Input:", userInput);
+    //
+    //     // updateMutateAsync(id, userInput);
+    //     alert('!!!');
+    // };
 
     const deleteSubmit = async (id) => {
         console.log("#######",id)
@@ -298,7 +346,7 @@ const Profile = () => {
                                                 text="Purchase"
                                                 disabled={isSubmitting}
                                                 className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                                onClick={() => updateSubmit(c.id, c.location, c.desc, c.reservationDate, c.product.id)}
+                                                onClick={() => handleSubmit(updateSubmit(c, c.id))}
                                             />
                                         </div>
                                     </div>

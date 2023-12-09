@@ -37,4 +37,17 @@ export class RatingController {
     const newRating = await this.ratingService.createRating(createRatingDto);
     return newRating;
   }
+
+  @Get()
+  @ApiOperation({
+    summary: '신뢰도점수 조회',
+    description: '신뢰도 점수 조회하기',
+  })
+  @ApiResponse({
+    description: 'Rating',
+  })
+  @UseGuards(JwtAuthGuard)
+  async getRating(@Req() req: RequestWithUserInterface) {
+    const user = req.user;
+  }
 }

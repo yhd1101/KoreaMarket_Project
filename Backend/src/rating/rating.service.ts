@@ -17,4 +17,12 @@ export class RatingService {
     await this.ratingRepository.save(newRating);
     return newRating;
   }
+
+  // async getRating(id: string) {
+  //   const rating = await this.ratingRepository.find({
+  //     where: { user: { id } },
+  //     relations: ['user', 'product'],
+  //   });
+  //   return rating;
+  // }
 }
