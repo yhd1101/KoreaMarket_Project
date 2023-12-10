@@ -23,6 +23,8 @@ import useChangePassword from "../../services/changePassword";
 import useFetchDeleteReservation from "../../services/deleteReservation";
 import axios from "axios";
 import useUpdateReservation from "../../services/reservationUpdate";
+import MapContainer from "../../components/Maps";
+import {Calendar} from "primereact/calendar";
 
 
 const Profile = () => {
@@ -33,7 +35,8 @@ const Profile = () => {
     const [reservationDate, newReservationDate] = useState("")
     const [reservationId, setReservationId] = useState("")
     const { data , isLoading, error } = useFetchProfileById()
-    console.log("111", data?.profile.reservation[0].id)
+    console.log("111", data?.profile.reservation[0]?.id)
+    const [showRatingModal, setShowRatingModal] = useState(false);
     const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(reservationId)
 
     const navigate = useNavigate()
@@ -346,10 +349,25 @@ const Profile = () => {
                                                 text="Purchase"
                                                 disabled={isSubmitting}
                                                 className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                                onClick={() => handleSubmit(updateSubmit(c, c.id))}
+                                                onClick={() => {
+                                                    setShowRatingModal(true)
+                                                }}
+                                                // onClick={() => setShowRatingModal(true) handleSubmit(updateSubmit(c, c.id))}
                                             />
                                         </div>
                                     </div>
+                                    {showRatingModal && (
+                                        <div className="modal-container" > {/* CSS 클래스를 추가합니다. */}
+                                            <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                                                <div className="relative w-full h-full max-w-5xl mx-auto my-4">
+                                                    <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+                                                        ddasdasda
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
 
 
 
@@ -368,7 +386,6 @@ const Profile = () => {
 
 
             </div>
-            {shouldShowNavbarAndFooter && <Footer />}
         </div>
     );
 };

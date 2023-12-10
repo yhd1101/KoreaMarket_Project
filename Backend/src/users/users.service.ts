@@ -50,8 +50,7 @@ export class UsersService {
       relations: [
         'reservation',
         'reservation.product',
-        'reservation.product.seller',
-        'rating',
+        'reservation.product.seller'
       ],
     });
     return { profile };
