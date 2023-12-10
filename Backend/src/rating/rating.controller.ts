@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
@@ -11,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { RatingService } from './rating.service';
 import { CreateRatingDto } from './dto/create-rating.dto';
-import { UpdateRatingDto } from './dto/update-rating.dto';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import {
   ApiBearerAuth,
@@ -33,8 +31,16 @@ export class RatingController {
   })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
-  async createRating(@Body() createRatingDto: CreateRatingDto) {
-    const newRating = await this.ratingService.createRating(createRatingDto);
+  async createRating(
+    @Body() createRatingDto: CreateRatingDto,
+    @Req() req: RequestWithUserInterface,
+  ) {
+    console.log(createRatingDto)
+    console.log(req.user)
+    const newRating = await this.ratingService.createRating(
+      createRatingDto,
+      req.user,
+    );
     return newRating;
   }
 
@@ -48,6 +54,24 @@ export class RatingController {
   })
   @UseGuards(JwtAuthGuard)
   async getRating(@Req() req: RequestWithUserInterface) {
-    const user = req.user;
+    const { user } = req;
+    const data = await this.ratingService.getRating(user.id);
+    return data;
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: '신뢰도점수 삭제', description: '신뢰도 삭제 api' })
+  async deleteRating(
+    @Param('id') id: string,
+    @Req() req: RequestWithUserInterface,
+  ) {
+    const { user } = req;
+  }
+
+  @Get(':id')
+  async getbyalluser(@Param('id') id: string) {
+    const user = await this.ratingService.getAllUser(id);
+    return user;
   }
 }

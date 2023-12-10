@@ -15,9 +15,13 @@ import Input from "../../components/ui/Input";
 import useCreateReservation from "../../services/createReservation";
 import MapContainer from "../../components/Maps";
 import {Calendar} from "primereact/calendar";
+import axios from "axios";
+import useFetchProductReviewById from "../../services/productReview";
+import index from "../Home";
 
 const ProductDetail = ( onClose) => {
     const { id } = useParams()
+    const [reviewProfile, setReviewProfile] = useState("")
     const { data, isLoading, error} = useFetchProductById(id)
     const { data: moneyInfo, isLoading: moneyLoading, error: moneyError  } = useFetchMoney()
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
@@ -26,7 +30,12 @@ const ProductDetail = ( onClose) => {
     const {id: commentId} = useParams()
     const { data: getComment, isLoading: LoadingComment, error: commentError } = useFetchCommentById(commentId)
     const { data: createReservation, mutateAsync: reservationMutateAsync  } =useCreateReservation()
+
+    const sellerId = data?.seller?.id
+    const {data: productReview , isLoading: productReviewLoading, error: productReviewError} = useFetchProductReviewById(sellerId)
     console.log("00000000", commentId)
+    console.log("dddd",sellerId)
+    console.log("review:", productReview)
 
 
 
@@ -35,6 +44,16 @@ const ProductDetail = ( onClose) => {
         handleSubmit,
         formState: { isSubmitting, errors, isDirty}
     } = useForm()
+
+    // const productReviewSubmit = async (id) => {
+    //     try {
+    //
+    //         const res = await axios.get(`http://localhost:8000/api/rating/${id}`)
+    //         console.log("seler:", res.data)
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
 
 
 
@@ -97,6 +116,9 @@ const ProductDetail = ( onClose) => {
             <LoadingSkeleton/>
         )
     }
+    // useEffect(() => {
+    //     productReviewSubmit(sellerId)
+    // }, [sellerId]);
 
     return (
         <div className="bg-white">
@@ -126,6 +148,10 @@ const ProductDetail = ( onClose) => {
                                 </SwiperSlide>
                             ))}
                         </Swiper>
+                        {/*{productReview?.data?.length}*/}
+                        {productReview?.data?.map((r, index) => (
+                            <h1>{r.review}</h1>
+                        ))}
 
                     </div>
                     {/* Product info */}

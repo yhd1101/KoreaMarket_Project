@@ -19,11 +19,18 @@ export class Rating extends CommonEntity {
   public rating: number;
 
   //판매자 정보
-  @OneToOne(() => User, (user: User) => user.rating)
+  @ManyToOne(() => User, (user: User) => user.reviewedFrom)
   @JoinColumn()
-  public seller: User;
+  public reviewedFrom: User;
 
-  @OneToOne(() => Product)
+  @OneToOne(() => Product, (product: Product) => product.rating)
   @JoinColumn()
   public productInfo: Product;
+
+  @OneToOne(() => User, (user: User) => user.reviewedBy)
+  @JoinColumn()
+  public reviewedBy: User;
+
+  @Column()
+  public review: string;
 }
