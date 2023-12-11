@@ -22,6 +22,7 @@ const ProductPost = () => {
         {name: 'Laptop',code: 'Laptop' },
         {name: 'Outer', code: 'Outer'},
         {name: 'Jacket', code: 'Jacket'},
+        {name: 'DeskTop', code: 'DeskTop'}
     ];
     const {
         register,
