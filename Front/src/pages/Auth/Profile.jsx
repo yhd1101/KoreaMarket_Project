@@ -23,8 +23,7 @@ import useChangePassword from "../../services/changePassword";
 import useFetchDeleteReservation from "../../services/deleteReservation";
 import axios from "axios";
 import useUpdateReservation from "../../services/reservationUpdate";
-import MapContainer from "../../components/Maps";
-import {Calendar} from "primereact/calendar";
+import { Rating } from "@material-tailwind/react";
 
 
 const Profile = () => {
@@ -47,6 +46,7 @@ const Profile = () => {
     const shouldShowNavbarAndFooter = false;
 
 
+
     const {mutateAsync: deleteMutateAsync, isLoading: deleteReservationLoading, error: deleteReservationError } = useFetchDeleteReservation()
 
 
@@ -67,6 +67,21 @@ const Profile = () => {
     //     e.preventDefault()
     //     console.log(newPassword)
     // }
+
+    const openRatingModal = () => {
+        const popup = window.open('http://localhost:3000/rating', 'Rating Modal', 'width=500,height=400');
+
+        // const receiveRatingCompleteMessage = (event) => {
+        //     if (event.origin === 'http://localhost:8000' && event.data === 'ratingComplete') {
+        //         popup.close();
+        //         setShowRatingModal(false);
+        //         // 여기에서 프론트엔드에서 추가적인 처리를 할 수 있습니다.
+        //     }
+        // };
+
+        // window.addEventListener('message', receiveRatingCompleteMessage);
+    };
+
 
     const newPasswordHandler = async (e) => {
         e.preventDefault()
@@ -349,26 +364,11 @@ const Profile = () => {
                                                 text="Purchase"
                                                 disabled={isSubmitting}
                                                 className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                                onClick={() => {
-                                                    setShowRatingModal(true)
-                                                }}
+                                                onClick={openRatingModal}
                                                 // onClick={() => setShowRatingModal(true) handleSubmit(updateSubmit(c, c.id))}
                                             />
                                         </div>
                                     </div>
-                                    {showRatingModal && (
-                                        <div className="modal-container" > {/* CSS 클래스를 추가합니다. */}
-                                            <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-                                                <div className="relative w-full h-full max-w-5xl mx-auto my-4">
-                                                    <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
-                                                        ddasdasda
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
 
 
                                     {/*<div>*/}

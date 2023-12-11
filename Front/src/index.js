@@ -22,6 +22,7 @@ import "./lang/i18n"
 
 import Profile from "./pages/Auth/Profile";
 import ProductPost from "./pages/Product/ProductPost";
+import Rating from "./pages/Auth/Rating";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <ProductPost/>
+            },
+            {
+                path: "/rating",
+                element: <Rating/>
             }
         ]
     }
