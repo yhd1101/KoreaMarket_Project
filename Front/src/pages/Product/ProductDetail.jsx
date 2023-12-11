@@ -33,9 +33,6 @@ const ProductDetail = ( onClose) => {
 
     const sellerId = data?.seller?.id
     const {data: productReview , isLoading: productReviewLoading, error: productReviewError} = useFetchProductReviewById(sellerId)
-    console.log("00000000", commentId)
-    console.log("dddd",sellerId)
-    console.log("review:", productReview)
 
 
 
@@ -62,20 +59,19 @@ const ProductDetail = ( onClose) => {
         const userInput = {
             desc, product : id
         }
-        console.log("coments Create: +++++++++++++++++++++", userInput)
         await mutateAsync(userInput)
     }
 
     const reservationSubmit = async (values) => {
         const {location, description, purchase, reservationDate} = values
-        console.log("ddddwdads",values)
         const userInput = {
              purchase: false, product: id,desc: description, location,
             reservationDate
         }
 
-        await reservationMutateAsync(userInput)
-        console.log("5555555", userInput)
+        // await reservationMutateAsync(userInput)
+        console.log("reservatio ", userInput)
+        alert("reservation!!!")
         setShowReservationModal(false)
     }
 
@@ -259,18 +255,14 @@ const ProductDetail = ( onClose) => {
                                                                     {/*    placeholder={getToday()} //현재 시간 가이드 오늘날짜로 보여줌*/}
                                                                     {/*/>*/}
                                                                 </div>
-                                                                <input
+                                                                <Input
                                                                     {...register('description', {
-                                                                        required: 'Please provide a name.',
-                                                                        maxLength: {
-                                                                            value: 20,
-                                                                            message: 'Name needs to be between 1 to 20 characters.',
-                                                                        },
+                                                                        required: 'description',
                                                                     })}
                                                                     ariaInvalid={isDirty}
-                                                                    labelText="Desc"
+                                                                    labelText="description"
                                                                     type="text"
-                                                                    className="mb-3"
+                                                                    className="mb-3 mt-3"
                                                                     autocomplete="on"
                                                                 />
                                                                 <Input
@@ -293,7 +285,7 @@ const ProductDetail = ( onClose) => {
                                             <form onSubmit={handleSubmit(reservationSubmit)}>
                                                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                                     <button
-                                                        onClick={() => console.log("dsadadwwqeqr")}
+                                                        // onClick={() => console.log("dsadadwwqeqr")}
                                                         type="submit"
                                                         class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                                                     >

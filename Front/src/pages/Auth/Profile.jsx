@@ -334,52 +334,47 @@ const Profile = () => {
 
 
 
-                        <ul className="grid grid-cols-1 gap-6  sm:grid-cols-2 md:grid-cols-4 mt-3">
-
+                        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 mt-3">
                             {error && <ErrorMessage />}
                             {data?.profile.reservation?.map((c, index) => (
                                 <Fragment key={index}>
-                                    {console.log("+++++++",c.id)}
-                                    <ReservationItem key={index}
-                                                     id={c?.product?.id}
-                                                     img={c?.product.productImg[0]}
-                                    />
-                                    <div>
-                                        <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '600px' }}>
-                                            {c.product.name}
-                                        </p>
-                                        <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
-                                        <p className="mb-1">Seller: {c.product.seller.name}</p>
-                                        <p className="mb-1">Location: {c.location}</p>
-                                        <p className="mb-1">{c.reservationDate.slice(0, 10)}</p>
-
-                                        <div className="flex space-x-4">
-                                            <Button
-                                                text="Cancel"
-                                                disabled={isSubmitting}
-                                                className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                                onClick={() => deleteSubmit(c.id)}
-                                            />
-                                            <Button
-                                                text="Purchase"
-                                                disabled={isSubmitting}
-                                                className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
-                                                onClick={openRatingModal}
-                                                // onClick={() => setShowRatingModal(true) handleSubmit(updateSubmit(c, c.id))}
-                                            />
-                                        </div>
-                                    </div>
-
-
-                                    {/*<div>*/}
-                                    {/*    {c.product.name}*/}
-                                    {/*    <br/>*/}
-                                    {/*    {c.product.seller.name}*/}
-                                    {/*</div>*/}
+                                    {c.purchase === false && ( // purchase가 false일 때만 렌더링
+                                        <>
+                                            {console.log("+++++++", c.id)}
+                                            <ReservationItem key={index} id={c?.product?.id} img={c?.product.productImg[0]} />
+                                            <div>
+                                                <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '600px' }}>
+                                                    {c.product.name}
+                                                </p>
+                                                <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
+                                                <p className="mb-1">Seller: {c.product.seller.name}</p>
+                                                <p className="mb-1">Location: {c.location}</p>
+                                                <p className="mb-1">{c.reservationDate.slice(0, 10)}</p>
+                                                <div className="flex space-x-4">
+                                                    <Button
+                                                        text="Cancel"
+                                                        disabled={isSubmitting}
+                                                        className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
+                                                        onClick={() => deleteSubmit(c.id)}
+                                                    />
+                                                    <Button
+                                                        text="Purchase"
+                                                        disabled={isSubmitting}
+                                                        className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
+                                                        onClick={() => {
+                                                            updateSubmit(c, c.id); // updateSubmit 함수 호출
+                                                            openRatingModal(); // openRatingModal 함수 호출 (원래 있던 부분)
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
                                 </Fragment>
                             ))}
-
                         </ul>
+
+
                     </main>
 
                 </main>
