@@ -92,6 +92,25 @@ export class ReservationService {
     }
   }
 
+    // if (purchase) {
+    //   const [reservations, reservationsCount] = await Promise.all([
+    //     this.reservationRepository.find({
+    //       where: { user: { id }, purchase: true },
+    //       relations: ['user', 'product'],
+    //     }),
+    //     this.reservationRepository.count({
+    //       where: { user: { id }, purchase: true },
+    //     }),
+    //   ]);
+    //
+    //   return { reservations, reservationsCount };
+    // } else {
+    //   throw new HttpException('No purchase', HttpStatus.NOT_FOUND);
+    // }
+
+
+
+
   async deleteReservationById(id: string, user: User) {
     const reservation = await this.reservationRepository.findOne({
       where: { id },

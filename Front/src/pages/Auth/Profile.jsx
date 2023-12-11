@@ -12,7 +12,7 @@ import Navbar from "../../components/layout/Navbar";
 import User from "../../components/User";
 import Button from "../../components/ui/Button";
 import {useAuthContext} from "../../context/AuthContext";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import useNewPassword from "../../services/newPassword";
 import ReservationTittle from "../../components/ui/ReservationTittle";
 import useFetchReservationById from "../../services/fetchReservations";
@@ -24,6 +24,10 @@ import useFetchDeleteReservation from "../../services/deleteReservation";
 import axios from "axios";
 import useUpdateReservation from "../../services/reservationUpdate";
 import { Rating } from "@material-tailwind/react";
+import useFetchPurchase from "../../services/purchase";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import {SwiperSlide} from "swiper/react";
+import ProductItem from "../../components/ui/ProductItem";
 
 
 const Profile = () => {
@@ -37,6 +41,8 @@ const Profile = () => {
     console.log("111", data?.profile.reservation[0]?.id)
     const [showRatingModal, setShowRatingModal] = useState(false);
     const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(reservationId)
+    const { data: purchaseCount } = useFetchPurchase()
+    console.log("purchase: ", purchaseCount?.length )
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -222,19 +228,19 @@ const Profile = () => {
                                     mobile={false}
                                 />
                             {/*<div className="border border-blue-500 p-4  ml-5 grid grid-cols-3 w-[280px]">*/}
-                            <div className=" ml-10 container m-auto grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                            <div className=" ml-8 container m-auto grid grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-4">
                                 <div>
                                     <span>Score</span>
                                     <br/>
-                                    <span className="ml-2">3.5</span>
+                                    <span className="ml-3">3.5</span>
                                 </div>
-                                <div className="border-r border-blue-300"/>
+                                <div className="ml-5 border-r border-blue-300"/>
                                 <div className="...">
                                     <span>Buy</span>
                                     <br/>
-                                    <span className="ml-2">5</span>
+                                    <span className="ml-3">{purchaseCount?.length }</span>
                                 </div>
-                                <div className="border-r border-blue-500"/>
+                                <div className="ml-4 border-r border-blue-500"/>
                                 <div className="...">
                                     <span>Sell</span>
                                     <br/>
@@ -334,16 +340,22 @@ const Profile = () => {
 
 
 
-                        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 mt-3">
+                        <ul className="grid  gap-6 sm:grid-cols-2 md:grid-cols-4 mt-3">
                             {error && <ErrorMessage />}
                             {data?.profile.reservation?.map((c, index) => (
                                 <Fragment key={index}>
                                     {c.purchase === false && ( // purchase가 false일 때만 렌더링
                                         <>
-                                            {console.log("+++++++", c.id)}
-                                            <ReservationItem key={index} id={c?.product?.id} img={c?.product.productImg[0]} />
+                                            <ProductItem key={index}
+                                                         id={c?.product?.id}
+                                                         img={c?.product.productImg[0]}
+                                                // img={"https://assets.burberry.com/is/image/Burberryltd/7F1F1853-CA91-43B6-B4B1-ADC28DE93F0F?$BBY_V3_SL_1$&wid=2500&hei=2500"}
+
+                                            />
+                                            <br/>
+
                                             <div>
-                                                <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '600px' }}>
+                                                <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '250px' }}>
                                                     {c.product.name}
                                                 </p>
                                                 <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
@@ -368,6 +380,7 @@ const Profile = () => {
                                                     />
                                                 </div>
                                             </div>
+                                            <br/>
                                         </>
                                     )}
                                 </Fragment>

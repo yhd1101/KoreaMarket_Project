@@ -21,8 +21,6 @@ const Products = () => {
     const { data, isLoading, error} = useFetchPurchase()
     const [isOpen, setIsOpen] = useState(true); // 상태 추가: 패널이 열려있는지 여부
     const [isOpen2, setIsOpen2] = useState(false);
-
-    console.log("dd212", data)
     const handleToggleMenu = () => {
         setMenuOpen(!isMenuOpen);
     };
