@@ -3,14 +3,16 @@ import Button from "../../components/ui/Button";
 import useCreateRating from "../../services/createRating";
 import {useForm} from "react-hook-form";
 import useFetchProfileById from "../../services/fetchProfileById";
+import {useParams} from "react-router-dom";
 
 const Rating = () => {
+    const { id } = useParams()
     const { data, mutateAsync} = useCreateRating()
     const { data: profileProductData , isLoading, error } = useFetchProfileById()
     const [rating, setRating] = useState(null);
     console.log("data", profileProductData?.profile?.reservation[0].product.id)
     console.log("ddddd", profileProductData?.profile?.reservation[0].product.seller.id)
-
+    console.log("Id: " ,id)
     const handleRatingChange = (value) => {
         setRating(value);
         console.log("value: ", value)

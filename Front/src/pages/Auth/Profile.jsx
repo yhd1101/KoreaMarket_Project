@@ -28,6 +28,7 @@ import useFetchPurchase from "../../services/purchase";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {SwiperSlide} from "swiper/react";
 import ProductItem from "../../components/ui/ProductItem";
+import useFetchRatingById from "../../services/ratingGetId";
 
 
 const Profile = () => {
@@ -38,11 +39,12 @@ const Profile = () => {
     const [reservationDate, newReservationDate] = useState("")
     const [reservationId, setReservationId] = useState("")
     const { data , isLoading, error } = useFetchProfileById()
-    console.log("111", data?.profile.reservation[0]?.id)
+    const { data: ratingData, isLoading: ratingLoading, error: ratingError } = useFetchRatingById(data?.profile.id)
     const [showRatingModal, setShowRatingModal] = useState(false);
     const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(reservationId)
     const { data: purchaseCount } = useFetchPurchase()
     console.log("purchase: ", purchaseCount?.length )
+    console.log("rating:", ratingData?.data.ratingAverage)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -54,8 +56,6 @@ const Profile = () => {
 
 
     const {mutateAsync: deleteMutateAsync, isLoading: deleteReservationLoading, error: deleteReservationError } = useFetchDeleteReservation()
-
-
 
 
 
@@ -74,18 +74,9 @@ const Profile = () => {
     //     console.log(newPassword)
     // }
 
-    const openRatingModal = () => {
-        const popup = window.open('http://localhost:3000/rating', 'Rating Modal', 'width=500,height=400');
+    const openRatingModal = (productId) => {
+        const popup = window.open('http://localhost:3000/rating', 'Rating Modal', 'width=500,height=400', productId);
 
-        // const receiveRatingCompleteMessage = (event) => {
-        //     if (event.origin === 'http://localhost:8000' && event.data === 'ratingComplete') {
-        //         popup.close();
-        //         setShowRatingModal(false);
-        //         // 여기에서 프론트엔드에서 추가적인 처리를 할 수 있습니다.
-        //     }
-        // };
-
-        // window.addEventListener('message', receiveRatingCompleteMessage);
     };
 
 
@@ -232,8 +223,9 @@ const Profile = () => {
                                 <div>
                                     <span>Score</span>
                                     <br/>
-                                    <span className="ml-3">3.5</span>
+                                    <span className="ml-3">{ratingData?.data.ratingAverage}</span>
                                 </div>
+
                                 <div className="ml-5 border-r border-blue-300"/>
                                 <div className="...">
                                     <span>Buy</span>
@@ -244,7 +236,7 @@ const Profile = () => {
                                 <div className="...">
                                     <span>Sell</span>
                                     <br/>
-                                    <span className="ml-2">4</span>
+                                    <span className="ml-2">{ratingData?.data?.user.length}</span>
                                 </div>
                             </div>
                             {/*<div className="border border-blue-500 p-4 ml-2 grid-cols-3">*/}
@@ -374,7 +366,7 @@ const Profile = () => {
                                                         className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
                                                         onClick={() => {
                                                             updateSubmit(c, c.id); // updateSubmit 함수 호출
-                                                            openRatingModal(); // openRatingModal 함수 호출 (원래 있던 부분)
+                                                            openRatingModal(c.product.id); // openRatingModal 함수 호출 (원래 있던 부분)
                                                         }}
                                                     />
                                                 </div>

@@ -16,7 +16,7 @@ import useCreateReservation from "../../services/createReservation";
 import MapContainer from "../../components/Maps";
 import {Calendar} from "primereact/calendar";
 import axios from "axios";
-import useFetchProductReviewById from "../../services/productReview";
+// import useFetchProductReviewById from "../../services/productReview";
 import index from "../Home";
 
 const ProductDetail = ( onClose) => {
@@ -30,9 +30,9 @@ const ProductDetail = ( onClose) => {
     const {id: commentId} = useParams()
     const { data: getComment, isLoading: LoadingComment, error: commentError } = useFetchCommentById(commentId)
     const { data: createReservation, mutateAsync: reservationMutateAsync  } =useCreateReservation()
-
+    const [isReservationButtonDisabled, setReservationButtonDisabled] = useState(false);
     const sellerId = data?.seller?.id
-    const {data: productReview , isLoading: productReviewLoading, error: productReviewError} = useFetchProductReviewById(sellerId)
+    // const {data: productReview , isLoading: productReviewLoading, error: productReviewError} = useFetchProductReviewById(sellerId)
 
 
 
@@ -68,11 +68,18 @@ const ProductDetail = ( onClose) => {
              purchase: false, product: id,desc: description, location,
             reservationDate
         }
+       try{
+           await reservationMutateAsync(userInput)
 
-        await reservationMutateAsync(userInput)
-        console.log("reservatio ", userInput)
-        alert("reservation!!!")
-        setShowReservationModal(false)
+               console.log("Reservation ", userInput);
+               alert("Reservation successful!");
+               setShowReservationModal(false);
+       } catch (err) {
+            console.log(err)
+       }
+
+
+
     }
 
 
@@ -145,9 +152,9 @@ const ProductDetail = ( onClose) => {
                             ))}
                         </Swiper>
                         {/*{productReview?.data?.length}*/}
-                        {productReview?.data?.map((r, index) => (
-                            <h1>{r.review}</h1>
-                        ))}
+                        {/*{productReview?.data?.map((r, index) => (*/}
+                        {/*    <h1>{r.review}</h1>*/}
+                        {/*))}*/}
 
                     </div>
                     {/* Product info */}

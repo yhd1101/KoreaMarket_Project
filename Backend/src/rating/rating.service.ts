@@ -24,7 +24,7 @@ export class RatingService {
   async getRating(id: string) {
     const rating = await this.ratingRepository.find({
       where: { reviewedBy: { id } },
-      relations: ['reviewedFrom', 'productInfo', 'reviewedBy'],
+      relations: ['reviewedFrom','reviewedBy','productInfo'],
     });
     return rating;
   }
@@ -37,15 +37,19 @@ export class RatingService {
     //
     //   return 'deleted rating';
     // }
-    throw new HttpException('not rating', HttpStatus.FORBIDDEN);
   }
 
   async getAllUser(id: string) {
     const user = await this.ratingRepository.find({
       where: { reviewedFrom: { id } },
-      relations: ['reviewedBy'],
+      relations: ['reviewedBy','productInfo'],
     });
-    if (user) return user;
+    if (user.length > 0) {
+      const ratingSum = user.reduce((sum, rating) => sum + rating.rating, 0);
+      const ratingAverage = ratingSum / user.length;
+
+      return {user, ratingAverage};
+    }
     throw new HttpException('No UserId', HttpStatus.NOT_FOUND);
   }
 }
