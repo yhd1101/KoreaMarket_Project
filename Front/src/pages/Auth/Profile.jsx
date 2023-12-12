@@ -74,7 +74,10 @@ const Profile = () => {
     //     console.log(newPassword)
     // }
 
-    const openRatingModal = (productId) => {
+    const openRatingModal = (productId, sellerId) => {
+
+        localStorage.setItem("productId", productId)
+        localStorage.setItem("sellerId", sellerId)
         const popup = window.open('http://localhost:3000/rating', 'Rating Modal', 'width=500,height=400', productId);
 
     };
@@ -332,7 +335,7 @@ const Profile = () => {
 
 
 
-                        <ul className="grid  gap-6 sm:grid-cols-2 md:grid-cols-4 mt-3">
+                        <ul className="grid  gap-6 sm:grid-cols-2 mt-3">
                             {error && <ErrorMessage />}
                             {data?.profile.reservation?.map((c, index) => (
                                 <Fragment key={index}>
@@ -349,6 +352,7 @@ const Profile = () => {
                                                 <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '250px' }}>
                                                     {c.product.name}
                                                 </p>
+
                                                 <p style={{ color: 'purple' }} className="mb-1">Reserved</p>
                                                 <p className="mb-1">Seller: {c.product.seller.name}</p>
                                                 <p className="mb-1">Location: {c.location}</p>
@@ -365,8 +369,9 @@ const Profile = () => {
                                                         disabled={isSubmitting}
                                                         className="rounded-lg bg-violet-500 py-4 px-20 font-semibold text-white hover:bg-violet-600"
                                                         onClick={() => {
+                                                            console.log("ddd!@3", c.product.seller.id)
                                                             updateSubmit(c, c.id); // updateSubmit 함수 호출
-                                                            openRatingModal(c.product.id); // openRatingModal 함수 호출 (원래 있던 부분)
+                                                            openRatingModal(c.product.id, c.product.seller.id); // openRatingModal 함수 호출 (원래 있던 부분)
                                                         }}
                                                     />
                                                 </div>

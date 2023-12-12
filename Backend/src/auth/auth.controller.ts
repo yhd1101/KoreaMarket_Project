@@ -170,16 +170,25 @@ export class AuthController {
     const mainPageUrl = 'http://localhost:3000';
     // 사용자에게 로그인이 완료되었음을 안내하는 메시지를 표시
     const script = `
-    <script>
-      window.localStorage.setItem('user', '${JSON.stringify(user)}');
-      window.localStorage.setItem('token', '${token}');
-      window.opener.postMessage('loginComplete', '${mainPageUrl}');
-      alert('Login completed. You can now close this window.');
-    </script>
-  `;
+  <script>
+    const sanitizedUser = ${JSON.stringify(token)};
+    window.localStorage.setItem('user', JSON.stringify(sanitizedUser));
+    window.localStorage.setItem('token', '${token}');
+    window.opener.postMessage('loginComplete', '${mainPageUrl}');
+    alert('Login completed. You can now close this window.');
+  </script>
+`;
 
-    res.send(script);
-    res.send(script);
+  //   const script = `
+  //   <script>
+  //     window.localStorage.setItem('user', '${JSON.stringify(user)}');
+  //     window.localStorage.setItem('token', '${token}');
+  //     window.opener.postMessage('loginComplete', '${mainPageUrl}');
+  //     alert('Login completed. You can now close this window.');
+  //   </script>
+  // `;
+
+    return token
   }
 
   @HttpCode(200)

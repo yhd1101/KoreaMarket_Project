@@ -6,6 +6,10 @@ import useFetchProfileById from "../../services/fetchProfileById";
 import {useParams} from "react-router-dom";
 
 const Rating = () => {
+    const productId = localStorage.getItem("productId")
+    const sellerId = localStorage.getItem("sellerId")
+    console.log("Ids!",productId)
+    console.log("sellerIdss", sellerId)
     const { id } = useParams()
     const { data, mutateAsync} = useCreateRating()
     const { data: profileProductData , isLoading, error } = useFetchProfileById()
@@ -30,7 +34,7 @@ const Rating = () => {
     const onSubmit = async (values)  => {
         const { productInfo, reviewedFrom, review} = values
         const userInput = {
-            rating: rating, productInfo:profileProductData?.profile?.reservation[0].product.id,
+            rating: rating, productInfo:productId,
             reviewedFrom: profileProductData?.profile?.reservation[0].product.seller.id
             ,review
         }

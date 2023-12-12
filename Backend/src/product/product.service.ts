@@ -45,7 +45,7 @@ export class ProductService {
 
   async getAllProducts(
     pageOptionsDto: PageOptionsDto,
-    category?: string[],
+    category?: string | string[],
   ): Promise<PageDto<Product>> {
     const queryBuilder = await this.productRepository.createQueryBuilder(
       'product',
@@ -56,16 +56,36 @@ export class ProductService {
     console.log(category);
 
     if (category !== undefined) {
+      console.log("+++++++")
       if (Array.isArray(category)) {
+        console.log("++++++")
         queryBuilder.andWhere('product.category IN (:...category)', {
           category,
         });
       } else {
+        console.log("-------")
         queryBuilder.andWhere('product.category = :category', {
           category,
         });
       }
     }
+    // if (category !== undefined) {
+    //   console.log("+++++++")
+    //   if (Array.isArray(category)) {
+    //     console.log("++++++")
+    //     queryBuilder.andWhere('product.category IN (:...category)', {
+    //       category,
+    //     });
+    //   }
+    // //   } else {
+    // //     console.log("-------")
+    // //     queryBuilder.andWhere('product.category = :category', {
+    // //       category,
+    // //     });
+    // //   }
+    // }else {
+    //   console.log("-------")
+    // }
 
     await queryBuilder
       .orderBy('product.createdAt', pageOptionsDto.order)

@@ -40,7 +40,7 @@ export class ProductController {
   // }
   async getAllProducts(
     @Query() pageOptionsDto: PageOptionsDto,
-    @Query('category') category?: string[],
+    @Query('category') category?: string | string[],
   ): Promise<PageDto<Product>> {
     return await this.productService.getAllProducts(pageOptionsDto, category);
   }
