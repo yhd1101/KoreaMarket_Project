@@ -13,7 +13,7 @@ export class CreateRatingDto {
   @ApiProperty({
     description: 'insert userId',
   })
-  reviewedFrom: User;
+  reviewedFrom: User[];
 
   @ApiProperty({
     description: 'insert productId',

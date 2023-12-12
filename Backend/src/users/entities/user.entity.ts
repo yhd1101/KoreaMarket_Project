@@ -39,10 +39,11 @@ export class User extends CommonEntity {
   @JoinColumn()
   public reservation: Reservation[];
 
-  @OneToMany(() => Rating, (rating: Rating) => rating.reviewedFrom)
-  public reviewedFrom: Rating[];
+  @ManyToOne(() => Rating, (rating: Rating) => rating.reviewedFrom)
+  @JoinColumn()
+  public reviewedFrom: Rating;
 
-  @OneToOne(() => Rating, (rating: Rating) => rating.reviewedBy)
+  @ManyToMany(() => Rating, (rating: Rating) => rating.reviewedBy)
   public reviewedBy: Rating;
 
   @Column({

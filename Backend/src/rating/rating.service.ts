@@ -29,12 +29,9 @@ export class RatingService {
     return rating;
   }
 
-  async deleteRating(id: string, user: User) {
-    const rating = await this.ratingRepository.findOne({
-      where: { id },
-      relations: ['user'],
-    });
-
+  async deleteRating(id: string) {
+    const rating = await this.ratingRepository.delete({id})
+    return rating
     // if (rating.user.id === user.id) {
     //   await this.ratingRepository.delete(id);
     //

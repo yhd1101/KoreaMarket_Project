@@ -1,15 +1,16 @@
+// services/fetchProducts.js
+
 import axios from "axios";
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-const fetchProducts = async () => {
-    const {data} = await axios.get("http://localhost:8000/api/product")
+const fetchProducts = async (page) => {
+    const { data } = await axios.get(`http://localhost:8000/api/product?page=${page}`);
     return data.data.data;
-    console.log("213232", data)
-}
+};
 
-const useFetchProducts = () =>
-    useQuery(["products"], () => fetchProducts(), {
-        keepPreviousData: true
-    })
+const useFetchProducts = (page) =>
+    useQuery(["products", page], () => fetchProducts(page), {
+        keepPreviousData: true,
+    });
 
 export default useFetchProducts;

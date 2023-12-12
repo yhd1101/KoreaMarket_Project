@@ -10,18 +10,30 @@ import ErrorMessage from "../../components/ui/ErrorMessage";
 import ProductItem from "../../components/ui/ProductItem";
 import {SwiperSlide} from "swiper/react";
 import ProductCard from "../../components/ui/ProductCard";
+import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 
 const Products = () => {
     const [filters, setFilters] = useState([])
     const [isMenuOpen, setMenuOpen] = useState(false);
-    const {data, isLoading, error} = useFetchProducts()
+    const [page, setPage] = useState(1)
+    const {data, isLoading, error} = useFetchProducts(page)
+
     console.log("ddddsdsa+=",data?.title)
     console.log("dsdadwdqeq__", data?.name)
 
     const [isOpen, setIsOpen] = useState(true); // 상태 추가: 패널이 열려있는지 여부
     const [isOpen2, setIsOpen2] = useState(false);
+    const handleLoadMore = () => {
+        setPage((prevPage) => prevPage + 1);
+    };
+    const handledown = () => {
+        setPage((prevPage) => prevPage -1);
+    };
 
 
+    const handlePaginationClick = (newPage) => {
+        setPage(newPage);
+    };
     const handleToggleMenu = () => {
         setMenuOpen(!isMenuOpen);
     };
@@ -258,20 +270,20 @@ const Products = () => {
                                         </Fragment>
 
                                     ))}
-                                    {/*{data?.map((item, index) => (*/}
-                                    {/*    <Fragment key={index}>*/}
-                                    {/*        <ProductItem image={data?.productImg} title={data?.name} id={data?.id} />*/}
-                                    {/*        /!*<ProductItem image={data?.productImg[0]}  title={data?.name} id={data?.item.id} />*!/*/}
-                                    {/*    </Fragment>*/}
-                                    {/*))}*/}
-                                    {/*{data?.map((item, index)=> (*/}
-                                    {/*    <Fragment key={index}>*/}
-                                    {/*        /!*{data.id}*!/*/}
-                                    {/*        <ProductItem image={data?.productImg} title={data?.name} id={data?.id} />*/}
-                                    {/*    </Fragment>*/}
-                                    {/*))}*/}
                                 </>
                             </ul>
+                            {data && (
+                                <div className="mt-8  flex items-center justify-center">
+                                    <div className="swiper-button image-swiper-button-prev-product mr-4 h-6 w-6 cursor-pointer" onClick={handledown}>
+                                        <ChevronLeftIcon />
+                                    </div>
+                                    <div className="custom-pagination flex justify-center"></div>
+                                    <div className="swiper-button image-swiper-button-next-product ml-4 h-6 w-6 cursor-pointer" onClick={handleLoadMore}>
+                                        <ChevronRightIcon />
+
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>

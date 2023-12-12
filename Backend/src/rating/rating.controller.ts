@@ -67,6 +67,7 @@ export class RatingController {
     @Req() req: RequestWithUserInterface,
   ) {
     const { user } = req;
+    const rating = await this.ratingService.deleteRating(id)
   }
 
   @Get(':id')

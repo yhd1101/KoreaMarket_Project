@@ -1,7 +1,7 @@
 import {
   Column,
   Entity,
-  JoinColumn,
+  JoinColumn, ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -19,15 +19,14 @@ export class Rating extends CommonEntity {
   public rating: number;
 
   //판매자 정보
-  @ManyToOne(() => User, (user: User) => user.reviewedFrom)
-  @JoinColumn()
-  public reviewedFrom: User;
+  @OneToMany(() => User, (user: User) => user.reviewedFrom)
+  public reviewedFrom: User[];
 
   @OneToOne(() => Product, (product: Product) => product.rating)
   @JoinColumn()
   public productInfo: Product;
 
-  @OneToOne(() => User, (user: User) => user.reviewedBy)
+  @ManyToMany(() => User, (user: User) => user.reviewedBy)
   @JoinColumn()
   public reviewedBy: User;
 
