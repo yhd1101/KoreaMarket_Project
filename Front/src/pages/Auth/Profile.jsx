@@ -29,6 +29,8 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import {SwiperSlide} from "swiper/react";
 import ProductItem from "../../components/ui/ProductItem";
 import useFetchRatingById from "../../services/ratingGetId";
+import MapContainer from "../../components/Maps";
+import {Calendar} from "primereact/calendar";
 
 
 const Profile = () => {
@@ -43,6 +45,7 @@ const Profile = () => {
     const [showRatingModal, setShowRatingModal] = useState(false);
     const { data: updateReservationData, isLoading: isUpdateReservationLoading, mutateAsync: updateMutateAsync} = useUpdateReservation(reservationId)
     const { data: purchaseCount } = useFetchPurchase()
+    const [showReservationModal, setShowReservationModal] = useState(false); // 모달 가시성을 제어하는 상태
     console.log("purchase: ", purchaseCount?.length )
     console.log("rating:", ratingData?.data.ratingAverage)
 
@@ -79,6 +82,7 @@ const Profile = () => {
         localStorage.setItem("productId", productId)
         localStorage.setItem("sellerId", sellerId)
         const popup = window.open('http://localhost:3000/rating', 'Rating Modal', 'width=500,height=400', productId);
+
 
     };
 
@@ -226,7 +230,7 @@ const Profile = () => {
                                 <div>
                                     <span>Score</span>
                                     <br/>
-                                    <span className="ml-3">{ratingData?.data.ratingAverage}</span>
+                                    <span className="ml-3">{ratingData?.data.ratingAverage ?? 0}</span>
                                 </div>
 
                                 <div className="ml-5 border-r border-blue-300"/>
@@ -239,7 +243,7 @@ const Profile = () => {
                                 <div className="...">
                                     <span>Sell</span>
                                     <br/>
-                                    <span className="ml-2">{ratingData?.data?.user.length}</span>
+                                    <span className="ml-2">{ratingData?.data?.user.length ?? 0}</span>
                                 </div>
                             </div>
                             {/*<div className="border border-blue-500 p-4 ml-2 grid-cols-3">*/}
@@ -341,12 +345,72 @@ const Profile = () => {
                                 <Fragment key={index}>
                                     {c.purchase === false && ( // purchase가 false일 때만 렌더링
                                         <>
-                                            <ProductItem key={index}
-                                                         id={c?.product?.id}
-                                                         img={c?.product.productImg[0]}
-                                                // img={"https://assets.burberry.com/is/image/Burberryltd/7F1F1853-CA91-43B6-B4B1-ADC28DE93F0F?$BBY_V3_SL_1$&wid=2500&hei=2500"}
+                                            <div onClick={() => {
+                                                setShowReservationModal(true)
+                                            }}>
+                                                <ReservationItem key={index}
+                                                             id={c?.product?.id}
+                                                             img={c?.product.productImg[0]}
+                                                    // img={"https://assets.burberry.com/is/image/Burberryltd/7F1F1853-CA91-43B6-B4B1-ADC28DE93F0F?$BBY_V3_SL_1$&wid=2500&hei=2500"}
+                                                />
+                                                {showReservationModal && (
+                                                    <div className="modal-container" > {/* CSS 클래스를 추가합니다. */}
+                                                        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+                                                            <div className="relative w-full h-full max-w-5xl mx-auto my-4">
+                                                                <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
+                                                                    <div className="flex items-start justify-between p-3 border-b border-solid rounded-t border-blueGray-200">
+                                                                        <h3 className="text-3xl font-semibold">Reservation</h3>
+                                                                        <button
+                                                                            className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                            onClick={() => setShowReservationModal(false)}
+                                                                        >
+                                                                            <span className="text-black h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="relative p-6 flex-auto max-h-[80vh] min-h-[50vh] flex justify-center">
+                                                                        <div className="mx-4 flex-1 ml-8" style={{ marginBottom: '1px' }}>
+                                                                            <MapContainer />
 
-                                            />
+                                                                        </div>
+                                                                        <div className="mx-4 flex-1 text-left ">
+                                                                            <div className="mt-4">
+                                                                                <h1 className="text-xl font-semibold">Seller information</h1>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div className={"mb-1"}>
+                                                                                    <span className="font-semibold">seller name:</span> {c.product.seller.name}
+                                                                                </div>
+                                                                                <div className={"mb-1, mt-2"}>
+                                                                                    <span className="font-semibold">seller email:</span> {c.product.seller.email}
+                                                                                </div>
+                                                                                <div className={"mb-1, mt-16"}>
+                                                                                    <span className="font-semibold">Memo:</span> {c.desc}
+                                                                                </div>
+                                                                                <div className={"mb-1, mt-16"}>
+                                                                                    <span className="font-semibold">location:</span> {c.location}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <form>
+                                                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                                                            <button
+                                                                                onClick={() => setShowReservationModal(false)}
+                                                                                type="button"
+                                                                                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                                            >
+                                                                                Cancel
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                            </div>
+
 
                                             <div>
                                                 <p className="font-bold tracking-tight text-gray-900 mb-1" style={{ width: '250px' }}>

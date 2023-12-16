@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 export default function ReservationItem({ img, id }) {
     return (
-        <Link to={`/product/${id}`} className="block">
-            <div className="relative overflow-hidden rounded-2xl bg-gray-100" style={{ width: '170px', height: '170px' }}>
+
+            <div  className="relative overflow-hidden rounded-2xl bg-gray-100" style={{ width: '300px', height: '200px' }}>
                 <LazyLoadImage
                     src={img}
                     alt={id}
@@ -13,7 +13,6 @@ export default function ReservationItem({ img, id }) {
                 />
             </div>
 
-        </Link>
 
     );
 }

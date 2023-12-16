@@ -14,8 +14,6 @@ const Rating = () => {
     const { data, mutateAsync} = useCreateRating()
     const { data: profileProductData , isLoading, error } = useFetchProfileById()
     const [rating, setRating] = useState(null);
-    console.log("data", profileProductData?.profile?.reservation[0].product.id)
-    console.log("ddddd", profileProductData?.profile?.reservation[0].product.seller.id)
     console.log("Id: " ,id)
     const handleRatingChange = (value) => {
         setRating(value);
@@ -42,6 +40,7 @@ const Rating = () => {
         console.log("data!!:", userInput)
         mutateAsync(userInput)
         alert("Thank you for review")
+
     }
 
     return (

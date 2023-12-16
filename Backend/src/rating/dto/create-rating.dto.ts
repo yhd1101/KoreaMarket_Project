@@ -6,7 +6,7 @@ import { Product } from '@product/entities/product.entity';
 export class CreateRatingDto {
   @ApiProperty({
     description: 'insert rating',
-    default: 1,
+    default: 0,
   })
   rating: number;
 

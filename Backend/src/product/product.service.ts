@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -8,12 +8,15 @@ import { User } from '@users/entities/user.entity';
 import { PageOptionsDto } from '@common/dtos/page-options.dto';
 import { PageDto } from '@common/dtos/page.dto';
 import { PageMetaDto } from '@common/dtos/page-meta.dto';
+import {CACHE_MANAGER} from "@nestjs/common/cache";
+import {Cache} from "cache-manager";
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   //등록해주는 로직
@@ -47,6 +50,11 @@ export class ProductService {
     pageOptionsDto: PageOptionsDto,
     category?: string | string[],
   ): Promise<PageDto<Product>> {
+    const redisData = await this.cacheManager.get("products")
+    console.log( redisData)
+    if(redisData) {
+      return redisData
+    }
     const queryBuilder = await this.productRepository.createQueryBuilder(
       'product',
     );
@@ -87,6 +95,8 @@ export class ProductService {
     //   console.log("-------")
     // }
 
+
+
     await queryBuilder
       .orderBy('product.createdAt', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
@@ -94,6 +104,15 @@ export class ProductService {
 
     const itemCount = await queryBuilder.getCount();
     const { entities } = await queryBuilder.getRawAndEntities();
+
+    // await this.cacheManager.get(entities)
+    await this.cacheManager.set("products", entities)
+
+
+
+
+
+
 
     const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
     return new PageDto(entities, pageMetaDto);

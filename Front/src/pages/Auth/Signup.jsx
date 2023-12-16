@@ -69,6 +69,9 @@ const Signup = () => {
             password: data.password,
             provider: "local",
         }
+        mutateAsync(userInput)
+        alert("signup")
+        navigate("/login")
         console.log(userInput)
 
     });
@@ -175,12 +178,14 @@ const Signup = () => {
 
 
                         <Button
-                            text="Create account"
-                            disabled={isSubmitting}
-                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600"
-                            type={"submit"}
-                            disable={btnDisable}
                             onClick={onSubmit_2}
+                            // name="submit1"
+                            // variant="contained"
+                            text="Create"
+                            // disabled={isSubmitting}
+                            className="rounded-lg bg-violet-500 py-4 font-semibold text-white hover:bg-violet-600 mb-2"
+                            type="submit"
+
                         />
                     </form>
 

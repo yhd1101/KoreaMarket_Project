@@ -19,9 +19,7 @@ import { ConfirmEmailDto } from '@users/dto/confirm-email.dto';
 import { VerificationTokenPayloadInterface } from '@auth/interfaces/verificationTokenPayload.interface';
 import { ChangePasswordDto } from '@users/dto/change-password.dto';
 import { NewPasswordDto } from '@users/dto/new-password.dto';
-import { User } from '@users/entities/user.entity';
 import { Reservation } from '@reservation/entities/reservation.entity';
-import { Product } from '@product/entities/product.entity';
 
 @Injectable()
 export class AuthService {
@@ -73,24 +71,24 @@ export class AuthService {
   }
 
   async sendEmail(email: string) {
-    // const generateNumber = this.generateOTP();
-    // await this.cacheManger.set(email, generateNumber);
-    // await this.emailService.sendMail({
-    //   to: email,
-    //   subject: '이메일확인',
-    //   // html: `이메일 확인용 메일입니다. 아래 번호를 인증해주세요 <br><b><h1>${generateNumber}</h1></b>`,
-    //   html: verificationEmail(generateNumber),
-    // });
-    // return 'success';
+    const generateNumber = this.generateOTP();
+    await this.cacheManger.set(email, generateNumber);
+    await this.emailService.sendMail({
+      to: email,
+      subject: '이메일확인',
+      // html: `이메일 확인용 메일입니다. 아래 번호를 인증해주세요 <br><b><h1>${generateNumber}</h1></b>`,
+      html: verificationEmail(generateNumber),
+    });
+    return 'success';
   }
 
   async confirmEmail(confirmEmailDto: ConfirmEmailDto) {
-    // const emailCodeByRedis = await this.cacheManger.get(confirmEmailDto.email);
-    // if (emailCodeByRedis !== confirmEmailDto.code) {
-    //   throw new BadRequestException('Wrong code provided');
-    // }
-    // // await this.cacheManger.del(confirmEmailDto.email);
-    // return true;
+    const emailCodeByRedis = await this.cacheManger.get(confirmEmailDto.email);
+    if (emailCodeByRedis !== confirmEmailDto.code) {
+      throw new BadRequestException('Wrong code provided');
+    }
+    await this.cacheManger.del(confirmEmailDto.email);
+    return true;
   }
   async forgotPassword(email: string) {
     const payload: VerificationTokenPayloadInterface = { email };
