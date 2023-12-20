@@ -197,7 +197,7 @@ export class ProductService {
     if (redisData !== null) {
       // Redis에서 데이터를 삭제
       await this.cacheManager.del('products');
-      await this.cacheManager.get("products")
+
 
     }
 
@@ -208,8 +208,15 @@ export class ProductService {
   }
 
   async productUpdateById(id: string, createProductDto: CreateProductDto) {
+    const redisData = await this.cacheManager.get("products");
+    if (redisData !== null) {
+      // Redis에서 데이터를 삭제
+      await this.cacheManager.del('products');
+      console.log("*****", redisData)
 
+    }
     await this.productRepository.update(id, createProductDto);
+
     return 'updated product';
   }
 }
