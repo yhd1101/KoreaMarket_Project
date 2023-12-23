@@ -14,6 +14,7 @@ import { AppConfigModule } from '@common/config/config.module';
 import { LoggerModule } from './logger/logger.module';
 import { RatingModule } from './rating/rating.module';
 import { MovieModule } from './movie/movie.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { MovieModule } from './movie/movie.module';
     LoggerModule,
     RatingModule,
     MovieModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
