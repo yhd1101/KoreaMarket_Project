@@ -38,4 +38,8 @@ export class MovieService {
     }
   }
 
+  async getMovies() {
+      return await this.movieRepository.find()
+  }
+
 }
