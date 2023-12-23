@@ -18,8 +18,8 @@ const Products = () => {
     const [page, setPage] = useState(1)
     const {data, isLoading, error} = useFetchProducts(page)
 
-    console.log("ddddsdsa+=",data?.title)
-    console.log("dsdadwdqeq__", data?.name)
+    console.log("ddddsdsa+=",data?.[0])
+    console.log("dsdadwdqeq__", data)
 
     const [isOpen, setIsOpen] = useState(true); // 상태 추가: 패널이 열려있는지 여부
     const [isOpen2, setIsOpen2] = useState(false);

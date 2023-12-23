@@ -4,8 +4,8 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchProducts = async (page) => {
-    const { data } = await axios.get(`http://localhost:8000/api/product?page=${page}`);
-    return data.data.data;
+    const { data } = await axios.get(`http://localhost:8000/api/product`);
+    return data.data;
 };
 
 const useFetchProducts = (page) =>

@@ -40,6 +40,9 @@ import * as Joi from '@hapi/joi';
         JWT_CHAGNE_PASSWORD_SECRET: Joi.string().required(),
         JWT_CHAGNE_PASSWORD_EXPIRESIN: Joi.string().required(),
         PASSWORD_CHANGE_URL: Joi.string().required(),
+
+        MOVIE_URL: Joi.string().required(),
+        MOVIE_TOKEN: Joi.string().required(),
       }),
     }),
   ], //env파일을 인식해줌

@@ -13,6 +13,7 @@ import { CommentModule } from '@comment/comment.module';
 import { AppConfigModule } from '@common/config/config.module';
 import { LoggerModule } from './logger/logger.module';
 import { RatingModule } from './rating/rating.module';
+import { MovieModule } from './movie/movie.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { RatingModule } from './rating/rating.module';
     ReservationModule,
     LoggerModule,
     RatingModule,
+    MovieModule,
   ],
   controllers: [AppController],
   providers: [AppService],

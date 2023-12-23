@@ -23,6 +23,7 @@
   "dependencies": {
     "@compodoc/compodoc": "^1.1.22",
     "@hapi/joi": "^17.1.1",
+    "@nestjs/axios": "^3.0.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
@@ -42,6 +43,7 @@
     "@types/passport-kakao": "^1.0.0",
     "@types/passport-local": "^1.0.35",
     "@types/passport-naver": "^1.0.1",
+    "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "cache-manager": "4.1",
     "cache-manager-redis-store": "2.0",
