@@ -15,6 +15,7 @@ import { LoggerModule } from './logger/logger.module';
 import { RatingModule } from './rating/rating.module';
 import { MovieModule } from './movie/movie.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { LocalFilesModule } from './local-files/local-files.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     RatingModule,
     MovieModule,
     ScheduleModule.forRoot(),
+    LocalFilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,13 +7,14 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '@users/entities/user.entity';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { Reservation } from '@reservation/entities/reservation.entity';
-import { Product } from '@product/entities/product.entity';
+import { LocalFilesService } from '@root/local-files/local-files.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) //db활용
     private userRepository: Repository<User>,
+    private readonly localFilesService: LocalFilesService,
   ) {}
 
   // //프로필
@@ -50,7 +51,7 @@ export class UsersService {
       relations: [
         'reservation',
         'reservation.product',
-        'reservation.product.seller'
+        'reservation.product.seller',
       ],
     });
     return { profile };
@@ -87,5 +88,15 @@ export class UsersService {
     const user = await this.userRepository.findOneBy({ email });
     user.password = await bcrypt.hash(password, 10);
     return this.userRepository.save(user);
+  }
+
+  //프로필 이미지 파일 바꾸기
+  async addAvatar(userId: string, fileData: LocalFileDto) {
+    const avatar = await this.localFilesService.saveLocalFileData(fileData);
+    await this.userRepository.update(userId, {
+      profileImg: 'http//localhost:8000/' + avatar.path,
+    });
+
+    return 'success';
   }
 }

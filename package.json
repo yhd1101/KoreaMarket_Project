@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@material-tailwind/react": "^2.1.5"
+    "@material-tailwind/react": "^2.1.5",
+    "@nestjs/mapped-types": "*",
+    "@types/multer": "^1.4.11"
   }
 }
